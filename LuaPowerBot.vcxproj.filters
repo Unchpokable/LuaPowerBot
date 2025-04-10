@@ -43,6 +43,12 @@
     <Filter Include="sources\configs">
       <UniqueIdentifier>{8579acae-1d7f-4e71-8a93-8c1653d75a88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sources\utility">
+      <UniqueIdentifier>{169ea3dc-eea2-4725-a1b5-699febbd224b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\utility">
+      <UniqueIdentifier>{ca76465d-3c98-4dbe-9a2b-70b62ec8ad98}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="thirdparty\imgui-docking\imgui_widgets.cpp">
@@ -77,6 +83,15 @@
     </ClCompile>
     <ClCompile Include="bot_runtime.cxx">
       <Filter>sources\telegram</Filter>
+    </ClCompile>
+    <ClCompile Include="expected.cxx">
+      <Filter>sources\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="lua_load.cxx">
+      <Filter>sources\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua_load_internal.cxx">
+      <Filter>sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +130,12 @@
     </ClInclude>
     <ClInclude Include="bot_runtime.hxx">
       <Filter>headers\telegram</Filter>
+    </ClInclude>
+    <ClInclude Include="lua_load.hxx">
+      <Filter>headers\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="expected.hxx">
+      <Filter>headers\utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
