@@ -49,6 +49,12 @@
     <Filter Include="headers\utility">
       <UniqueIdentifier>{ca76465d-3c98-4dbe-9a2b-70b62ec8ad98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="headers\lua\api">
+      <UniqueIdentifier>{0b29ec1b-a229-4878-84a3-947f4304c784}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\lua\api">
+      <UniqueIdentifier>{fe247511-de77-436d-8a96-ed1e00a3dd21}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="thirdparty\imgui-docking\imgui_widgets.cpp">
@@ -91,7 +97,7 @@
       <Filter>sources\lua</Filter>
     </ClCompile>
     <ClCompile Include="lua_load_internal.cxx">
-      <Filter>sources</Filter>
+      <Filter>sources\lua</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
