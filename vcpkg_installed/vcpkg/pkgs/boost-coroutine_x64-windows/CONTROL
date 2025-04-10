@@ -1,0 +1,7 @@
+Package: boost-coroutine
+Version: 1.86.0
+Depends: boost-assert, boost-cmake, boost-config, boost-context, boost-core, boost-exception, boost-headers, boost-move, boost-system, boost-throw-exception, boost-type-traits, boost-utility
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 930d7ec2bf197369afe02f473a340160b2f9ad5c0d18f7204c8c80e61cb89dfe
+Description: Boost coroutine module

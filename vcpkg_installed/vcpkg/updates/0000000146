@@ -1,0 +1,8 @@
+Package: boost-any
+Version: 1.86.0
+Depends: boost-assert, boost-cmake, boost-config, boost-headers, boost-throw-exception, boost-type-index
+Architecture: x64-windows
+Multi-Arch: same
+Abi: c2359d0810b12dc8c3ee1672d81dbb0550fba38ec6747afa1caa9974eb4ed678
+Description: Boost any module
+Status: install ok half-installed

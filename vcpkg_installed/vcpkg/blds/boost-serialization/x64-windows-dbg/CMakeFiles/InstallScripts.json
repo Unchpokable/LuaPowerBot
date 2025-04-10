@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-serialization/x64-windows-dbg/cmake_install.cmake",
+		"C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-serialization/x64-windows-dbg/libs/serialization/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

@@ -1,0 +1,11 @@
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-io_x64-windows/include/boost/io/detail/buffer_fill.hpp
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-io_x64-windows/include/boost/io/detail/ostream_guard.hpp
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-io_x64-windows/include/boost/io/ios_state.hpp
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-io_x64-windows/include/boost/io/nullstream.hpp
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-io_x64-windows/include/boost/io/ostream_joiner.hpp
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-io_x64-windows/include/boost/io/ostream_put.hpp
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-io_x64-windows/include/boost/io/quoted.hpp
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-io_x64-windows/include/boost/io_fwd.hpp
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-io_x64-windows/lib/cmake/boost_io-1.86.0/boost_io-targets.cmake
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-io_x64-windows/lib/cmake/boost_io-1.86.0/boost_io-config.cmake
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-io_x64-windows/lib/cmake/boost_io-1.86.0/boost_io-config-version.cmake

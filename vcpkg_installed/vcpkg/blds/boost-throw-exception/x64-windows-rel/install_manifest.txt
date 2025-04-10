@@ -1,0 +1,5 @@
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-throw-exception_x64-windows/include/boost/exception/exception.hpp
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-throw-exception_x64-windows/include/boost/throw_exception.hpp
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-throw-exception_x64-windows/lib/cmake/boost_throw_exception-1.86.0/boost_throw_exception-targets.cmake
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-throw-exception_x64-windows/lib/cmake/boost_throw_exception-1.86.0/boost_throw_exception-config.cmake
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-throw-exception_x64-windows/lib/cmake/boost_throw_exception-1.86.0/boost_throw_exception-config-version.cmake

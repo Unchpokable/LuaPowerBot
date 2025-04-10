@@ -1,0 +1,17 @@
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-test/x64-windows-rel/CMakeFiles/tests.dir
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-test/x64-windows-rel/CMakeFiles/check.dir
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-test/x64-windows-rel/CMakeFiles/tests-quick.dir
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-test/x64-windows-rel/CMakeFiles/check-quick.dir
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-test/x64-windows-rel/CMakeFiles/edit_cache.dir
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-test/x64-windows-rel/CMakeFiles/rebuild_cache.dir
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-test/x64-windows-rel/CMakeFiles/list_install_components.dir
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-test/x64-windows-rel/CMakeFiles/install.dir
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-test/x64-windows-rel/CMakeFiles/install/local.dir
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-test/x64-windows-rel/libs/test/CMakeFiles/boost_prg_exec_monitor.dir
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-test/x64-windows-rel/libs/test/CMakeFiles/boost_test_exec_monitor.dir
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-test/x64-windows-rel/libs/test/CMakeFiles/boost_unit_test_framework.dir
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-test/x64-windows-rel/libs/test/CMakeFiles/edit_cache.dir
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-test/x64-windows-rel/libs/test/CMakeFiles/rebuild_cache.dir
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-test/x64-windows-rel/libs/test/CMakeFiles/list_install_components.dir
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-test/x64-windows-rel/libs/test/CMakeFiles/install.dir
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-test/x64-windows-rel/libs/test/CMakeFiles/install/local.dir

@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="sources\thirdparty">
+      <UniqueIdentifier>{705d856e-33f4-4418-bed0-44a716e2a1e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\thirdparty">
+      <UniqueIdentifier>{a82accd9-b929-467c-9ba5-188fa25597a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\lua">
+      <UniqueIdentifier>{cdee1370-40ae-4f26-bd0d-0c380dddf93d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\lua">
+      <UniqueIdentifier>{a4f216f0-2418-4c3c-93e1-faad6e48ee5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\editor">
+      <UniqueIdentifier>{7fc3ca67-f2ed-48a1-90a0-fe7225a5870d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\editor">
+      <UniqueIdentifier>{876caa8e-09a7-49c4-9f64-57202a4b8ebf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\telegram">
+      <UniqueIdentifier>{00f062a4-a410-4753-a06a-233089fc42c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\telegram">
+      <UniqueIdentifier>{21b445f2-6321-4e13-8d91-118bdb35f9cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\configs">
+      <UniqueIdentifier>{3a64266c-1de9-48fd-b5f3-32d90da02821}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\configs">
+      <UniqueIdentifier>{8579acae-1d7f-4e71-8a93-8c1653d75a88}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="thirdparty\imgui-docking\imgui_widgets.cpp">
+      <Filter>sources\thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="thirdparty\imgui-docking\imgui.cpp">
+      <Filter>sources\thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="thirdparty\imgui-docking\imgui_demo.cpp">
+      <Filter>sources\thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="thirdparty\imgui-docking\imgui_draw.cpp">
+      <Filter>sources\thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="thirdparty\imgui-docking\imgui_tables.cpp">
+      <Filter>sources\thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cxx">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="thirdparty\imgui-docking\backends\imgui_impl_glfw.cpp">
+      <Filter>sources\thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="thirdparty\imgui-docking\backends\imgui_impl_opengl3.cpp">
+      <Filter>sources\thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="thirdparty\imgui-docking\backends\imgui_impl_win32.cpp">
+      <Filter>sources\thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="thirdparty\imtextedit\TextEditor.cpp">
+      <Filter>sources\thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="bot_runtime.cxx">
+      <Filter>sources\telegram</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="thirdparty\imgui-docking\imconfig.h">
+      <Filter>headers\thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\imgui-docking\imgui.h">
+      <Filter>headers\thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\imgui-docking\imgui_internal.h">
+      <Filter>headers\thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\imgui-docking\imstb_rectpack.h">
+      <Filter>headers\thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\imgui-docking\imstb_textedit.h">
+      <Filter>headers\thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\imgui-docking\imstb_truetype.h">
+      <Filter>headers\thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\imgui-docking\backends\imgui_impl_glfw.h">
+      <Filter>headers\thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\imgui-docking\backends\imgui_impl_opengl3.h">
+      <Filter>headers\thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\imgui-docking\backends\imgui_impl_opengl3_loader.h">
+      <Filter>headers\thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\imgui-docking\backends\imgui_impl_win32.h">
+      <Filter>headers\thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\imtextedit\TextEditor.h">
+      <Filter>headers\thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="bot_runtime.hxx">
+      <Filter>headers\telegram</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

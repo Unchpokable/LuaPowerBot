@@ -1,0 +1,4 @@
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-array_x64-windows/include/boost/array.hpp
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-array_x64-windows/lib/cmake/boost_array-1.86.0/boost_array-targets.cmake
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-array_x64-windows/lib/cmake/boost_array-1.86.0/boost_array-config.cmake
+C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-array_x64-windows/lib/cmake/boost_array-1.86.0/boost_array-config-version.cmake
