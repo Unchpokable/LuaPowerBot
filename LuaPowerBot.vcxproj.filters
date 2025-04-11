@@ -49,11 +49,11 @@
     <Filter Include="headers\utility">
       <UniqueIdentifier>{ca76465d-3c98-4dbe-9a2b-70b62ec8ad98}</UniqueIdentifier>
     </Filter>
-    <Filter Include="headers\lua\api">
-      <UniqueIdentifier>{0b29ec1b-a229-4878-84a3-947f4304c784}</UniqueIdentifier>
-    </Filter>
     <Filter Include="sources\lua\api">
-      <UniqueIdentifier>{fe247511-de77-436d-8a96-ed1e00a3dd21}</UniqueIdentifier>
+      <UniqueIdentifier>{fb7fb7ac-4d1b-4094-a752-7a12d65aea71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\lua\api">
+      <UniqueIdentifier>{edf76b50-e418-46a8-88b2-25713f334fd5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -84,9 +84,6 @@
     <ClCompile Include="thirdparty\imgui-docking\backends\imgui_impl_win32.cpp">
       <Filter>sources\thirdparty</Filter>
     </ClCompile>
-    <ClCompile Include="thirdparty\imtextedit\TextEditor.cpp">
-      <Filter>sources\thirdparty</Filter>
-    </ClCompile>
     <ClCompile Include="bot_runtime.cxx">
       <Filter>sources\telegram</Filter>
     </ClCompile>
@@ -96,8 +93,23 @@
     <ClCompile Include="lua_load.cxx">
       <Filter>sources\lua</Filter>
     </ClCompile>
+    <ClCompile Include="parse_args.cxx">
+      <Filter>sources\utility</Filter>
+    </ClCompile>
     <ClCompile Include="lua_load_internal.cxx">
-      <Filter>sources\lua</Filter>
+      <Filter>sources\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="lua_api.cxx">
+      <Filter>sources\lua\api</Filter>
+    </ClCompile>
+    <ClCompile Include="user_session.cxx">
+      <Filter>sources\telegram</Filter>
+    </ClCompile>
+    <ClCompile Include="lua_api_types.cxx">
+      <Filter>sources\lua\api</Filter>
+    </ClCompile>
+    <ClCompile Include="lua_api_functions.cxx">
+      <Filter>sources\lua\api</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,9 +143,6 @@
     <ClInclude Include="thirdparty\imgui-docking\backends\imgui_impl_win32.h">
       <Filter>headers\thirdparty</Filter>
     </ClInclude>
-    <ClInclude Include="thirdparty\imtextedit\TextEditor.h">
-      <Filter>headers\thirdparty</Filter>
-    </ClInclude>
     <ClInclude Include="bot_runtime.hxx">
       <Filter>headers\telegram</Filter>
     </ClInclude>
@@ -142,6 +151,21 @@
     </ClInclude>
     <ClInclude Include="expected.hxx">
       <Filter>headers\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="parse_args.hxx">
+      <Filter>headers\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="lua_api.hxx">
+      <Filter>headers\lua\api</Filter>
+    </ClInclude>
+    <ClInclude Include="user_session.hxx">
+      <Filter>headers\telegram</Filter>
+    </ClInclude>
+    <ClInclude Include="lua_api_functions.hxx">
+      <Filter>headers\lua\api</Filter>
+    </ClInclude>
+    <ClInclude Include="lua_api_types.hxx">
+      <Filter>headers\lua\api</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

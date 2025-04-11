@@ -107,7 +107,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(LIBRARIES_DIR)\luajit\include;$(LIBRARIES_DIR)\sol2\include;$(SolutionDir)thirdparty\;$(SolutionDir)thirdparty\compiled\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(LIBRARIES_DIR)\luajit\include;$(LIBRARIES_DIR)\sol2\include;$(SolutionDir)thirdparty\;$(SolutionDir)thirdparty\compiled\include;$(SolutionDir)thirdparty\imgui-docking\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
@@ -115,6 +115,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(LIBRARIES_DIR)\luajit\lib;$(SolutionDir)thirdparty\compiled\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>lua51.lib;luajit.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -136,9 +137,13 @@
   <ItemGroup>
     <ClCompile Include="bot_runtime.cxx" />
     <ClCompile Include="expected.cxx" />
+    <ClCompile Include="lua_api.cxx" />
+    <ClCompile Include="lua_api_functions.cxx" />
+    <ClCompile Include="lua_api_types.cxx" />
     <ClCompile Include="lua_load.cxx" />
     <ClCompile Include="lua_load_internal.cxx" />
     <ClCompile Include="main.cxx" />
+    <ClCompile Include="parse_args.cxx" />
     <ClCompile Include="thirdparty\imgui-docking\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="thirdparty\imgui-docking\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="thirdparty\imgui-docking\backends\imgui_impl_win32.cpp" />
@@ -148,11 +153,16 @@
     <ClCompile Include="thirdparty\imgui-docking\imgui_tables.cpp" />
     <ClCompile Include="thirdparty\imgui-docking\imgui_widgets.cpp" />
     <ClCompile Include="thirdparty\imtextedit\TextEditor.cpp" />
+    <ClCompile Include="user_session.cxx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot_runtime.hxx" />
     <ClInclude Include="expected.hxx" />
+    <ClInclude Include="lua_api.hxx" />
+    <ClInclude Include="lua_api_functions.hxx" />
+    <ClInclude Include="lua_api_types.hxx" />
     <ClInclude Include="lua_load.hxx" />
+    <ClInclude Include="parse_args.hxx" />
     <ClInclude Include="thirdparty\imgui-docking\backends\imgui_impl_glfw.h" />
     <ClInclude Include="thirdparty\imgui-docking\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="thirdparty\imgui-docking\backends\imgui_impl_opengl3_loader.h" />
@@ -164,6 +174,7 @@
     <ClInclude Include="thirdparty\imgui-docking\imstb_textedit.h" />
     <ClInclude Include="thirdparty\imgui-docking\imstb_truetype.h" />
     <ClInclude Include="thirdparty\imtextedit\TextEditor.h" />
+    <ClInclude Include="user_session.hxx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

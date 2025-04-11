@@ -8,7 +8,8 @@
 
 namespace lua {
 
-struct LuaScript {
+struct LuaScript
+{
     LuaScript(std::string file, sol::state&& state) : originFile(std::move(file)), luaState(std::move(state)) {}
 
     LuaScript(const LuaScript&) = delete;

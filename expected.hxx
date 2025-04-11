@@ -8,7 +8,8 @@
 
 #define no_return [[noreturn]]
 
-no_return inline void unreachable() {
+no_return inline void unreachable()
+{
     assert(false);
 }
 
@@ -19,11 +20,11 @@ public:
     using value_type = T;
     using error_type = Err;
 
-    Expected(const value_type& value) requires std::copy_constructible<value_type>;
-    Expected(value_type&& value) requires std::move_constructible<value_type>;
+    Expected(const value_type& value) requires std::copy_constructible<T>;
+    Expected(value_type&& value) requires std::move_constructible<T>;
 
-    Expected(const error_type& err) requires std::copy_constructible<error_type>;
-    Expected(error_type&& err) requires std::move_constructible<error_type>;
+    Expected(const error_type& err) requires std::copy_constructible<Err>;
+    Expected(error_type&& err) requires std::move_constructible<Err>;
 
     bool hasValue() const noexcept;
     explicit operator bool() const noexcept;
@@ -65,7 +66,7 @@ Expected<T, Err>::operator bool() const noexcept
 template <typename T, typename Err>
 const typename Expected<T, Err>::value_type& Expected<T, Err>::value() const
 {
-    if(!hasValue) 
+    if(!hasValue()) 
         unreachable();
     return std::get<0>(_data);
 }
@@ -73,23 +74,23 @@ const typename Expected<T, Err>::value_type& Expected<T, Err>::value() const
 template <typename T, typename Err>
 const typename Expected<T, Err>::error_type& Expected<T, Err>::error() const
 {
-    if(hasValue)
+    if(hasValue())
         unreachable();
     return std::get<1>(_data);
 }
 
 template <typename T, typename Err>
-typename Expected<T, Err>::value_type & Expected<T, Err>::value()
+typename Expected<T, Err>::value_type& Expected<T, Err>::value()
 {
-    if(!hasValue) 
+    if(!hasValue()) 
         unreachable();
     return std::get<0>(_data);
 }
 
 template <typename T, typename Err>
-typename Expected<T, Err>::error_type & Expected<T, Err>::error()
+typename Expected<T, Err>::error_type& Expected<T, Err>::error()
 {
-    if(hasValue) 
+    if(hasValue()) 
         unreachable();
     return std::get<1>(_data);
 }

@@ -2,25 +2,29 @@
 
 #include <tgbot/tgbot.h>
 
+#include "user_session.hxx"
+
 namespace lua {
 struct LuaScript;
 }
 
 namespace tg {
 
-class BotRuntimeContext {
+class BotRuntimeContext
+{
 public:
-    
+    static std::unique_ptr<BotRuntimeContext> create(const std::string& apiKey, const std::string& commandsPath);
+
+    BotRuntimeContext(const std::string& apiKey);
 
 private:
-    void toKeys(std::vector<lua::LuaScript*> scripts);
+    std::unique_ptr<TgBot::Bot> _bot { nullptr };
+    std::unordered_map<std::uint64_t, std::unique_ptr<UserSession>> _sessions;
 
-    std::unordered_map<std::string, lua::LuaScript*> _commands;
-
+    std::thread _thread;
     std::mutex _mutex;
-    std::thread _botThread;
 
-    std::vector<uint64_t> _maintainers;
+    std::vector<uint64_t> _trustedUsers;
 };
 
 }
