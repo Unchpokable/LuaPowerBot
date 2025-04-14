@@ -3,13 +3,13 @@
   "spdxVersion": "SPDX-2.2",
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
-  "documentNamespace": "https://spdx.org/spdxdocs/tgbot-cpp-x64-windows-1.7.3-a5b42367-35c1-41ff-8ebc-303b2534ff8d",
-  "name": "tgbot-cpp:x64-windows@1.7.3 08717fa15d213c44b5d4d3c65c51c1f84b1588e4092c2ee0ec1bfb4756b3f649",
+  "documentNamespace": "https://spdx.org/spdxdocs/tgbot-cpp-x64-windows-1.7.3-5f8b1e69-b6d3-4f48-83e0-10f4d9b4f5f2",
+  "name": "tgbot-cpp:x64-windows@1.7.3 50ca46a93b2c9cac8484f3c79f687eb0f0a2f1865a31f6dc046d077e19e0f940",
   "creationInfo": {
     "creators": [
-      "Tool: vcpkg-2024-12-09-1005b78fa1bf1dde1a20c2734cba4ea61ca94d9a"
+      "Tool: vcpkg-2025-04-07-b8b513ba8778c918cff49c3e837aae5999d5d2aa"
     ],
-    "created": "2025-04-10T07:26:05Z"
+    "created": "2025-04-12T14:38:46Z"
   },
   "relationships": [
     {
@@ -41,6 +41,11 @@
       "spdxElementId": "SPDXRef-file-1",
       "relationshipType": "CONTAINED_BY",
       "relatedSpdxElement": "SPDXRef-port"
+    },
+    {
+      "spdxElementId": "SPDXRef-file-1",
+      "relationshipType": "DEPENDENCY_MANIFEST_OF",
+      "relatedSpdxElement": "SPDXRef-port"
     }
   ],
   "packages": [
@@ -59,7 +64,7 @@
     {
       "name": "tgbot-cpp:x64-windows",
       "SPDXID": "SPDXRef-binary",
-      "versionInfo": "08717fa15d213c44b5d4d3c65c51c1f84b1588e4092c2ee0ec1bfb4756b3f649",
+      "versionInfo": "50ca46a93b2c9cac8484f3c79f687eb0f0a2f1865a31f6dc046d077e19e0f940",
       "downloadLocation": "NONE",
       "licenseConcluded": "MIT",
       "licenseDeclared": "NOASSERTION",
@@ -83,7 +88,7 @@
   ],
   "files": [
     {
-      "fileName": "./C:/Users/DEACMM-PC/AppData/Local/vcpkg/registries/git-trees/3823beb74a5b34932a15adb815986be1a7d56761/portfile.cmake",
+      "fileName": "./portfile.cmake",
       "SPDXID": "SPDXRef-file-0",
       "checksums": [
         {
@@ -95,7 +100,7 @@
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./C:/Users/DEACMM-PC/AppData/Local/vcpkg/registries/git-trees/3823beb74a5b34932a15adb815986be1a7d56761/vcpkg.json",
+      "fileName": "./vcpkg.json",
       "SPDXID": "SPDXRef-file-1",
       "checksums": [
         {

@@ -1,8 +1,0 @@
-Package: tgbot-cpp
-Version: 1.7.3
-Depends: boost-algorithm, boost-asio, boost-lexical-cast, boost-property-tree, boost-system, boost-test, boost-variant, curl, openssl, vcpkg-cmake, zlib
-Architecture: x64-windows
-Multi-Arch: same
-Abi: 08717fa15d213c44b5d4d3c65c51c1f84b1588e4092c2ee0ec1bfb4756b3f649
-Description: C++ library for Telegram bot API.
-Status: install ok half-installed

@@ -1,8 +1,0 @@
-Package: boost-phoenix
-Version: 1.86.0
-Depends: boost-assert, boost-bind, boost-cmake, boost-config, boost-core, boost-function, boost-fusion, boost-headers, boost-mpl, boost-predef, boost-preprocessor, boost-proto, boost-range, boost-smart-ptr, boost-type-traits, boost-utility
-Architecture: x64-windows
-Multi-Arch: same
-Abi: 883b8594ffe913f26af6ac1b827734b2fa4541d439af1f0848dc6f9b3b1eb187
-Description: Boost phoenix module
-Status: install ok installed

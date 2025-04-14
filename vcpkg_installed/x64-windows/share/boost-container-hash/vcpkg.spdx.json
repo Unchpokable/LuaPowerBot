@@ -3,13 +3,13 @@
   "spdxVersion": "SPDX-2.2",
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
-  "documentNamespace": "https://spdx.org/spdxdocs/boost-container-hash-x64-windows-1.86.0-4f2f2f1e-8f91-4e04-920e-0984cf0575e7",
-  "name": "boost-container-hash:x64-windows@1.86.0 2a1d923fb633117b3026c1d18d67b4537736d1810274c0ae5ea5673dacfb44e3",
+  "documentNamespace": "https://spdx.org/spdxdocs/boost-container-hash-x64-windows-1.86.0-81a78194-6afd-40ee-88c5-45d815778fde",
+  "name": "boost-container-hash:x64-windows@1.86.0 06488720180303c1b3060b7ee17ebcc4882ba0992e1e42efbec05dc209e7494f",
   "creationInfo": {
     "creators": [
-      "Tool: vcpkg-2024-12-09-1005b78fa1bf1dde1a20c2734cba4ea61ca94d9a"
+      "Tool: vcpkg-2025-04-07-b8b513ba8778c918cff49c3e837aae5999d5d2aa"
     ],
-    "created": "2025-04-10T07:20:19Z"
+    "created": "2025-04-12T14:34:08Z"
   },
   "relationships": [
     {
@@ -41,6 +41,11 @@
       "spdxElementId": "SPDXRef-file-1",
       "relationshipType": "CONTAINED_BY",
       "relatedSpdxElement": "SPDXRef-port"
+    },
+    {
+      "spdxElementId": "SPDXRef-file-1",
+      "relationshipType": "DEPENDENCY_MANIFEST_OF",
+      "relatedSpdxElement": "SPDXRef-port"
     }
   ],
   "packages": [
@@ -59,7 +64,7 @@
     {
       "name": "boost-container-hash:x64-windows",
       "SPDXID": "SPDXRef-binary",
-      "versionInfo": "2a1d923fb633117b3026c1d18d67b4537736d1810274c0ae5ea5673dacfb44e3",
+      "versionInfo": "06488720180303c1b3060b7ee17ebcc4882ba0992e1e42efbec05dc209e7494f",
       "downloadLocation": "NONE",
       "licenseConcluded": "BSL-1.0",
       "licenseDeclared": "NOASSERTION",
@@ -83,7 +88,7 @@
   ],
   "files": [
     {
-      "fileName": "./C:/Users/DEACMM-PC/AppData/Local/vcpkg/registries/git-trees/2903e8d987be9e6c2d367298452cca9900f87f8e/portfile.cmake",
+      "fileName": "./portfile.cmake",
       "SPDXID": "SPDXRef-file-0",
       "checksums": [
         {
@@ -95,7 +100,7 @@
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./C:/Users/DEACMM-PC/AppData/Local/vcpkg/registries/git-trees/2903e8d987be9e6c2d367298452cca9900f87f8e/vcpkg.json",
+      "fileName": "./vcpkg.json",
       "SPDXID": "SPDXRef-file-1",
       "checksums": [
         {

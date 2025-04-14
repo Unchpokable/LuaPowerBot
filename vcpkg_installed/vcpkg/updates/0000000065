@@ -1,8 +1,0 @@
-Package: boost-move
-Version: 1.86.0
-Depends: boost-cmake, boost-config, boost-headers
-Architecture: x64-windows
-Multi-Arch: same
-Abi: 48d8c8e498c02831fd6407e2755fe912b408374e67f9fd85dc7817efffe92f89
-Description: Boost move module
-Status: install ok installed

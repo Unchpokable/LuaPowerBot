@@ -1,8 +1,0 @@
-Package: boost-variant
-Version: 1.86.0
-Depends: boost-assert, boost-cmake, boost-config, boost-container-hash, boost-core, boost-detail, boost-headers, boost-integer, boost-mpl, boost-preprocessor, boost-static-assert, boost-throw-exception, boost-type-index, boost-type-traits, boost-utility
-Architecture: x64-windows
-Multi-Arch: same
-Abi: 29387be03e39152ddb5301d8031f80cd32e0e3639e73b76c678b882e709a9d89
-Description: Boost variant module
-Status: install ok installed

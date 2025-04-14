@@ -3,13 +3,13 @@
   "spdxVersion": "SPDX-2.2",
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
-  "documentNamespace": "https://spdx.org/spdxdocs/boost-tuple-x64-windows-1.86.0-b90685ce-e732-4c26-ba86-32a5631ff69a",
-  "name": "boost-tuple:x64-windows@1.86.0 0c146fb9ee2ae2c92496e8467ad7b65469213a4ad0433d0930e82cc44cb3566c",
+  "documentNamespace": "https://spdx.org/spdxdocs/boost-tuple-x64-windows-1.86.0-79bbc4ab-712c-43df-a1ce-33a12375bc29",
+  "name": "boost-tuple:x64-windows@1.86.0 aa4b54c6efb62b17e109291de947a569500ab781f61c6c9e05466a8b2e71c3e1",
   "creationInfo": {
     "creators": [
-      "Tool: vcpkg-2024-12-09-1005b78fa1bf1dde1a20c2734cba4ea61ca94d9a"
+      "Tool: vcpkg-2025-04-07-b8b513ba8778c918cff49c3e837aae5999d5d2aa"
     ],
-    "created": "2025-04-10T07:21:02Z"
+    "created": "2025-04-12T14:34:50Z"
   },
   "relationships": [
     {
@@ -41,6 +41,11 @@
       "spdxElementId": "SPDXRef-file-1",
       "relationshipType": "CONTAINED_BY",
       "relatedSpdxElement": "SPDXRef-port"
+    },
+    {
+      "spdxElementId": "SPDXRef-file-1",
+      "relationshipType": "DEPENDENCY_MANIFEST_OF",
+      "relatedSpdxElement": "SPDXRef-port"
     }
   ],
   "packages": [
@@ -59,7 +64,7 @@
     {
       "name": "boost-tuple:x64-windows",
       "SPDXID": "SPDXRef-binary",
-      "versionInfo": "0c146fb9ee2ae2c92496e8467ad7b65469213a4ad0433d0930e82cc44cb3566c",
+      "versionInfo": "aa4b54c6efb62b17e109291de947a569500ab781f61c6c9e05466a8b2e71c3e1",
       "downloadLocation": "NONE",
       "licenseConcluded": "BSL-1.0",
       "licenseDeclared": "NOASSERTION",
@@ -83,7 +88,7 @@
   ],
   "files": [
     {
-      "fileName": "./C:/Users/DEACMM-PC/AppData/Local/vcpkg/registries/git-trees/b04ebfe07fa6c45bf2e0dd35a9fec10add1b6ef9/portfile.cmake",
+      "fileName": "./portfile.cmake",
       "SPDXID": "SPDXRef-file-0",
       "checksums": [
         {
@@ -95,7 +100,7 @@
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./C:/Users/DEACMM-PC/AppData/Local/vcpkg/registries/git-trees/b04ebfe07fa6c45bf2e0dd35a9fec10add1b6ef9/vcpkg.json",
+      "fileName": "./vcpkg.json",
       "SPDXID": "SPDXRef-file-1",
       "checksums": [
         {
