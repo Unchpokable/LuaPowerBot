@@ -1,8 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-throw-exception/x64-windows-rel/cmake_install.cmake",
-		"C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-throw-exception/x64-windows-rel/libs/throw_exception/cmake_install.cmake"
-	],
-	"Parallel" : false
-}

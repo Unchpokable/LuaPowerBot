@@ -1,7 +1,0 @@
-Package: boost-describe
-Version: 1.86.0
-Depends: boost-cmake, boost-config, boost-headers, boost-mp11
-Architecture: x64-windows
-Multi-Arch: same
-Abi: b47317bb8138514d693a4b4ebf7e102384e6d73f54b60d237a283080f961c324
-Description: Boost describe module

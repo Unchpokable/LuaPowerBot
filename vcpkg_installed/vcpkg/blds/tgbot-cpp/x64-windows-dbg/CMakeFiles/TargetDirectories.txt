@@ -1,6 +1,0 @@
-C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/tgbot-cpp/x64-windows-dbg/CMakeFiles/TgBot.dir
-C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/tgbot-cpp/x64-windows-dbg/CMakeFiles/edit_cache.dir
-C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/tgbot-cpp/x64-windows-dbg/CMakeFiles/rebuild_cache.dir
-C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/tgbot-cpp/x64-windows-dbg/CMakeFiles/list_install_components.dir
-C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/tgbot-cpp/x64-windows-dbg/CMakeFiles/install.dir
-C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/tgbot-cpp/x64-windows-dbg/CMakeFiles/install/local.dir

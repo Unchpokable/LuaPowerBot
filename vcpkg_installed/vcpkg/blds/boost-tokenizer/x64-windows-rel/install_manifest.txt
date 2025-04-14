@@ -1,6 +1,0 @@
-C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-tokenizer_x64-windows/include/boost/tokenizer.hpp
-C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-tokenizer_x64-windows/include/boost/token_functions.hpp
-C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-tokenizer_x64-windows/include/boost/token_iterator.hpp
-C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-tokenizer_x64-windows/lib/cmake/boost_tokenizer-1.86.0/boost_tokenizer-targets.cmake
-C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-tokenizer_x64-windows/lib/cmake/boost_tokenizer-1.86.0/boost_tokenizer-config.cmake
-C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/pkgs/boost-tokenizer_x64-windows/lib/cmake/boost_tokenizer-1.86.0/boost_tokenizer-config-version.cmake

@@ -1,8 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-container/x64-windows-dbg/cmake_install.cmake",
-		"C:/Users/DEACMM-PC/source/repos/LuaPowerBot/vcpkg_installed/vcpkg/blds/boost-container/x64-windows-dbg/libs/container/cmake_install.cmake"
-	],
-	"Parallel" : false
-}
