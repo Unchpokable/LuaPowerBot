@@ -54,7 +54,15 @@ void tg::UserSession::forceClose()
 
 void tg::UserSession::mapCommands()
 {
-    for (const auto& entry : _commandBox) {
+    for (const auto& [name, func_object] : _commandBox->commands()) {
+        auto str_name = name.as<std::string>();
         
+        if(!func_object.is<sol::function>()) {
+            throw std::exception("command should be a function!"); // todo: replace by logging
+        }
+
+        auto function = func_object.as<sol::function>();
+
+        _mappedCommands.insert_or_assign(str_name, function);
     }
 }
