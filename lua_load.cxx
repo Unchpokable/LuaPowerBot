@@ -2,20 +2,14 @@
 
 namespace fs = std::filesystem;
 
-lua::LuaScript::LuaScript(LuaScript&& other) noexcept : originFile(std::move(other.originFile)), luaState(std::move(other.luaState)) { }
+lua::CommandBox::CommandBox(sol::state&& state, std::string prefix) : _state(std::move(state)), _prefix(std::move(prefix)) { }
 
-lua::LuaScript& lua::LuaScript::operator=(LuaScript&& other) noexcept {
-    originFile = std::move(other.originFile);
-    luaState = std::move(other.luaState);
-
-    return *this;
+sol::global_table& lua::CommandBox::commands()
+{
+    return _state[_prefix].tbl;
 }
 
-std::string lua::LuaScript::name() const {
-    return fs::path(originFile).stem().string();
-}
-
-Expected<std::vector<lua::LuaScript*>, std::exception> lua::load_scripts(const std::string& folder)
+Expected<lua::CommandBox*, std::exception> lua::load_scripts(const std::string& folder)
 {
     auto path = fs::path(folder);
 
@@ -27,21 +21,36 @@ Expected<std::vector<lua::LuaScript*>, std::exception> lua::load_scripts(const s
         return std::exception("Given path should be a root directory!");
     }
 
-    std::vector<LuaScript*> scripts;
 
-    for (const auto& entry : fs::directory_iterator(path)) {
+    for(const auto& entry : fs::directory_iterator(path)) {
         if(entry.is_regular_file() && fs::path(entry).extension() == "lua") {
-            auto script = internal::load_script(entry.path().string());
-            if(script) {
-                scripts.push_back(script.value());
-            } else {
-                std::string err_msg = "Unable to load script: " + fs::path(entry).string();
-                return std::exception(err_msg.c_str());
-            }
+
         }
     }
 
-    return scripts;
+    sol::state state;
+    state.open_libraries(sol::lib::base);
+
+    sol::table commands = state.create_table();
+
+    for(const auto& entry : fs::directory_iterator(folder)) {
+        std::string command_name = entry.path().stem().string();
+
+        sol::load_result result = state.load_file(entry.path().string());
+
+        if(!result.valid()) {
+            sol::error err = result;
+            return std::exception(err.what());
+        }
+
+        sol::function initializer = result.get<sol::function>();
+        sol::table instance = initializer();
+        commands[command_name] = instance;
+    }
+
+    state["commands"] = commands;
+
+    return new CommandBox(std::move(state), "commands");
 }
 
 

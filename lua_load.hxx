@@ -6,32 +6,35 @@
 
 #include "expected.hxx"
 
+template<typename T>
+concept SolBasicType =
+    std::is_same_v<T, sol::object> ||
+    std::is_same_v<T, sol::table> ||
+    std::is_same_v<T, sol::function> ||
+    std::is_same_v<T, sol::userdata> ||
+    std::is_same_v<T, sol::lightuserdata> ||
+    std::is_same_v<T, sol::thread> ||
+    std::is_same_v<T, sol::coroutine> ||
+    std::is_same_v<T, sol::environment> ||
+    std::is_same_v<T, sol::variadic_args> ||
+    std::is_same_v<T, sol::variadic_results> ||
+    std::is_same_v<T, sol::protected_function> ||
+    std::is_same_v<T, sol::protected_function_result>;
+
 namespace lua {
 
-struct LuaScript
+class CommandBox final
 {
-    LuaScript(std::string file, sol::state&& state) : originFile(std::move(file)), luaState(std::move(state)) {}
+public:
+    CommandBox(sol::state&& state, std::string prefix);
 
-    LuaScript(const LuaScript&) = delete;
-    LuaScript& operator=(const LuaScript&) = delete;
+    sol::global_table& commands();
 
-    LuaScript(LuaScript&& other) noexcept;
-    LuaScript& operator=(LuaScript&& other) noexcept;
-
-    std::string name() const;
-
-    std::string originFile;
-    sol::state luaState;
+private:
+    sol::state _state;
+    std::string _prefix;
 };
 
-Expected<std::vector<LuaScript*>, std::exception> load_scripts(const std::string& folder);
-
-}
-
-
-namespace lua::internal {
-
-Expected<LuaScript*, std::exception> load_script(const std::string& file);
-bool validate_basic_script_signature(const sol::state_view& state);
+Expected<CommandBox*, std::exception> load_scripts(const std::string& folder);
 
 }

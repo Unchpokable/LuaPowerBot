@@ -8,18 +8,14 @@
 
 #include "globals.hxx"
 
-namespace lua {
-struct LuaScript;
-}
-
 namespace tg {
 
-class BotRuntimeContext
+class BotRuntime
 {
 public:
-    static std::unique_ptr<BotRuntimeContext> create(const std::string& apiKey, const std::string& commandsPath);
+    static std::unique_ptr<BotRuntime> create(const std::string& apiKey, const std::string& commandsPath);
 
-    BotRuntimeContext(const std::string& apiKey);
+    BotRuntime(const std::string& apiKey);
 
 private:
     void verifySessions();

@@ -150,7 +150,6 @@
     <ClCompile Include="lua_api_functions.cxx" />
     <ClCompile Include="lua_api_types.cxx" />
     <ClCompile Include="lua_load.cxx" />
-    <ClCompile Include="lua_load_internal.cxx" />
     <ClCompile Include="main.cxx" />
     <ClCompile Include="parse_args.cxx" />
     <ClCompile Include="thirdparty\imgui-docking\backends\imgui_impl_glfw.cpp" />

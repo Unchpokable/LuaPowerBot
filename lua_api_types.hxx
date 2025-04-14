@@ -5,28 +5,46 @@
 
 #include <sol/sol.hpp>
 
-namespace lua::api::types {
+namespace lua::api::types::ui {
 
-struct InlineKeyboardButton {
+struct InlineKeyboardButton
+{
     std::string text;
     std::string callbackData;
 };
 
-struct InlineKeyboard {
+struct InlineKeyboard
+{
     using ButtonRow = std::vector<InlineKeyboardButton>;
 
     std::vector<ButtonRow> buttons;
 };
 
-struct ReplyKeyboardButton {
+struct ReplyKeyboardButton
+{
     std::string text;
 };
 
-struct ReplyKeyboard {
+struct ReplyKeyboard
+{
     using ButtonRow = std::vector<ReplyKeyboardButton>;
 
     std::vector<ButtonRow> buttons;
 };
+
+}
+
+namespace lua::api::types::routines {
+
+enum class CoroutineStep
+{
+    Step,
+    Done
+};
+
+}
+
+namespace lua::api::types {
 
 void register_types(sol::state_view state);
 

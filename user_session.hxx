@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include <queue>
 #include <string>
 #include <unordered_map>
 
@@ -13,19 +14,29 @@ namespace tg {
 class UserSession
 {
 public:
+    using TimePoint = std::chrono::time_point<std::chrono::steady_clock>;
+
     UserSession(const std::shared_ptr<TgBot::Bot>& bot);
 
     void manage(const TgBot::Message::Ptr& message);
-    void manageCallback(TgBot::CallbackQuery::Ptr callbackQuery);
+    void manageCallback(const TgBot::CallbackQuery::Ptr& callbackQuery);
 
-    std::chrono::steady_clock lastActivity() const;
+    void update();
+
+    TimePoint lastActivity() const;
+
+    void forceClose();
 
 private:
-    std::unordered_map<std::string, lua::LuaScript*> _rawCommands;
-    lua::LuaScript* _activeCommand { nullptr };
+    void mapCommands();
 
     std::shared_ptr<TgBot::Bot> _bot;
-    std::chrono::steady_clock _lastActivity;
+
+    std::queue<sol::coroutine> _coroutines;
+    std::unique_ptr<lua::CommandBox> _commandBox;
+    std::unordered_map<std::string, sol::function> _mappedCommands;
+
+    TimePoint _lastActivity;
 };
 
 }
