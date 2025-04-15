@@ -145,13 +145,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bot_runtime.cxx" />
+    <ClCompile Include="error.cxx" />
     <ClCompile Include="expected.cxx" />
+    <ClCompile Include="logging.cxx" />
     <ClCompile Include="lua_api.cxx" />
     <ClCompile Include="lua_api_functions.cxx" />
     <ClCompile Include="lua_api_types.cxx" />
     <ClCompile Include="lua_load.cxx" />
     <ClCompile Include="main.cxx" />
     <ClCompile Include="parse_args.cxx" />
+    <ClCompile Include="strings.cxx" />
     <ClCompile Include="thirdparty\imgui-docking\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="thirdparty\imgui-docking\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="thirdparty\imgui-docking\backends\imgui_impl_win32.cpp" />
@@ -165,13 +168,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot_runtime.hxx" />
+    <ClInclude Include="error.hxx" />
     <ClInclude Include="expected.hxx" />
     <ClInclude Include="globals.hxx" />
+    <ClInclude Include="logdef.hxx" />
+    <ClInclude Include="logging.hxx" />
     <ClInclude Include="lua_api.hxx" />
     <ClInclude Include="lua_api_functions.hxx" />
     <ClInclude Include="lua_api_types.hxx" />
     <ClInclude Include="lua_load.hxx" />
     <ClInclude Include="parse_args.hxx" />
+    <ClInclude Include="strings.hxx" />
     <ClInclude Include="thirdparty\imgui-docking\backends\imgui_impl_glfw.h" />
     <ClInclude Include="thirdparty\imgui-docking\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="thirdparty\imgui-docking\backends\imgui_impl_opengl3_loader.h" />

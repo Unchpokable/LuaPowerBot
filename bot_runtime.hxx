@@ -24,10 +24,9 @@ private:
     std::unordered_map<std::uint64_t, std::unique_ptr<UserSession>> _activeSessions;
     std::queue<std::uint64_t> _enqueuedClients;
 
-    std::thread _thread;
-    std::mutex _mutex;
-
     std::vector<uint64_t> _trustedUsers;
+
+    BytecodeMap _bytecode;
 };
 
 }

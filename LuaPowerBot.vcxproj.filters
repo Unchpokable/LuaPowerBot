@@ -111,6 +111,15 @@
     <ClCompile Include="thirdparty\imtextedit\TextEditor.cpp">
       <Filter>sources\thirdparty</Filter>
     </ClCompile>
+    <ClCompile Include="strings.cxx">
+      <Filter>sources\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="error.cxx">
+      <Filter>sources\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="logging.cxx">
+      <Filter>sources\utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="thirdparty\imgui-docking\imconfig.h">
@@ -172,6 +181,18 @@
     </ClInclude>
     <ClInclude Include="globals.hxx">
       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="strings.hxx">
+      <Filter>headers\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="error.hxx">
+      <Filter>headers\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="logging.hxx">
+      <Filter>headers\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="logdef.hxx">
+      <Filter>headers\utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
