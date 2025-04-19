@@ -18,6 +18,8 @@ public:
     BotRuntime(const std::string& apiKey);
 
 private:
+    void initNewSession(std::uint64_t chatId);
+
     void verifySessions();
 
     std::unique_ptr<TgBot::Bot> _bot { nullptr };

@@ -6,6 +6,8 @@
 
 namespace lua::api::functions {
 
-sol::coroutine makeCoroutine(const sol::function& func);
+types::routines::Coroutine make_coroutine(const sol::function& func, types::routines::CoroutinePolicy policy);
+
+void register_functions(sol::state_view state);
 
 }

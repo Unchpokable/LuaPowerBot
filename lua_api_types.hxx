@@ -42,6 +42,28 @@ enum class CoroutineStep
     Done
 };
 
+enum class CoroutinePolicy
+{
+    EnqueueNext,
+    RejectNext,
+    SyncExecute
+};
+
+struct Coroutine
+{
+    sol::coroutine coroutine;
+    CoroutinePolicy policy;
+
+    template<typename ...Args>
+    sol::protected_function_result operator()(Args&&... args);
+};
+
+template <typename ...Args>
+sol::protected_function_result Coroutine::operator()(Args&&... args)
+{
+    return coroutine(std::forward<Args>(args...));
+}
+
 }
 
 namespace lua::api::types {
