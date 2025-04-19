@@ -6,6 +6,8 @@
 
 #include "expected.hxx"
 
+#include "error.hxx"
+
 template<typename T>
 concept SolBasicType =
     std::is_same_v<T, sol::object> ||
@@ -21,6 +23,8 @@ concept SolBasicType =
     std::is_same_v<T, sol::protected_function> ||
     std::is_same_v<T, sol::protected_function_result>;
 
+using BytecodeMap = std::unordered_map<std::string, std::string>;
+
 namespace lua {
 
 class CommandBox final
@@ -35,6 +39,9 @@ private:
     std::string _prefix;
 };
 
-Expected<CommandBox*, std::exception> load_scripts(const std::string& folder);
+Expected<BytecodeMap, errors::Error> load_bytecode_map(const std::string& folder);
+Expected<CommandBox*, errors::Error> make_state_from_cached_bytecode(const BytecodeMap& bytecode_map);
+
+Expected<CommandBox*, errors::Error> load_scripts(const std::string& folder);
 
 }

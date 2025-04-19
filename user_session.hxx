@@ -16,7 +16,7 @@ class UserSession
 public:
     using TimePoint = std::chrono::time_point<std::chrono::steady_clock>;
 
-    UserSession(const std::shared_ptr<TgBot::Bot>& bot);
+    UserSession(const std::shared_ptr<TgBot::Bot>& bot, const BytecodeMap& commands);
 
     void manage(const TgBot::Message::Ptr& message);
     void manageCallback(const TgBot::CallbackQuery::Ptr& callbackQuery);
@@ -37,6 +37,28 @@ private:
     std::unordered_map<std::string, sol::function> _mappedCommands;
 
     TimePoint _lastActivity;
+};
+
+class UserSessionThread
+{
+public:
+    UserSessionThread();
+    ~UserSessionThread();
+
+    void enqueueTask(std::function<void()> task);
+
+private:
+    void threadFunc();
+
+    bool _running { true };
+
+    std::thread _thread;
+    std::mutex _mutex;
+
+    std::condition_variable _condition;
+    std::queue<std::function<void()>> _tasks;
+
+    UserSession _session;
 };
 
 }
