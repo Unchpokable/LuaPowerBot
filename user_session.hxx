@@ -18,7 +18,7 @@ public:
 
     UserSession(const std::shared_ptr<TgBot::Bot>& bot, const BytecodeMap& commands);
 
-    void manage(const TgBot::Message::Ptr& message);
+    void manageMessage(const TgBot::Message::Ptr& message);
     void manageCallback(const TgBot::CallbackQuery::Ptr& callbackQuery);
 
     void update();
@@ -42,10 +42,20 @@ private:
 class UserSessionThread
 {
 public:
-    UserSessionThread();
+    using NoReturningTask = std::function<void()>;
+
+    UserSessionThread(const std::shared_ptr<TgBot::Bot>& bot, const BytecodeMap& commands);
     ~UserSessionThread();
 
-    void enqueueTask(std::function<void()> task);
+    void enqueueTask(NoReturningTask task);
+
+    void manageMessage(const TgBot::Message::Ptr& message);
+    void manageCallback(const TgBot::CallbackQuery::Ptr& callbackQuery);
+
+    UserSession::TimePoint lastActivity() const;
+    void forceClose();
+
+    void update();
 
 private:
     void threadFunc();
@@ -56,7 +66,7 @@ private:
     std::mutex _mutex;
 
     std::condition_variable _condition;
-    std::queue<std::function<void()>> _tasks;
+    std::queue<NoReturningTask> _tasks;
 
     UserSession _session;
 };

@@ -4,6 +4,6 @@
 
 namespace globals {
 
-constexpr static unsigned short MaxActiveSessions = 100;
+inline unsigned short MaxThreadedSession = 12;
 
 }

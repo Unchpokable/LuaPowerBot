@@ -12,14 +12,16 @@ tg::UserSession::UserSession(const std::shared_ptr<TgBot::Bot>& bot, const Bytec
     auto commandBoxResult = lua::make_state_from_cached_bytecode(commands);
 
     if(!commandBoxResult) {
-        commandBoxResult.error().throwError<std::exception>();
+        auto err = commandBoxResult.error();
+        luabot_logFatal("An error happens during making a Lua state from cached bytecode {}", err.message());
+        err.throwError<std::exception>();
     }
 
     auto commandBox = commandBoxResult.value();
     _commandBox.reset(commandBox);
 }
 
-void tg::UserSession::manage(const TgBot::Message::Ptr& message)
+void tg::UserSession::manageMessage(const TgBot::Message::Ptr& message)
 {
     _lastActivity = std::chrono::high_resolution_clock::now();
 
@@ -41,13 +43,15 @@ void tg::UserSession::manageCallback(const TgBot::CallbackQuery::Ptr& callbackQu
     auto command = _commandBox->commands()[commandName]["CallbackQuery"].get<sol::function>();
 
     if(!command.valid()) {
-        throw std::runtime_error("CallbackQuery provided by script " + commandName + " is not a function!");
+        luabot_logFatal("CallbackQuery provided by script {} is not a function!", commandName);
+        return;
     }
 
     auto result = command(callbackData);
 
     if(!result.valid()) {
-        throw std::runtime_error("CallbackQuery provided by " + commandName + " called with failure: " + result.get<sol::error>().what());
+        luabot_logFatal("CallbackQuery provided by {} called with failure: {}", commandName, result.get<sol::error>().what());
+        return;
     }
 
     // todo: handle if callback query returned coroutine or smth like that;
@@ -99,5 +103,109 @@ void tg::UserSession::mapCommands()
         auto function = func_object.as<sol::function>();
 
         _mappedCommands.insert_or_assign(str_name, function);
+    }
+}
+
+tg::UserSessionThread::UserSessionThread(const std::shared_ptr<TgBot::Bot>& bot, const BytecodeMap& commands)
+    : _session(bot, commands)
+{
+    _thread = std::thread(&UserSessionThread::threadFunc, this);
+    luabot_logInfo("Started UserSessionThread");
+}
+
+tg::UserSessionThread::~UserSessionThread()
+{
+    {
+        std::unique_lock lock(_mutex);
+        _running = false;
+        _condition.notify_one();
+    }
+
+    if(_thread.joinable()) {
+        _thread.join();
+    }
+
+
+}
+
+void tg::UserSessionThread::enqueueTask(NoReturningTask task)
+{
+    {
+        std::unique_lock lock(_mutex);
+        _tasks.push(std::move(task));
+    }
+
+    _condition.notify_one();
+}
+
+void tg::UserSessionThread::manageMessage(const TgBot::Message::Ptr& message)
+{
+    enqueueTask([this, message]() {
+        _session.manageMessage(message);
+    });
+}
+
+void tg::UserSessionThread::manageCallback(const TgBot::CallbackQuery::Ptr& callbackQuery)
+{
+    enqueueTask([this, callbackQuery]() {
+        _session.manageCallback(callbackQuery);
+    });
+}
+
+tg::UserSession::TimePoint tg::UserSessionThread::lastActivity() const
+{
+    return _session.lastActivity();
+}
+
+void tg::UserSessionThread::forceClose()
+{
+    enqueueTask([this]() {
+        _session.forceClose();
+    });
+}
+
+void tg::UserSessionThread::update()
+{
+    enqueueTask([this]() {
+        try {
+            _session.update();
+        } catch(const std::exception& e) {
+            luabot_logErr("Exception in manual UserSession update: {}", e.what());
+        }
+    });
+
+    _condition.notify_one();
+}
+
+void tg::UserSessionThread::threadFunc()
+{
+    while(true) {
+        NoReturningTask task;
+
+        {
+            std::unique_lock lock(_mutex);
+            _condition.wait(lock, [this] {
+                return !_running || !_tasks.empty();
+            });
+
+            if(!_running && _tasks.empty()) {
+                break;
+            }
+
+            if(!_tasks.empty()) {
+                task = std::move(_tasks.front());
+                _tasks.pop();
+            }
+        }
+
+        if(task) {
+            try {
+                task();
+            } catch(const std::exception& e) {
+                luabot_logErr("Exception in UserSessionThread task: {}", e.what());
+            } catch(...) {
+                luabot_logErr("Unknown exception in UserSessionThread task");
+            }
+        }
     }
 }
