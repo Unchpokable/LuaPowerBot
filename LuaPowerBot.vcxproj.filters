@@ -120,6 +120,12 @@
     <ClCompile Include="logging.cxx">
       <Filter>sources\utility</Filter>
     </ClCompile>
+    <ClCompile Include="editor.cxx">
+      <Filter>sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="configs.cxx">
+      <Filter>sources\configs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="thirdparty\imgui-docking\imconfig.h">
@@ -193,6 +199,12 @@
     </ClInclude>
     <ClInclude Include="logdef.hxx">
       <Filter>headers\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="editor.hxx">
+      <Filter>headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="configs.hxx">
+      <Filter>headers\configs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
