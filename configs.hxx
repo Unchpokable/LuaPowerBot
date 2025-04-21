@@ -39,6 +39,12 @@ using ConfigValueBase = std::variant<
 using SerializeFunc = std::function<std::vector<std::uint8_t>(const std::any&)>;
 using DeserializeFunc = std::function<std::any(const std::vector<std::uint8_t>&)>;
 
+template<typename T>
+using SerializeFuncT = std::function<std::vector<std::uint8_t>>(T&& any);
+
+template<typename T>
+using DeserializeFuncT = std::function<T(const std::vector<std::uint8_t>&)>;
+
 class ConfigValue
 {
 public:
@@ -121,9 +127,7 @@ std::optional<T> deserialize(const std::vector<std::uint8_t>& data)
 }
 
 template<typename T>
-void register_type(
-    std::function<std::vector<std::uint8_t>(const T&)> serializeFunc,
-    std::function<std::optional<T>(const std::vector<std::uint8_t>&)> deserializeFunc)
+void register_type(SerializeFuncT<T> serializeFunc, DeserializeFuncT<T> deserializeFunc)
 {
     auto typeId = typeid(T).hash_code();
     auto& registry = internal::get_type_registry();

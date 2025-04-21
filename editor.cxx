@@ -36,39 +36,45 @@ bool g_is_maximized = false;
 
 }
 
-void error_callback(int error, const char* description) {
+void error_callback(int error, const char* description)
+{
     luabot_logErr("GLFW Error {}: {}", error, description);
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
     data::g_wnd_geometry = { width, height };
     glViewport(0, 0, width, height);
 }
 
-void window_maximize_callback(GLFWwindow* window, int maximized) {
+void window_maximize_callback(GLFWwindow* window, int maximized)
+{
     data::g_is_maximized = maximized == GLFW_TRUE;
 }
 
 #ifdef _WIN32
 
-LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
+{
     if(ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam))
         return true;
 
     return CallWindowProc(data::g_wndproc, hwnd, msg, wparam, lparam);
 }
 
-void setup_win32_handling(GLFWwindow* window) {
+void setup_win32_handling(GLFWwindow* window)
+{
     HWND hwnd = glfwGetWin32Window(window);
 
     if(hwnd != nullptr) {
-        WNDPROC prev_wndproc = (WNDPROC)GetWindowLongPtr(hwnd, GWLP_WNDPROC);
+        WNDPROC prev_wndproc = reinterpret_cast<WNDPROC>(GetWindowLongPtr(hwnd, GWLP_WNDPROC));
 
         data::g_wndproc = prev_wndproc;
 
-        SetWindowLongPtr(hwnd, GWLP_WNDPROC, (LONG_PTR)wnd_proc);
+        SetWindowLongPtr(hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(wnd_proc));
     }
 }
+
 #endif
 
 GLFWwindow* make_window(const char* title, configs::Vec2Int geometry)
@@ -111,7 +117,8 @@ GLFWwindow* make_window(const char* title, configs::Vec2Int geometry)
 
 }
 
-void initialize_imgui(GLFWwindow* window) {
+void initialize_imgui(GLFWwindow* window)
+{
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
 
@@ -122,7 +129,6 @@ void initialize_imgui(GLFWwindow* window) {
 
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 130");
-
 }
 
 void editor::open_gui()
