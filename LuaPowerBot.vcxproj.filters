@@ -126,6 +126,9 @@
     <ClCompile Include="configs.cxx">
       <Filter>sources\configs</Filter>
     </ClCompile>
+    <ClCompile Include="zipped.cxx">
+      <Filter>sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="thirdparty\imgui-docking\imconfig.h">
@@ -205,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="configs.hxx">
       <Filter>headers\configs</Filter>
+    </ClInclude>
+    <ClInclude Include="zipped.hxx">
+      <Filter>headers\utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

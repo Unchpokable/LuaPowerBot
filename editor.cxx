@@ -27,12 +27,17 @@ namespace data {
 
 #ifdef _WIN32
 
-WNDPROC g_wndproc = nullptr;
+WNDPROC old_windowproc = nullptr;
 
 #endif
 
-configs::Vec2Int g_wnd_geometry;
-bool g_is_maximized = false;
+configs::Vec2Int window_geometry;
+bool is_maximized = false;
+
+ImGuiID dockspace_id { 0 };
+bool is_first_frame { false };
+
+ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 }
 
@@ -43,13 +48,13 @@ void error_callback(int error, const char* description)
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    data::g_wnd_geometry = { width, height };
+    data::window_geometry = { width, height };
     glViewport(0, 0, width, height);
 }
 
 void window_maximize_callback(GLFWwindow* window, int maximized)
 {
-    data::g_is_maximized = maximized == GLFW_TRUE;
+    data::is_maximized = maximized == GLFW_TRUE;
 }
 
 #ifdef _WIN32
@@ -59,7 +64,7 @@ LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
     if(ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam))
         return true;
 
-    return CallWindowProc(data::g_wndproc, hwnd, msg, wparam, lparam);
+    return CallWindowProc(data::old_windowproc, hwnd, msg, wparam, lparam);
 }
 
 void setup_win32_handling(GLFWwindow* window)
@@ -69,7 +74,7 @@ void setup_win32_handling(GLFWwindow* window)
     if(hwnd != nullptr) {
         WNDPROC prev_wndproc = reinterpret_cast<WNDPROC>(GetWindowLongPtr(hwnd, GWLP_WNDPROC));
 
-        data::g_wndproc = prev_wndproc;
+        data::old_windowproc = prev_wndproc;
 
         SetWindowLongPtr(hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(wnd_proc));
     }
@@ -106,15 +111,13 @@ GLFWwindow* make_window(const char* title, configs::Vec2Int geometry)
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1); 
 
-    data::g_wnd_geometry = geometry;
+    data::window_geometry = geometry;
 
 #ifdef _WIN32
     setup_win32_handling(window);
 #endif
 
     return window;
-}
-
 }
 
 void initialize_imgui(GLFWwindow* window)
@@ -131,10 +134,85 @@ void initialize_imgui(GLFWwindow* window)
     ImGui_ImplOpenGL3_Init("#version 130");
 }
 
+void render_bot_page()
+{
+    
+}
+
+void render_text_editor()
+{
+
+}
+
+void render_output_console()
+{
+    
+}
+
+void render_gui(GLFWwindow* window)
+{
+    render_bot_page();
+    render_text_editor();
+    render_output_console();
+}
+
+}
+
+void editor::set_window_background_color(float r, float g, float b, float alpha)
+{
+    internal::data::clear_color = ImVec4(r, g, b, alpha);
+}
+
 void editor::open_gui()
 {
-    glfwInit();
+    if(!glfwInit()) {
+        luabot_logFatal("Unable to initialize GLFW!");
+        return;
+    }
 
-    auto wnd = internal::make_window("Lua!Power Bot Editor", { 640, 480 });
+    auto window = internal::make_window("Lua!Power Bot Editor", { 640, 480 });
+    glfwMakeContextCurrent(window);
+    glfwSwapInterval(1);
+
+    internal::initialize_imgui(window);
+
+    while(!glfwWindowShouldClose(window)) {
+        glfwPollEvents();
+
+        if(glfwGetWindowAttrib(window, GLFW_ICONIFIED) != 0) {
+            ImGui_ImplGlfw_Sleep(10);
+            continue;
+        }
+
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        auto viewport = ImGui::GetMainViewport();
+        ImGui::DockSpaceOverViewport(0, viewport, ImGuiDockNodeFlags_PassthruCentralNode);
+
+        internal::render_gui(window);
+
+        ImGui::Render();
+
+        glfwGetFramebufferSize(window, &internal::data::window_geometry.x, &internal::data::window_geometry.y);
+
+        glViewport(0, 0, internal::data::window_geometry.x, internal::data::window_geometry.y);
+
+        auto color = internal::data::clear_color;
+        glClearColor(color.x * color.w, color.y * color.w, color.z * color.w, color.w);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        glfwSwapBuffers(window);
+    }
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    glfwDestroyWindow(window);
+    glfwTerminate();
 }
 

@@ -113,7 +113,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(LIBRARIES_DIR)\luajit\include;$(LIBRARIES_DIR)\sol2\include;$(SolutionDir)thirdparty\;$(SolutionDir)thirdparty\compiled\include;$(SolutionDir)thirdparty\imgui-docking\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(LIBRARIES_DIR)\luajit\include;$(LIBRARIES_DIR)\sol2\include;$(SolutionDir)thirdparty\;$(SolutionDir)thirdparty\compiled\include;$(SolutionDir)thirdparty\imgui-docking\;$(LIBRARIES_DIR)\zlib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -121,8 +121,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(LIBRARIES_DIR)\luajit\lib;$(SolutionDir)thirdparty\compiled\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>lua51.lib;luajit.lib;glfw3_mt.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(LIBRARIES_DIR)\luajit\lib;$(SolutionDir)thirdparty\compiled\lib;$(LIBRARIES_DIR)\zlib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>lua51.lib;luajit.lib;glfw3_mt.lib;crypt32.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -167,6 +167,7 @@
     <ClCompile Include="thirdparty\imgui-docking\imgui_widgets.cpp" />
     <ClCompile Include="thirdparty\imtextedit\TextEditor.cpp" />
     <ClCompile Include="user_session.cxx" />
+    <ClCompile Include="zipped.cxx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot_runtime.hxx" />
@@ -195,6 +196,7 @@
     <ClInclude Include="thirdparty\imgui-docking\imstb_truetype.h" />
     <ClInclude Include="thirdparty\imtextedit\TextEditor.h" />
     <ClInclude Include="user_session.hxx" />
+    <ClInclude Include="zipped.hxx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
