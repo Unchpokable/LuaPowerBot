@@ -9,7 +9,7 @@ sol::global_table& lua::CommandBox::commands()
     return _state[_prefix].tbl;
 }
 
-Expected<BytecodeMap, errors::Error> lua::load_bytecode_map(const std::string &folder) {
+Expected<BytecodeMap, errors::Error> lua::load_bytecode_map(const std::string& folder) {
     auto path = fs::path(folder);
 
     if(!exists(path)) {
@@ -20,7 +20,7 @@ Expected<BytecodeMap, errors::Error> lua::load_bytecode_map(const std::string &f
         return errors::Error("Given path should be a root directory!");
     }
 
-    std::unordered_map<std::string, std::string> result;
+    BytecodeMap result;
 
     for(const auto& entry: fs::directory_iterator(folder)) {
         if(entry.is_regular_file() && fs::path(entry).extension() == ".lua") {
@@ -47,7 +47,7 @@ Expected<BytecodeMap, errors::Error> lua::load_bytecode_map(const std::string &f
     return result;
 }
 
-Expected<lua::CommandBox*, errors::Error> lua::make_state_from_cached_bytecode(const std::unordered_map<std::string, std::string> &bytecode_map) {
+Expected<lua::CommandBox*, errors::Error> lua::make_state_from_cached_bytecode(const BytecodeMap& bytecode_map) {
     sol::state state;
 
     state.open_libraries(sol::lib::base);

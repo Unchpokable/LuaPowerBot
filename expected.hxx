@@ -6,9 +6,9 @@
 #include <utility>
 #include <variant>
 
-#define no_return [[noreturn]]
+#include "globals.hxx"
 
-no_return inline void unreachable()
+__noreturn inline void unreachable()
 {
     assert(false);
 }

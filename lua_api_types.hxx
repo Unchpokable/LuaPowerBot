@@ -61,7 +61,7 @@ struct Coroutine
 template <typename ...Args>
 sol::protected_function_result Coroutine::operator()(Args&&... args)
 {
-    return coroutine(std::forward<Args>(args...));
+    return coroutine(std::forward<Args>(args)...);
 }
 
 }
