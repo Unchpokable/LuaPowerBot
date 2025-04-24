@@ -43,6 +43,7 @@ namespace compressed {
 class PackedBot final {
 public:
     using ByteArray = std::vector<std::uint8_t>;
+    using StringPredicate = std::function<bool(std::string_view)>;
 
     constexpr static const char* DefaultHeader = "LUAPOWER_PACKED_BOT_v1";
 
@@ -59,7 +60,9 @@ public:
     std::vector<Entry> entries() const;
 
     bool hasEntry(std::string_view name) const;
-    Expected<Entry, errors::Error> getEntry(std::string_view name);
+    Expected<Entry, errors::Error> getEntry(std::string_view name) const;
+
+    std::vector<Entry> entriesIf(const StringPredicate &predicate) const;
 
     void addEntry(std::string_view name, const ByteArray& data);
     void removeEntry(std::string_view name);
@@ -67,7 +70,9 @@ public:
 
     Expected<ByteArray, errors::Error> entryData(std::string_view name);
 
-    void save();
+    void save(const std::string& api_key);
+
+    Expected<std::string, errors::Error> key() const;
 
 private:
     void create();
@@ -75,8 +80,8 @@ private:
 
     void makeIndex();
 
-    ByteArray zlib_compressData(const ByteArray& data);
-    ByteArray zlib_decompressData(const ByteArray& compressed_data, std::size_t uncompressed_size);
+    static ByteArray zlib_compressData(const ByteArray& data);
+    static ByteArray zlib_decompressData(const ByteArray& compressed_data, std::size_t uncompressed_size);
 
     std::string _path;
     std::fstream _file;
