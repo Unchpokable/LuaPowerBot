@@ -2,60 +2,86 @@
 
 #include <ctime>
 #include <fstream>
+#include <functional>
 #include <map>
 #include <string>
 #include <vector>
+
+#include "error.hxx"
+#include "expected.hxx"
+
+/*
+Packed bot file structure description
+byte size : type \\ comment
+
+[header]
+32 : C-string \\ version header, up to 32 bytes without \0
+128 : byte array \\ DPAPI encrypted telegram API token (for gui editor)
+
+[index] [ fixed size 1 KiB - up to 128 entries]
+8 : std::size_t \\ index size
+1024 : byte array \\ index. Array of std::size_t - offsets of content. Offsets can be unordered because while indexing data in any case file::seekg will be called for any next index
+
+[content]
+unrestricted array of data structured as:
+8 : std::size_t \\ file name length
+variadic : byte array \\ file name without \0. Byte array with length of file name length
+8 : std::size_t \\ compressed data size
+8 : std::size_t \\ uncompressed data size
+variadic : byte array \\ content array with length of compressed data size
+
+
+Generic statements:
+
+- Any changes in entries applies only in RAM. Physical file should be opened along a full PackedBot lifetime.
+- Removing and replacing files also applies only in RAM
+- Save is full rewrite
+*/
 
 namespace compressed {
 
 class PackedBot final {
 public:
+    using ByteArray = std::vector<std::uint8_t>;
+
     constexpr static const char* DefaultHeader = "LUAPOWER_PACKED_BOT_v1";
 
     struct Entry {
         std::string name;
-        std::size_t offset;
+        std::size_t offset; 
         std::size_t compressed_size;
         std::size_t uncompressed_size;
-        std::time_t timestamp;
     };
 
-    enum class Mode {
-        Read,
-        Write,
-        ReadWrite,
-        Append
-    };
+    explicit PackedBot(std::string_view file);
+    ~PackedBot();
 
     std::vector<Entry> entries() const;
 
-    bool hasEntry(std::string_view name);
-    Entry getEntry(std::string_view name);
+    bool hasEntry(std::string_view name) const;
+    Expected<Entry, errors::Error> getEntry(std::string_view name);
 
-    void addEntry(std::string_view name, const std::vector<std::uint8_t>& data);
+    void addEntry(std::string_view name, const ByteArray& data);
+    void removeEntry(std::string_view name);
+    void replaceEntry(std::string_view name, const ByteArray& data);
 
-    std::vector<std::uint8_t> entryData(std::string_view name);
+    Expected<ByteArray, errors::Error> entryData(std::string_view name);
 
-    std::string extractText(std::string_view name);
-
-    void repack();
+    void save();
 
 private:
     void create();
     void open();
-    void readIndex(std::size_t offset);
-    void writeIndex();
 
-    void writeIndexTo(std::ostream& stream, const std::map<std::string, Entry>& entries);
+    void makeIndex();
 
-    std::vector<std::uint8_t> zlib_compressData(const std::vector<std::uint8_t> *data);
-    std::vector<uint8_t> zlib_decompressData(const std::vector<std::uint8_t>& compressed_data, std::size_t uncompressed_size);
-
-    Mode _openMode { Mode::ReadWrite };
+    ByteArray zlib_compressData(const ByteArray& data);
+    ByteArray zlib_decompressData(const ByteArray& compressed_data, std::size_t uncompressed_size);
 
     std::string _path;
     std::fstream _file;
-    std::map<std::string, Entry> _entries;
+    std::map<std::string, Entry, std::less<>> _index;
+    std::unordered_map<std::size_t, ByteArray> _uncompressedCache;
 };
 
 }
