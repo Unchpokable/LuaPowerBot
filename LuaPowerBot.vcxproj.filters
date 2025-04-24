@@ -127,7 +127,7 @@
       <Filter>sources\configs</Filter>
     </ClCompile>
     <ClCompile Include="zipped.cxx">
-      <Filter>sources</Filter>
+      <Filter>sources\utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

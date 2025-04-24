@@ -49,7 +49,7 @@ public:
 
     struct Entry {
         std::string name;
-        std::size_t offset; 
+        std::ptrdiff_t offset; 
         std::size_t compressed_size;
         std::size_t uncompressed_size;
     };
@@ -80,8 +80,8 @@ private:
 
     void makeIndex();
 
-    static ByteArray zlib_compressData(const ByteArray& data);
-    static ByteArray zlib_decompressData(const ByteArray& compressed_data, std::size_t uncompressed_size);
+    static ByteArray zlib_compress(const ByteArray& data);
+    static ByteArray zlib_decompress(const ByteArray& compressed_data, std::size_t uncompressed_size);
 
     std::string _path;
     std::fstream _file;
