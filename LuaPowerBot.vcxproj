@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClCompile Include="bot_runtime.cxx" />
     <ClCompile Include="configs.cxx" />
+    <ClCompile Include="dp_api.cxx" />
     <ClCompile Include="editor.cxx" />
     <ClCompile Include="error.cxx" />
     <ClCompile Include="expected.cxx" />
@@ -172,6 +173,7 @@
   <ItemGroup>
     <ClInclude Include="bot_runtime.hxx" />
     <ClInclude Include="configs.hxx" />
+    <ClInclude Include="dp_api.hxx" />
     <ClInclude Include="editor.hxx" />
     <ClInclude Include="error.hxx" />
     <ClInclude Include="expected.hxx" />

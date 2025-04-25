@@ -55,6 +55,18 @@
     <Filter Include="headers\lua\api">
       <UniqueIdentifier>{edf76b50-e418-46a8-88b2-25713f334fd5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="headers\security">
+      <UniqueIdentifier>{3d633f24-0bed-4ed2-82f8-ed8d881f1785}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\storage">
+      <UniqueIdentifier>{e542660b-1adc-4107-a5d6-542c43d4c684}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\security">
+      <UniqueIdentifier>{be645278-fb4e-4513-ae76-bd18eb113168}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\storage">
+      <UniqueIdentifier>{ef521af1-5d95-4a6d-8da3-07d44337d277}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="thirdparty\imgui-docking\imgui_widgets.cpp">
@@ -127,7 +139,10 @@
       <Filter>sources\configs</Filter>
     </ClCompile>
     <ClCompile Include="zipped.cxx">
-      <Filter>sources\utility</Filter>
+      <Filter>sources\storage</Filter>
+    </ClCompile>
+    <ClCompile Include="dp_api.cxx">
+      <Filter>sources\security</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -210,7 +225,10 @@
       <Filter>headers\configs</Filter>
     </ClInclude>
     <ClInclude Include="zipped.hxx">
-      <Filter>headers\utility</Filter>
+      <Filter>headers\storage</Filter>
+    </ClInclude>
+    <ClInclude Include="dp_api.hxx">
+      <Filter>headers\security</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

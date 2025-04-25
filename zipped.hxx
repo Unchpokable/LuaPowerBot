@@ -83,6 +83,8 @@ private:
     static ByteArray zlib_compress(const ByteArray& data);
     static ByteArray zlib_decompress(const ByteArray& compressed_data, std::size_t uncompressed_size);
 
+    std::string _apiToken;
+
     std::string _path;
     std::fstream _file;
     std::map<std::string, Entry, std::less<>> _index;
