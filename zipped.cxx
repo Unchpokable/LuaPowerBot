@@ -66,7 +66,7 @@ ByteArray zlib_decompress(ByteArray &compressed_data, std::size_t uncompressed_s
 
     auto result = uncompress2(decompressed_data.data(), &decompressed_size, source, &source_length);
 
-    if(!result != Z_OK) {
+    if(result != Z_OK) {
         throw std::runtime_error(std::format("ZLib :: Decompression failed: {}", std::to_string(result)));
     }
 
@@ -81,6 +81,8 @@ ByteArray zlib_decompress(ByteArray &compressed_data, std::size_t uncompressed_s
 
 compressed::PackedBot::PackedBot(std::string_view file)
 {
+    _path = file;
+
     try {
         open();
     } catch(const std::exception&) {
@@ -207,7 +209,7 @@ Expected<compressed::ByteArray, errors::Error> compressed::PackedBot::entryData(
     _file.read(reinterpret_cast<char*>(&uncompressed_size), sizeof(uncompressed_size));
 
     ByteArray compressed_data;
-    compressed_data.reserve(compressed_size);
+    compressed_data.resize(compressed_size);
 
     _file.read(reinterpret_cast<char*>(compressed_data.data()), compressed_size);
 
