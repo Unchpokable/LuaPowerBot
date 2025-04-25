@@ -5,7 +5,7 @@
 
 #include <format>
 
-#include "dp_api.hxx"
+#include "security.hxx"
 
 namespace security::internal {
 
@@ -22,7 +22,7 @@ Expected<std::vector<std::uint8_t>, errors::Error> security::dpapi_encrypt(std::
 
     auto status = CryptProtectData(&blob, internal::Description, nullptr, nullptr, nullptr, 0, &out_blob);
 
-    if(FAILED(status)) {
+    if(status == FALSE) {
         return errors::Error(std::format("Windows Data Protection API Returned an error code: {}", GetLastError()));
     }
 
@@ -47,7 +47,7 @@ Expected<std::vector<std::uint8_t>, errors::Error> security::dpapi_decrypt(std::
 
     auto status = CryptUnprotectData(&blob, &description, nullptr, nullptr, nullptr, 0, &out_blob);
 
-    if(FAILED(status)) {
+    if(status == FALSE) {
         return errors::Error(std::format("Windows Data Protection API Returned an error code: {}", GetLastError()));
     }
 
@@ -56,7 +56,25 @@ Expected<std::vector<std::uint8_t>, errors::Error> security::dpapi_decrypt(std::
 
     std::memcpy(result.data(), out_blob.pbData, out_blob.cbData);
 
+    SecureZeroMemory(out_blob.pbData, out_blob.cbData);
+
     LocalFree(out_blob.pbData);
 
+    if(description) {
+        LocalFree(description);
+    }
+
     return result;
+}
+
+Expected<std::vector<std::uint8_t>, errors::Error> security::dpapi_encrypt_string(std::string_view string)
+{
+    std::vector<std::uint8_t> vector(string.begin(), string.end());
+    return dpapi_encrypt(vector);
+}
+
+Expected<std::vector<std::uint8_t>, errors::Error> security::dpapi_decrypt_string(std::string_view string)
+{
+    std::vector<std::uint8_t> vector(string.begin(), string.end());
+    return dpapi_decrypt(vector);
 }

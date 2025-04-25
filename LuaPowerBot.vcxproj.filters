@@ -141,7 +141,7 @@
     <ClCompile Include="zipped.cxx">
       <Filter>sources\storage</Filter>
     </ClCompile>
-    <ClCompile Include="dp_api.cxx">
+    <ClCompile Include="security.cxx">
       <Filter>sources\security</Filter>
     </ClCompile>
   </ItemGroup>
@@ -227,7 +227,7 @@
     <ClInclude Include="zipped.hxx">
       <Filter>headers\storage</Filter>
     </ClInclude>
-    <ClInclude Include="dp_api.hxx">
+    <ClInclude Include="security.hxx">
       <Filter>headers\security</Filter>
     </ClInclude>
   </ItemGroup>

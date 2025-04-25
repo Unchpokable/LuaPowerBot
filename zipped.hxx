@@ -40,9 +40,10 @@ Generic statements:
 
 namespace compressed {
 
+using ByteArray = std::vector<std::uint8_t>;
+
 class PackedBot final {
 public:
-    using ByteArray = std::vector<std::uint8_t>;
     using StringPredicate = std::function<bool(std::string_view)>;
 
     constexpr static const char* DefaultHeader = "LUAPOWER_PACKED_BOT_v1";
@@ -70,9 +71,13 @@ public:
 
     Expected<ByteArray, errors::Error> entryData(std::string_view name);
 
-    void save(const std::string& api_key);
+    void removeFromCache(std::string_view name);
 
-    Expected<std::string, errors::Error> key() const;
+    void save();
+
+    bool isTokenAvailable() const;
+    Expected<std::string, errors::Error> token() const;
+    void setToken(std::string_view token);
 
 private:
     void create();
@@ -80,10 +85,8 @@ private:
 
     void makeIndex();
 
-    static ByteArray zlib_compress(const ByteArray& data);
-    static ByteArray zlib_decompress(const ByteArray& compressed_data, std::size_t uncompressed_size);
-
     std::string _apiToken;
+    bool _tokenAvailable { false };
 
     std::string _path;
     std::fstream _file;
