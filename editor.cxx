@@ -136,17 +136,23 @@ void initialize_imgui(GLFWwindow* window)
 
 void render_bot_page()
 {
-    
+    ImGui::Begin("Bot Workbench");
+
+    ImGui::End();
 }
 
 void render_text_editor()
 {
+    ImGui::Begin("Editor");
 
+    ImGui::End();
 }
 
 void render_output_console()
 {
-    
+    ImGui::Begin("Output");
+
+    ImGui::End();
 }
 
 void render_gui(GLFWwindow* window)

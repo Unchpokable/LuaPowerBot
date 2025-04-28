@@ -1,5 +1,8 @@
 #include "parse_args.hxx"
 
+#include <ranges>
+
+
 std::string remove_quotes(const std::string& str)
 {
     if(str.size() >= 2 && str.front() == '"' && str.back() == '"') {
@@ -10,6 +13,32 @@ std::string remove_quotes(const std::string& str)
 
 bool cmd::empty(const CmdArgs& args) {
     return args.args.empty() && args.namedArgs.empty();
+}
+
+std::optional<cmd::ArgsOption> cmd::get(const CmdArgs& args, std::string_view arg)
+{
+    auto single_arg = std::ranges::find(args.args, arg);
+
+    if(single_arg != args.args.end()) {
+        return *single_arg;
+    }
+
+    auto arg_pair = std::ranges::find(args.namedArgs, arg, [](const std::pair<std::string, std::string>& pair) {
+        return pair.first;
+    });
+
+    if(arg_pair != args.namedArgs.end()) {
+        return *arg_pair;
+    }
+
+    return std::nullopt;
+}
+
+bool cmd::contains(const CmdArgs& args, std::string_view arg)
+{
+    auto get_result = get(args, arg);
+
+    return get_result.has_value();
 }
 
 cmd::CmdArgs cmd::parse_arguments(int argc, char **argv)
