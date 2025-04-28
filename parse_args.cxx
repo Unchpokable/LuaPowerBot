@@ -23,9 +23,7 @@ std::optional<cmd::ArgsOption> cmd::get(const CmdArgs& args, std::string_view ar
         return *single_arg;
     }
 
-    auto arg_pair = std::ranges::find(args.namedArgs, arg, [](const std::pair<std::string, std::string>& pair) {
-        return pair.first;
-    });
+    auto arg_pair = args.namedArgs.find(std::string(arg));
 
     if(arg_pair != args.namedArgs.end()) {
         return *arg_pair;

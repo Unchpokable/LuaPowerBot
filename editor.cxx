@@ -176,7 +176,9 @@ void editor::open_gui()
         return;
     }
 
-    auto window = internal::make_window("Lua!Power Bot Editor", { 640, 480 });
+    auto geometry = configs::get<configs::Vec2Int>("Geometry");
+
+    auto window = internal::make_window("Lua!Power Bot Editor", { geometry->x, geometry->y });
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
@@ -206,7 +208,7 @@ void editor::open_gui()
         glViewport(0, 0, internal::data::window_geometry.x, internal::data::window_geometry.y);
 
         auto color = internal::data::clear_color;
-        glClearColor(color.x * color.w, color.y * color.w, color.z * color.w, color.w);
+        glClearColor(color.x, color.y, color.z, color.w);
         glClear(GL_COLOR_BUFFER_BIT);
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
