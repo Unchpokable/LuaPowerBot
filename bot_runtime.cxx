@@ -27,6 +27,9 @@ tg::BotRuntime::BotRuntime(const std::string& apiKey)
     _bot = std::make_unique<TgBot::Bot>(apiKey);
 }
 
+void tg::BotRuntime::initNewSession(std::uint64_t chatId)
+{
+}
 
 void tg::BotRuntime::verifySessions()
 {

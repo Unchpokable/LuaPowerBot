@@ -144,6 +144,9 @@
     <ClCompile Include="security.cxx">
       <Filter>sources\security</Filter>
     </ClCompile>
+    <ClCompile Include="bot_workbench.cxx">
+      <Filter>sources\editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="thirdparty\imgui-docking\imconfig.h">
@@ -229,6 +232,9 @@
     </ClInclude>
     <ClInclude Include="security.hxx">
       <Filter>headers\security</Filter>
+    </ClInclude>
+    <ClInclude Include="bot_workbench.hxx">
+      <Filter>headers\editor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
