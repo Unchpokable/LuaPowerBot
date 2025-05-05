@@ -10,6 +10,8 @@
 #include "error.hxx"
 #include "expected.hxx"
 
+#include "vfspp/ZipFileSystem.hpp"
+
 /*
 Packed bot file structure description
 byte size : type \\ comment
@@ -92,6 +94,8 @@ private:
     std::fstream _file;
     std::map<std::string, Entry, std::less<>> _index;
     std::unordered_map<std::size_t, ByteArray> _uncompressedCache;
+
+    vfspp::ZipFileSystemPtr _fs;
 };
 
 }

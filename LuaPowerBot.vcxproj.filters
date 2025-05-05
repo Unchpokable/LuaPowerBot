@@ -67,6 +67,9 @@
     <Filter Include="sources\storage">
       <UniqueIdentifier>{ef521af1-5d95-4a6d-8da3-07d44337d277}</UniqueIdentifier>
     </Filter>
+    <Filter Include="headers\thirdparty\vfs">
+      <UniqueIdentifier>{3d8ce95f-9c28-4db5-8b94-1c6353400cd3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="thirdparty\imgui-docking\imgui_widgets.cpp">
@@ -232,6 +235,45 @@
     </ClInclude>
     <ClInclude Include="security.hxx">
       <Filter>headers\security</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\vfspp\ZipFileSystem.hpp">
+      <Filter>headers\thirdparty\vfs</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\vfspp\ZipFile.hpp">
+      <Filter>headers\thirdparty\vfs</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\vfspp\VirtualFileSystem.hpp">
+      <Filter>headers\thirdparty\vfs</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\vfspp\VFS.h">
+      <Filter>headers\thirdparty\vfs</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\vfspp\StringUtils.hpp">
+      <Filter>headers\thirdparty\vfs</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\vfspp\NativeFileSystem.hpp">
+      <Filter>headers\thirdparty\vfs</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\vfspp\NativeFile.hpp">
+      <Filter>headers\thirdparty\vfs</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\vfspp\MemoryFileSystem.hpp">
+      <Filter>headers\thirdparty\vfs</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\vfspp\MemoryFile.hpp">
+      <Filter>headers\thirdparty\vfs</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\vfspp\IFileSystem.h">
+      <Filter>headers\thirdparty\vfs</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\vfspp\IFile.h">
+      <Filter>headers\thirdparty\vfs</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\vfspp\Global.h">
+      <Filter>headers\thirdparty\vfs</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\vfspp\FileInfo.hpp">
+      <Filter>headers\thirdparty\vfs</Filter>
     </ClInclude>
     <ClInclude Include="bot_workbench.hxx">
       <Filter>headers\editor</Filter>

@@ -199,6 +199,19 @@
     <ClInclude Include="thirdparty\imgui-docking\imstb_textedit.h" />
     <ClInclude Include="thirdparty\imgui-docking\imstb_truetype.h" />
     <ClInclude Include="thirdparty\imtextedit\TextEditor.h" />
+    <ClInclude Include="thirdparty\vfspp\FileInfo.hpp" />
+    <ClInclude Include="thirdparty\vfspp\Global.h" />
+    <ClInclude Include="thirdparty\vfspp\IFile.h" />
+    <ClInclude Include="thirdparty\vfspp\IFileSystem.h" />
+    <ClInclude Include="thirdparty\vfspp\MemoryFile.hpp" />
+    <ClInclude Include="thirdparty\vfspp\MemoryFileSystem.hpp" />
+    <ClInclude Include="thirdparty\vfspp\NativeFile.hpp" />
+    <ClInclude Include="thirdparty\vfspp\NativeFileSystem.hpp" />
+    <ClInclude Include="thirdparty\vfspp\StringUtils.hpp" />
+    <ClInclude Include="thirdparty\vfspp\VFS.h" />
+    <ClInclude Include="thirdparty\vfspp\VirtualFileSystem.hpp" />
+    <ClInclude Include="thirdparty\vfspp\ZipFile.hpp" />
+    <ClInclude Include="thirdparty\vfspp\ZipFileSystem.hpp" />
     <ClInclude Include="user_session.hxx" />
     <ClInclude Include="zipped.hxx" />
   </ItemGroup>
