@@ -8,7 +8,6 @@ void files::SubDirectory::Initialize()  { }
 
 void files::SubDirectory::Shutdown()
 {
-    _cached_files.clear();
 }
 
 bool files::SubDirectory::IsInitialized() const 
@@ -47,16 +46,9 @@ vfspp::IFilePtr files::SubDirectory::OpenFile(const vfspp::FileInfo& filePath, v
 {
     std::string full_path = to_full_path(filePath.AbsolutePath());
 
-    if(_cached_files.contains(filePath.AbsolutePath())) {
-        return _cached_files[filePath.AbsolutePath()];
-    }
 
     vfspp::FileInfo full_info(full_path);
     auto file = _origin_fs->OpenFile(full_info, mode);
-
-    if(file) {
-        _cached_files[filePath.AbsolutePath()] = file;
-    }
 
     return file;
 }
@@ -65,13 +57,6 @@ void files::SubDirectory::CloseFile(vfspp::IFilePtr file)
 {
     if(!file) {
         return;
-    }
-
-    for(auto it = _cached_files.begin(); it != _cached_files.end(); ++it) {
-        if(it->second == file) {
-            _cached_files.erase(it);
-            break;
-        }
     }
 
     _origin_fs->CloseFile(file);
