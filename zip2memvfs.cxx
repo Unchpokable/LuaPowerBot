@@ -12,7 +12,10 @@
 
 files::Zip2MemVirtualFileSystem::Zip2MemVirtualFileSystem(std::string_view zip_path)
     : _mem_fs(std::make_shared<vfspp::MemoryFileSystem>()), _zip_fs(std::make_shared<vfspp::ZipFileSystem>(std::string(zip_path)))
-{ }
+{
+    _mem_fs->Initialize();
+    _zip_fs->Initialize();
+}
 
 vfspp::FileInfo files::Zip2MemVirtualFileSystem::file_info(std::string_view name)
 {
@@ -66,6 +69,10 @@ vfspp::VirtualFileSystemPtr files::Zip2MemVirtualFileSystem::open_subdir(std::st
         cleaned_path.pop_back();
     }
 
+    if(cleaned_path.empty() || cleaned_path[0] != '/') {
+        cleaned_path = "/" + cleaned_path;
+    }
+
     auto it = _opened_subdirs.find(cleaned_path);
     if(it != _opened_subdirs.end()) {
         return it->second;
@@ -73,7 +80,7 @@ vfspp::VirtualFileSystemPtr files::Zip2MemVirtualFileSystem::open_subdir(std::st
 
     auto vfs = std::make_shared<vfspp::VirtualFileSystem>();
 
-    vfspp::FileInfo dir_info(_mem_fs->BasePath() + cleaned_path);
+    vfspp::FileInfo dir_info(cleaned_path);
     if(_mem_fs->IsDir(dir_info)) {
         auto sub_fs = std::make_shared<SubDirectory>(_mem_fs, cleaned_path, readonly);
         vfs->AddFileSystem("/", sub_fs);
@@ -82,18 +89,21 @@ vfspp::VirtualFileSystemPtr files::Zip2MemVirtualFileSystem::open_subdir(std::st
         return vfs;
     }
 
-    vfspp::FileInfo zip_dir_info(_zip_fs->BasePath() + cleaned_path);
-    if(_zip_fs->IsDir(zip_dir_info)) {
+    if(_zip_fs->IsDir(dir_info)) {
         const auto& zip_files = _zip_fs->FileList();
+        std::string search_prefix = cleaned_path;
+        if(!search_prefix.empty() && search_prefix.back() != '/') {
+            search_prefix += "/";
+        }
+
         for(const auto& [file_path, file] : zip_files) {
-            if(file_path.starts_with(cleaned_path + "/")) {
+            if(file_path.starts_with(search_prefix)) {
                 load_to_memory(file->GetFileInfo());
             }
         }
 
-        auto sub_fs = std::make_shared<SubDirectory>(_zip_fs, cleaned_path);
+        auto sub_fs = std::make_shared<SubDirectory>(_zip_fs, cleaned_path, true);
         vfs->AddFileSystem("/", sub_fs);
-
         _opened_subdirs[cleaned_path] = vfs;
         return vfs;
     }
@@ -108,29 +118,88 @@ void files::Zip2MemVirtualFileSystem::load_to_memory(const vfspp::FileInfo &file
         return;
     }
 
-    auto zip_file = _zip_fs->OpenFile(file_info, vfspp::IFile::FileMode::Read);
-    if(!zip_file) {
+    if(_zip_fs->IsDir(file_info)) {
+        auto files = _zip_fs->FileList(file_info);
         return;
     }
 
-    std::string dir_path = file_info.BaseName();
+    auto zip_file = _zip_fs->OpenFile(file_info, vfspp::IFile::FileMode::Read);
+    if(!zip_file) {
+        luabot_logErr("Failed to open file {} from ZIP", file_info.AbsolutePath());
+        return;
+    }
+
+    std::string dir_path = file_info.Path().parent_path().string();
     if(!dir_path.empty()) {
         vfspp::FileInfo dir_info(_mem_fs->BasePath() + dir_path);
     }
 
-    if(_mem_fs->CreateFile(mem_info)) {
-        auto mem_file = _mem_fs->OpenFile(mem_info, vfspp::IFile::FileMode::Write);
-        if(mem_file) {
-            uint8_t buffer[8192];
-            size_t bytes_read;
-            while((bytes_read = zip_file->Read(buffer, sizeof(buffer))) > 0) {
-                mem_file->Write(buffer, bytes_read);
-            }
-            _mem_fs->CloseFile(mem_file);
+    if(!_mem_fs->CreateFile(mem_info)) {
+        luabot_logErr("Failed to create file {} in memory", file_info.AbsolutePath());
+        _zip_fs->CloseFile(zip_file);
+        return;
+    }
 
-            _modified_files.insert(file_info.AbsolutePath());
+    auto mem_file = _mem_fs->OpenFile(mem_info, vfspp::IFile::FileMode::Write);
+    if(!mem_file) {
+        luabot_logErr("Failed to open file {} for writing", file_info.AbsolutePath());
+        _mem_fs->RemoveFile(mem_info);
+        _zip_fs->CloseFile(zip_file);
+        return;
+    }
+
+    uint8_t buffer[8192];
+    size_t bytes_read;
+    bool success = true;
+
+    while((bytes_read = zip_file->Read(buffer, sizeof(buffer))) > 0) {
+        size_t bytes_written = mem_file->Write(buffer, bytes_read);
+        if(bytes_written != bytes_read) {
+            luabot_logErr("Failed to write all data to file {}", file_info.AbsolutePath());
+            success = false;
+            break;
         }
     }
 
+    _mem_fs->CloseFile(mem_file);
     _zip_fs->CloseFile(zip_file);
+
+    if(success) {
+        _modified_files.insert(file_info.AbsolutePath());
+    } else {
+        _mem_fs->RemoveFile(mem_info);
+    }
+
+    _zip_fs->CloseFile(zip_file);
+}
+
+void files::Zip2MemVirtualFileSystem::load_directory_to_memory(const vfspp::FileInfo &file_info)
+{
+}
+
+bool files::Zip2MemVirtualFileSystem::create_directory_recursive(const std::string &dir_path) const
+{
+    std::vector<std::string> components;
+    std::stringstream ss(dir_path);
+    std::string item;
+
+    while(std::getline(ss, item, '/')) {
+        if(!item.empty()) {
+            components.push_back(item);
+        }
+    }
+
+    std::string current_path = "/";
+    for(const auto& component : components) {
+        current_path += component + "/";
+        vfspp::FileInfo dir_info(current_path);
+
+        if(!_mem_fs->IsDir(dir_info)) {
+            if(!_mem_fs->CreateFile(dir_info)) {
+                return false;
+            }
+        }
+    }
+
+    return true;
 }

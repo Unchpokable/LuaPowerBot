@@ -57,7 +57,7 @@ private:
 
 class Zip2MemVirtualFileSystem final {
 public:
-    constexpr std::size_t full_memory_cache_limit = 20;
+    constexpr std::size_t full_memory_cache_limit = 200;
 
     using StringPredicate = std::function<bool(std::string_view)>;
 
@@ -73,9 +73,11 @@ public:
     vfspp::VirtualFileSystemPtr open_subdir(std::string_view path, bool readonly = false);
 
 private:
-    void load_to_memory(const vfspp::FileInfo& file_info);
-
     constexpr std::size_t full_memory_caching_threshold = sizes::megabytes(full_memory_cache_limit);
+
+    void load_to_memory(const vfspp::FileInfo& file_info);
+    void load_directory_to_memory(const vfspp::FileInfo& file_info);
+    bool create_directory_recursive(const std::string& dir_path) const;
 
     vfspp::MemoryFileSystemPtr _mem_fs;
     vfspp::ZipFileSystemPtr _zip_fs;

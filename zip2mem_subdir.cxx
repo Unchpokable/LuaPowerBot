@@ -47,6 +47,10 @@ vfspp::IFilePtr files::SubDirectory::OpenFile(const vfspp::FileInfo& filePath, v
 {
     std::string full_path = to_full_path(filePath.AbsolutePath());
 
+    if(_cached_files.contains(filePath.AbsolutePath())) {
+        return _cached_files[filePath.AbsolutePath()];
+    }
+
     vfspp::FileInfo full_info(full_path);
     auto file = _origin_fs->OpenFile(full_info, mode);
 
