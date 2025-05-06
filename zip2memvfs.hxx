@@ -14,7 +14,6 @@
 
 #define VFSPP_ENABLE_MULTITHREADING
 
-#include "vfspp/MemoryFileSystem.hpp"
 #include "vfspp/VirtualFileSystem.hpp"
 #include "vfspp/ZipFileSystem.hpp"
 
@@ -66,8 +65,8 @@ Expected<std::string, errors::Error> read_text(const vfspp::IFilePtr& file);
 errors::FileSystemResult append_bytes(const ZipFS& zip, const std::string& name, const ByteArray& bytes);
 errors::FileSystemResult append_bytes(const vfspp::IFilePtr& file, const ByteArray& bytes);
 
-errors::FileSystemResult rewrite_bytes(const ZipFS& zip, const std::string& name, const ByteArray& bytes);
-errors::FileSystemResult rewrite_bytes(const vfspp::IFilePtr& file, const ByteArray& bytes);
+errors::FileSystemResult write_bytes(const ZipFS& zip, const std::string& name, const ByteArray& bytes);
+errors::FileSystemResult write_bytes(const vfspp::IFilePtr& file, const ByteArray& bytes);
 
 errors::FileSystemResult append_text(const ZipFS& zip, const std::string& name, const std::string& text);
 errors::FileSystemResult append_text(const vfspp::IFilePtr& file, const std::string& text);

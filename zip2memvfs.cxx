@@ -1,10 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "zip2memvfs.hxx"
-#include <algorithm>
-#include <cstring>
-#include <filesystem>
-#include <iostream>
 #include <ranges>
 
 #include "logdef.hxx"
@@ -126,18 +122,18 @@ errors::FileSystemResult files::append_bytes(const vfspp::IFilePtr& file, const 
     return errors::OK;
 }
 
-errors::FileSystemResult files::rewrite_bytes(const ZipFS& zip, const std::string& name, const ByteArray& bytes)
+errors::FileSystemResult files::write_bytes(const ZipFS& zip, const std::string& name, const ByteArray& bytes)
 {
     auto file = zip->OpenFile(name, vfspp::IFile::FileMode::Write | vfspp::IFile::FileMode::Truncate);
 
-    auto result = rewrite_bytes(file, bytes);
+    auto result = write_bytes(file, bytes);
 
     file->Close();
 
     return result;
 }
 
-errors::FileSystemResult files::rewrite_bytes(const vfspp::IFilePtr& file, const ByteArray& bytes)
+errors::FileSystemResult files::write_bytes(const vfspp::IFilePtr& file, const ByteArray& bytes)
 {
     if(file->IsOpened()) {
         file->Close();
@@ -192,7 +188,7 @@ errors::FileSystemResult files::write_text(const vfspp::IFilePtr& file, const st
 {
     auto text_bytes = internal::text_to_bytes(text);
 
-    auto result = rewrite_bytes(file, text_bytes);
+    auto result = write_bytes(file, text_bytes);
 
     return result;
 }
