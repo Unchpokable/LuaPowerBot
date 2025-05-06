@@ -15,6 +15,15 @@ concept ErrorCompatible =
     std::derived_from<T, std::exception> &&
     std::constructible_from<T, const char*>;
 
+enum FileSystemResult
+{
+    OK,
+    FileTooBig,
+    InvalidSize,
+    UnableToRead,
+    UnableToWrite
+};
+
 class Error final
 {
 public:
