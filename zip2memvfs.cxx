@@ -36,6 +36,22 @@ Expected<vfspp::ZipFileSystemPtr, errors::Error> files::open_zip(const std::stri
     return errors::Error(std::format("Unable to open archive {}", name));
 }
 
+Expected<files::VirtualFS, errors::Error> files::open_subdir(const ZipFS& zip, const std::string& directory, bool readonly)
+{
+    vfspp::FileInfo dir_info(directory);
+    if(!zip->IsDir(dir_info)) {
+        return errors::Error(std::format("Path is not a directory: {}", directory));
+    }
+
+    auto vfs = std::make_shared<vfspp::VirtualFileSystem>();
+
+    auto sub_fs = std::make_shared<SubDirectory>(zip, directory, readonly);
+
+    vfs->AddFileSystem("/", sub_fs);
+
+    return vfs;
+}
+
 Expected<files::ByteArray, errors::Error> files::read_bytes(const ZipFS& zip, const std::string& name)
 {
     auto file = zip->OpenFile(vfspp::FileInfo(name), vfspp::IFile::FileMode::Read);
@@ -88,22 +104,6 @@ Expected<std::string, errors::Error> files::read_text(const vfspp::IFilePtr& fil
     auto& data = bytes_result.value();
 
     return std::string(data.begin(), data.end());
-}
-
-Expected<files::VirtualFS, errors::Error> files::open_subdir(const ZipFS& zip, const std::string& directory, bool readonly)
-{
-    vfspp::FileInfo dir_info(directory);
-    if(!zip->IsDir(dir_info)) {
-        return errors::Error(std::format("Path is not a directory: {}", directory));
-    }
-
-    auto vfs = std::make_shared<vfspp::VirtualFileSystem>();
-
-    auto sub_fs = std::make_shared<SubDirectory>(zip, directory, readonly);
-
-    vfs->AddFileSystem("/", sub_fs);
-
-    return vfs;
 }
 
 errors::FileSystemResult files::append_bytes(const ZipFS& zip, const std::string& name, const ByteArray& bytes)

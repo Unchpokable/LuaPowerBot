@@ -6,9 +6,7 @@ files::SubDirectory::SubDirectory(vfspp::IFileSystemPtr base_fs, std::string_vie
 
 void files::SubDirectory::Initialize()  { }
 
-void files::SubDirectory::Shutdown()
-{
-}
+void files::SubDirectory::Shutdown() { }
 
 bool files::SubDirectory::IsInitialized() const 
 {

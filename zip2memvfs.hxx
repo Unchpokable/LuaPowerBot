@@ -56,11 +56,12 @@ private:
 };
 
 Expected<ZipFS, errors::Error> open_zip(const std::string& name);
+Expected<VirtualFS, errors::Error> open_subdir(const ZipFS& zip, const std::string& directory, bool readonly = false);
+
 Expected<ByteArray, errors::Error> read_bytes(const ZipFS& zip, const std::string& name);
 Expected<ByteArray, errors::Error> read_bytes(const vfspp::IFilePtr& file);
 Expected<std::string, errors::Error> read_text(const ZipFS& zip, const std::string& file_name);
 Expected<std::string, errors::Error> read_text(const vfspp::IFilePtr& file);
-Expected<VirtualFS, errors::Error> open_subdir(const ZipFS& zip, const std::string& directory, bool readonly = false);
 
 errors::FileSystemResult append_bytes(const ZipFS& zip, const std::string& name, const ByteArray& bytes);
 errors::FileSystemResult append_bytes(const vfspp::IFilePtr& file, const ByteArray& bytes);
