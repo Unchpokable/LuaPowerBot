@@ -169,12 +169,14 @@
     <ClCompile Include="thirdparty\imgui-docking\imgui_widgets.cpp" />
     <ClCompile Include="thirdparty\imtextedit\TextEditor.cpp" />
     <ClCompile Include="user_session.cxx" />
-    <ClCompile Include="zipped.cxx" />
+    <ClCompile Include="zip2memvfs.cxx" />
+    <ClCompile Include="zip2mem_subdir.cxx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot_runtime.hxx" />
     <ClInclude Include="bot_workbench.hxx" />
     <ClInclude Include="configs.hxx" />
+    <ClInclude Include="fsizes.hxx" />
     <ClInclude Include="security.hxx" />
     <ClInclude Include="editor.hxx" />
     <ClInclude Include="error.hxx" />
@@ -213,7 +215,7 @@
     <ClInclude Include="thirdparty\vfspp\ZipFile.hpp" />
     <ClInclude Include="thirdparty\vfspp\ZipFileSystem.hpp" />
     <ClInclude Include="user_session.hxx" />
-    <ClInclude Include="zipped.hxx" />
+    <ClInclude Include="zip2memvfs.hxx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

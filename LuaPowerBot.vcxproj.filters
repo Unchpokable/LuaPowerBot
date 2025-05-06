@@ -141,7 +141,7 @@
     <ClCompile Include="configs.cxx">
       <Filter>sources\configs</Filter>
     </ClCompile>
-    <ClCompile Include="zipped.cxx">
+    <ClCompile Include="zip2memvfs.cxx">
       <Filter>sources\storage</Filter>
     </ClCompile>
     <ClCompile Include="security.cxx">
@@ -149,6 +149,9 @@
     </ClCompile>
     <ClCompile Include="bot_workbench.cxx">
       <Filter>sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="zip2mem_subdir.cxx">
+      <Filter>sources\storage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -230,7 +233,7 @@
     <ClInclude Include="configs.hxx">
       <Filter>headers\configs</Filter>
     </ClInclude>
-    <ClInclude Include="zipped.hxx">
+    <ClInclude Include="zip2memvfs.hxx">
       <Filter>headers\storage</Filter>
     </ClInclude>
     <ClInclude Include="security.hxx">
@@ -277,6 +280,9 @@
     </ClInclude>
     <ClInclude Include="bot_workbench.hxx">
       <Filter>headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="fsizes.hxx">
+      <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
