@@ -67,6 +67,10 @@ Expected<files::ByteArray, errors::Error> files::read_bytes(const vfspp::IFilePt
     std::vector<std::uint8_t> data;
     data.resize(file->Size());
 
+    if(!file->IsOpened()) {
+        file->Open(vfspp::IFile::FileMode::Read);
+    }
+
     std::uint64_t bytes_read = file->Read(data.data(), data.size());
     if(bytes_read != data.size()) {
         return errors::Error(std::format("Failed to read file: {}", file->GetFileInfo().Name()));
@@ -105,14 +109,26 @@ Expected<std::string, errors::Error> files::read_text(const vfspp::IFilePtr& fil
 errors::FileSystemResult files::append_bytes(const ZipFS& zip, const std::string& name, const ByteArray& bytes)
 {
     auto file = zip->OpenFile(name, vfspp::IFile::FileMode::Append);
-    auto result = append_bytes(file, bytes);
+    if(!file) {
+        return errors::UnableToOpen;
+    }
+
+    auto result = append_bytes(file, bytes, false);
     file->Close();
 
     return result;
 }
 
-errors::FileSystemResult files::append_bytes(const vfspp::IFilePtr& file, const ByteArray& bytes)
+errors::FileSystemResult files::append_bytes(const vfspp::IFilePtr& file, const ByteArray& bytes, bool should_reopen)
 {
+    if(should_reopen) {
+        if(file->IsOpened()) {
+            file->Close();
+        }
+
+        file->Open(vfspp::IFile::FileMode::Append | vfspp::IFile::FileMode::Truncate);
+    }
+
     auto bytes_written = file->Write(bytes.data(), bytes.size());
 
     if(bytes_written != bytes.size()) {
@@ -125,21 +141,26 @@ errors::FileSystemResult files::append_bytes(const vfspp::IFilePtr& file, const 
 errors::FileSystemResult files::write_bytes(const ZipFS& zip, const std::string& name, const ByteArray& bytes)
 {
     auto file = zip->OpenFile(name, vfspp::IFile::FileMode::Write | vfspp::IFile::FileMode::Truncate);
+    if(!file) {
+        return errors::UnableToOpen;
+    }
 
-    auto result = write_bytes(file, bytes);
+    auto result = write_bytes(file, bytes, false);
 
     file->Close();
 
     return result;
 }
 
-errors::FileSystemResult files::write_bytes(const vfspp::IFilePtr& file, const ByteArray& bytes)
+errors::FileSystemResult files::write_bytes(const vfspp::IFilePtr& file, const ByteArray& bytes, bool should_reopen)
 {
-    if(file->IsOpened()) {
-        file->Close();
-    }
+    if(should_reopen) {
+        if(file->IsOpened()) {
+            file->Close();
+        }
 
-    file->Open(vfspp::IFile::FileMode::Write | vfspp::IFile::FileMode::Truncate);
+        file->Open(vfspp::IFile::FileMode::Write | vfspp::IFile::FileMode::Truncate);
+    }
 
     auto bytes_written = file->Write(bytes.data(), bytes.size());
 
@@ -147,48 +168,56 @@ errors::FileSystemResult files::write_bytes(const vfspp::IFilePtr& file, const B
         return errors::UnableToWrite;
     }
 
-    file->Close();
-    file->Open(vfspp::IFile::FileMode::Read | vfspp::IFile::FileMode::Append);
+    if(should_reopen) {
+        file->Close();
+        file->Open(vfspp::IFile::FileMode::Read | vfspp::IFile::FileMode::Append);
+    }
 
     return errors::OK;
 }
 
 errors::FileSystemResult files::append_text(const ZipFS& zip, const std::string& name, const std::string& text)
 {
-    auto file = zip->OpenFile(vfspp::FileInfo(name), vfspp::IFile::FileMode::Append);
+    auto file = zip->OpenFile(vfspp::FileInfo(name), vfspp::IFile::FileMode::Append | vfspp::IFile::FileMode::Truncate);
+    if(!file) {
+        return errors::UnableToOpen;
+    }
 
-    auto result = append_text(file, text);
+    auto result = append_text(file, text, false);
 
     file->Close();
 
     return result;
 }
 
-errors::FileSystemResult files::append_text(const vfspp::IFilePtr& file, const std::string& text)
+errors::FileSystemResult files::append_text(const vfspp::IFilePtr& file, const std::string& text, bool should_reopen)
 {
     auto text_bytes = internal::text_to_bytes(text);
 
-    auto result = append_bytes(file, text_bytes);
+    auto result = append_bytes(file, text_bytes, should_reopen);
 
     return result;
 }
 
 errors::FileSystemResult files::write_text(const ZipFS& zip, const std::string& name, const std::string& text)
 {
-    auto file = zip->OpenFile(vfspp::FileInfo(name), vfspp::IFile::FileMode::Append | vfspp::IFile::FileMode::Truncate);
+    auto file = zip->OpenFile(vfspp::FileInfo(name), vfspp::IFile::FileMode::Write | vfspp::IFile::FileMode::Truncate);
+    if(!file) {
+        return errors::UnableToOpen;
+    }
 
-    auto result = write_text(file, text);
+    auto result = write_text(file, text, false);
 
     file->Close();
 
     return result;
 }
 
-errors::FileSystemResult files::write_text(const vfspp::IFilePtr& file, const std::string& text)
+errors::FileSystemResult files::write_text(const vfspp::IFilePtr& file, const std::string& text, bool should_reopen)
 {
     auto text_bytes = internal::text_to_bytes(text);
 
-    auto result = write_bytes(file, text_bytes);
+    auto result = write_bytes(file, text_bytes, should_reopen);
 
     return result;
 }

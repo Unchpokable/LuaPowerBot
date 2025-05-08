@@ -21,7 +21,8 @@ enum FileSystemResult
     FileTooBig,
     InvalidSize,
     UnableToRead,
-    UnableToWrite
+    UnableToWrite,
+    UnableToOpen
 };
 
 class Error final
