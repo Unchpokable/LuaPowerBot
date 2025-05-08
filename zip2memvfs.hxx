@@ -54,6 +54,8 @@ private:
     vfspp::IFileSystemPtr _origin_fs;
     std::string _prefix;
     bool _readonly;
+
+    mutable TFileList _file_list;
 };
 
 Expected<ZipFS, errors::Error> open_zip(const std::string& name);

@@ -20,7 +20,7 @@ const std::string& files::SubDirectory::BasePath() const
 
 const vfspp::IFileSystem::TFileList& files::SubDirectory::FileList() const
 {
-    static TFileList filtered_list;
+    TFileList filtered_list;
     filtered_list.clear();
 
     const auto& base_list = _origin_fs->FileList();
@@ -32,7 +32,8 @@ const vfspp::IFileSystem::TFileList& files::SubDirectory::FileList() const
         }
     }
 
-    return filtered_list;
+    _file_list = filtered_list;
+    return _file_list;
 }
 
 bool files::SubDirectory::IsReadOnly() const 
