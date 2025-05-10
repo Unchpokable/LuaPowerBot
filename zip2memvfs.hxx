@@ -67,15 +67,15 @@ Expected<std::string, errors::Error> read_text(const ZipFS& zip, const std::stri
 Expected<std::string, errors::Error> read_text(const vfspp::IFilePtr& file);
 
 errors::FileSystemResult append_bytes(const ZipFS& zip, const std::string& name, const ByteArray& bytes);
-errors::FileSystemResult append_bytes(const vfspp::IFilePtr& file, const ByteArray& bytes, bool should_reopen = true);
+errors::FileSystemResult append_bytes(const vfspp::IFilePtr& file, const ByteArray& bytes);
 
 errors::FileSystemResult write_bytes(const ZipFS& zip, const std::string& name, const ByteArray& bytes);
-errors::FileSystemResult write_bytes(const vfspp::IFilePtr& file, const ByteArray& bytes, bool should_reopen = true);
+errors::FileSystemResult write_bytes(const vfspp::IFilePtr& file, const ByteArray& bytes);
 
 errors::FileSystemResult append_text(const ZipFS& zip, const std::string& name, const std::string& text);
-errors::FileSystemResult append_text(const vfspp::IFilePtr& file, const std::string& text, bool should_reopen = true);
+errors::FileSystemResult append_text(const vfspp::IFilePtr& file, const std::string& text);
 
 errors::FileSystemResult write_text(const ZipFS& zip, const std::string& name, const std::string& text);
-errors::FileSystemResult write_text(const vfspp::IFilePtr& file, const std::string& text, bool should_reopen = true);
+errors::FileSystemResult write_text(const vfspp::IFilePtr& file, const std::string& text);
 
 }
