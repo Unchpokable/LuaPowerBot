@@ -17,6 +17,12 @@ ByteArray text_to_bytes(const std::string& string)
     return bytes;
 }
 
+bool check_file_flags(const vfspp::IFilePtr& file, vfspp::IFile::FileMode flags)
+{
+    auto current_mode = file->GetCurrentMode();
+
+}
+
 }
 
 Expected<vfspp::ZipFileSystemPtr, errors::Error> files::open_zip(const std::string& name)

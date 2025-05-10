@@ -4,6 +4,8 @@
 #include "IFile.h"
 #include "zip_file.hpp"
 
+#include <stack>
+
 namespace vfspp
 {
 
@@ -208,7 +210,35 @@ public:
             return WriteST(stream, size, bufferSize);
         }
     }
-    
+
+    virtual FileMode GetCurrentMode() const override
+    {
+        if constexpr (VFSPP_MT_SUPPORT_ENABLED) {
+            std::lock_guard<std::mutex> lock(m_Mutex);
+            return GetCurrentModeST();
+        } else {
+            return GetCurrentModeST();
+        }
+    }
+
+    virtual void PushMode(FileMode newMode) override {
+        if constexpr(VFSPP_MT_SUPPORT_ENABLED) {
+            std::lock_guard<std::mutex> lock(m_Mutex);
+            PushModeST(newMode);
+        } else {
+            PushModeST(newMode);
+        }
+    }
+
+    virtual bool PopMode() override {
+        if constexpr(VFSPP_MT_SUPPORT_ENABLED) {
+            std::lock_guard<std::mutex> lock(m_Mutex);
+            return PopModeST();
+        } else {
+            return PopModeST();
+        }
+    }
+
 private:
     inline const FileInfo& GetFileInfoST() const
     {
@@ -253,6 +283,7 @@ private:
         
         m_Data.resize(m_Size);
         m_IsOpened = mz_zip_reader_extract_to_mem_no_alloc(zipArchive.get(), m_EntryID, m_Data.data(), static_cast<size_t>(m_Size), 0, 0, 0);
+        m_Mode = mode;
     }
     
     inline void CloseST()
@@ -370,7 +401,45 @@ private:
 		return totalSize - size;
     }
 
+    inline FileMode GetCurrentModeST() const
+    {
+        return m_Mode;
+    }
+
+    inline void PushModeST(FileMode newMode) {
+        m_ModeStack.push(m_Mode);
+        if(m_IsOpened) {
+            CloseST();
+            m_Mode = newMode;
+            OpenST(m_Mode);
+        } else {
+            m_Mode = newMode;
+        }
+    }
+
+    inline bool PopModeST() {
+        if(m_ModeStack.empty()) {
+            return false;
+        }
+
+        FileMode oldMode = m_ModeStack.top();
+        m_ModeStack.pop();
+
+        if(m_IsOpened) {
+            CloseST();
+            m_Mode = oldMode;
+            OpenST(m_Mode);
+        } else {
+            m_Mode = oldMode;
+        }
+
+        return true;
+    }
+
 private:
+    FileMode m_Mode;
+    std::stack<FileMode> m_ModeStack;
+
     FileInfo m_FileInfo;
     uint32_t m_EntryID;
     uint64_t m_Size;

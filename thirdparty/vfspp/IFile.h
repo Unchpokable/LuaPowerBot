@@ -126,6 +126,21 @@ public:
      * Write data from stream to file
      */
     virtual uint64_t Write(std::istream& stream, uint64_t size, uint64_t bufferSize = 1024) = 0;
+
+    /*
+     * Get current file mode
+     */
+    virtual FileMode GetCurrentMode() const = 0;
+
+    /*
+     * Push current mode to stack and switch to new mode
+     */
+    virtual void PushMode(FileMode newMode) = 0;
+
+    /*
+     * Pop mode from stack and restore previous mode
+     */
+    virtual bool PopMode() = 0;
 };
     
 inline bool operator==(IFilePtr f1, IFilePtr f2)

@@ -3,6 +3,8 @@
 
 #include "IFile.h"
 
+#include <stack>
+
 namespace vfspp
 {
 
@@ -206,6 +208,34 @@ public:
         }
     }
 
+    virtual FileMode GetCurrentMode() const override
+    {
+        if constexpr(VFSPP_MT_SUPPORT_ENABLED) {
+            std::lock_guard<std::mutex> lock(m_Mutex);
+            return GetCurrentModeST();
+        } else {
+            return GetCurrentModeST();
+        }
+    }
+
+    virtual void PushMode(FileMode newMode) override {
+        if constexpr(VFSPP_MT_SUPPORT_ENABLED) {
+            std::lock_guard<std::mutex> lock(m_Mutex);
+            PushModeST(newMode);
+        } else {
+            PushModeST(newMode);
+        }
+    }
+
+    virtual bool PopMode() override {
+        if constexpr(VFSPP_MT_SUPPORT_ENABLED) {
+            std::lock_guard<std::mutex> lock(m_Mutex);
+            return PopModeST();
+        } else {
+            return PopModeST();
+        }
+    }
+
 private:
     inline const FileInfo& GetFileInfoST() const
     {
@@ -385,8 +415,43 @@ private:
 		
 		return totalSize - size;
     }
-    
+
+    inline FileMode GetCurrentModeST() const {
+        return m_Mode;
+    }
+
+    inline void PushModeST(FileMode newMode) {
+        m_ModeStack.push(m_Mode);
+        if(m_IsOpened) {
+            CloseST();
+            m_Mode = newMode;
+            OpenST(m_Mode);
+        } else {
+            m_Mode = newMode;
+        }
+    }
+
+    inline bool PopModeST() {
+        if(m_ModeStack.empty()) {
+            return false;
+        }
+
+        FileMode oldMode = m_ModeStack.top();
+        m_ModeStack.pop();
+
+        if(m_IsOpened) {
+            CloseST();
+            m_Mode = oldMode;
+            OpenST(m_Mode);
+        } else {
+            m_Mode = oldMode;
+        }
+
+        return true;
+    }
+
 private:
+    std::stack<FileMode> m_ModeStack;
     std::vector<uint8_t> m_Data;
     FileInfo m_FileInfo;
     bool m_IsReadOnly;
