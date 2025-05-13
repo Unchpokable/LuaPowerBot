@@ -130,7 +130,7 @@ errors::FileSystemResult files::append_bytes(const vfspp::IFilePtr& file, const 
     bool should_pop_mode = false;
 
     if(file->IsOpened()) {
-        if(internal::check_file_flags(file, vfspp::IFile::FileMode::Append | vfspp::IFile::FileMode::Truncate)) {
+        if(!internal::check_file_flags(file, vfspp::IFile::FileMode::Append | vfspp::IFile::FileMode::Truncate)) {
             file->PushMode(vfspp::IFile::FileMode::Append | vfspp::IFile::FileMode::Truncate);
             should_pop_mode = true;
         }
@@ -170,7 +170,7 @@ errors::FileSystemResult files::write_bytes(const vfspp::IFilePtr& file, const B
     bool should_pop_mode = false;
 
     if(file->IsOpened()) {
-        if(internal::check_file_flags(file, vfspp::IFile::FileMode::Write | vfspp::IFile::FileMode::Truncate)) {
+        if(!internal::check_file_flags(file, vfspp::IFile::FileMode::Write | vfspp::IFile::FileMode::Truncate)) {
             file->PushMode(vfspp::IFile::FileMode::Write | vfspp::IFile::FileMode::Truncate);
             should_pop_mode = true;
         }

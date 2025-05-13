@@ -14,9 +14,9 @@ using namespace nlohmann;
 
 namespace configs::internal::data {
 
-std::unordered_map<std::size_t, TypeInfo> g_type_registry;
-std::unordered_map<std::string, ConfigValue> g_config_values;
-std::mutex g_config_mutex;
+std::unordered_map<std::size_t, TypeInfo> type_registry;
+std::unordered_map<std::string, ConfigValue> config_values;
+std::mutex config_mutex;
 
 }
 
@@ -67,13 +67,13 @@ void conf_value_from_json(const json& j, configs::ConfigValue& config) {
 
 std::unordered_map<std::size_t, configs::internal::TypeInfo>& configs::internal::get_type_registry()
 {
-    return data::g_type_registry;
+    return data::type_registry;
 }
 
 std::unordered_map<std::string, configs::ConfigValue>& configs::internal::get_config_values()
 {
-    std::unique_lock lock(data::g_config_mutex);
-    return data::g_config_values;
+    std::unique_lock lock(data::config_mutex);
+    return data::config_values;
 }
 
 Expected<bool, errors::Error> configs::load_from_file(const fs::path& path)
