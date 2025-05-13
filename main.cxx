@@ -3,11 +3,28 @@
 
 #include "editor.hxx"
 
+std::string get_executable_path();
+
+#ifdef _WIN32
+
+#include "Windows.h"
+
+std::string get_executable_path()
+{
+    char buffer[MAX_PATH]; // MAX_PATH
+    GetModuleFileNameA(nullptr, buffer, MAX_PATH);
+
+    std::string::size_type pos = std::string(buffer).find_last_of("\\/");
+    return std::string(buffer).substr(0, pos + 1);
+}
+
+#endif
+
 int main(int argc, char** argv)
 {
     auto args = cmd::parse_arguments(argc, argv);
 
-    configs::load_from_file("C:\\Users\\Unchp\\source\\repos\\LuaPowerBot\\x64\\Debug\\config.json");
+    configs::load_from_file(get_executable_path() + "config.json");
 
     if(cmd::empty(args) || cmd::get(args, "gui")) {
         editor::open_gui();

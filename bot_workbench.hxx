@@ -5,7 +5,7 @@ namespace editor::workbench {
 void init();
 void shutdown();
 
-void open_file(std::string_view file);
+void open_project_file(const std::string& file);
 
 void refresh_scripts();
 void save();

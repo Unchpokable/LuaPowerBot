@@ -14,6 +14,7 @@ class BotRuntime
 {
 public:
     static std::unique_ptr<BotRuntime> create(const std::string& apiKey, const std::string& commandsPath);
+    static std::unique_ptr<BotRuntime> createFromProject(const std::string& zip, const std::string& external_api_key = {});
 
     BotRuntime(const std::string& apiKey);
 

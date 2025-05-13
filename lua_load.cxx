@@ -1,5 +1,7 @@
 #include "lua_load.hxx"
 
+#include "logdef.hxx"
+
 namespace fs = std::filesystem;
 
 lua::CommandBox::CommandBox(sol::state&& state, std::string prefix) : _state(std::move(state)), _prefix(std::move(prefix)) { }
@@ -41,6 +43,47 @@ Expected<BytecodeMap, errors::Error> lua::load_bytecode_map(const std::string& f
             }
 
             result.insert_or_assign(entry.path().stem().string(), bytecode.get<std::string>());
+        }
+    }
+
+    return result;
+}
+
+Expected<BytecodeMap, errors::Error> lua::load_bytecode_map(const files::ZipFS& zip_fs)
+{
+    auto files = zip_fs->FileList();
+
+    BytecodeMap result;
+
+    for(auto& [name, file] : files) {
+        if(file->GetFileInfo().Extension() == ".lua") {
+            auto script_text = files::read_text(file);
+            if(!script_text) {
+                luabot_logWarn("Unable to load: {}", name);
+                continue;
+            }
+
+
+            sol::state temp_state;
+            temp_state.open_libraries(sol::lib::base);
+            sol::load_result lua = temp_state.load(script_text.value());
+
+            if(!lua.valid()) {
+                sol::error err = lua;
+                luabot_logErr("Unable to load script: {}", err.what());
+                return errors::Error(std::format("Fatal error during loading script: {}", err.what()));
+            }
+
+            auto func = lua.get<sol::function>();
+            auto bytecode = temp_state["string"]["dump"](func);
+
+            if(!bytecode.valid()) {
+                sol::error err = bytecode;
+                luabot_logErr("Unable to load script: {}", err.what());
+                return errors::Error(std::format("Unable to compile script: {}", err.what()));
+            }
+
+            result.insert_or_assign(file->GetFileInfo().BaseName(), bytecode.get<std::string>());
         }
     }
 

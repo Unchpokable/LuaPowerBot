@@ -8,6 +8,8 @@
 
 #include "error.hxx"
 
+#include "zip2memvfs.hxx"
+
 template<typename T>
 concept SolBasicType =
     std::is_same_v<T, sol::object> ||
@@ -40,6 +42,8 @@ private:
 };
 
 Expected<BytecodeMap, errors::Error> load_bytecode_map(const std::string& folder);
+Expected<BytecodeMap, errors::Error> load_bytecode_map(const files::ZipFS& zip_fs);
+
 Expected<CommandBox*, errors::Error> make_state_from_cached_bytecode(const BytecodeMap& bytecode_map);
 
 Expected<CommandBox*, errors::Error> load_scripts(const std::string& folder);
