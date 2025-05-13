@@ -35,7 +35,7 @@ std::unique_ptr<tg::BotRuntime> tg::BotRuntime::createFromProject(const std::str
 
     if(!commands) {
         luabot_logErr("Unable to load scripts: {}", commands.error().message());
-        commands.error().throwError<std::runtime_error>();
+        return nullptr;
     }
 
     std::unique_ptr<BotRuntime> bot = { nullptr };
@@ -46,7 +46,7 @@ std::unique_ptr<tg::BotRuntime> tg::BotRuntime::createFromProject(const std::str
         auto key = files::read_bytes(filesystem.value(), "credentials.bin");
 
         if(!key) {
-            luabot_logWarn("Unable to create a bot runtime from given project file - key corrupted");
+            luabot_logErr("Unable to create a bot runtime from given project file - key corrupted");
             return nullptr;
         }
 
@@ -63,6 +63,8 @@ std::unique_ptr<tg::BotRuntime> tg::BotRuntime::createFromProject(const std::str
 
         return bot;
     }
+
+    return bot;
 }
 
 tg::BotRuntime::BotRuntime(const std::string& apiKey)
