@@ -20,7 +20,7 @@ void editor::workbench::open_project_file(const std::string& file)
     auto result = files::open_zip(file);
 
     if(!result) {
-        luabot_logWarn("Unable to open file {}", file);
+        luabot_logErr("Unable to open file {}", file);
         return;
     }
 

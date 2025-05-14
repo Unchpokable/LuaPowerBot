@@ -153,6 +153,12 @@
     <ClCompile Include="zip2mem_subdir.cxx">
       <Filter>sources\storage</Filter>
     </ClCompile>
+    <ClCompile Include="editor_utils.cxx">
+      <Filter>sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ui_state.cxx">
+      <Filter>sources\editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="thirdparty\imgui-docking\imconfig.h">
@@ -283,6 +289,12 @@
     </ClInclude>
     <ClInclude Include="fsizes.hxx">
       <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="editor_utils.hxx">
+      <Filter>headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_state.hxx">
+      <Filter>headers\editor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

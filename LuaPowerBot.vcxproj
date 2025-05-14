@@ -147,6 +147,7 @@
     <ClCompile Include="bot_runtime.cxx" />
     <ClCompile Include="bot_workbench.cxx" />
     <ClCompile Include="configs.cxx" />
+    <ClCompile Include="editor_utils.cxx" />
     <ClCompile Include="security.cxx" />
     <ClCompile Include="editor.cxx" />
     <ClCompile Include="error.cxx" />
@@ -168,6 +169,7 @@
     <ClCompile Include="thirdparty\imgui-docking\imgui_tables.cpp" />
     <ClCompile Include="thirdparty\imgui-docking\imgui_widgets.cpp" />
     <ClCompile Include="thirdparty\imtextedit\TextEditor.cpp" />
+    <ClCompile Include="ui_state.cxx" />
     <ClCompile Include="user_session.cxx" />
     <ClCompile Include="zip2memvfs.cxx" />
     <ClCompile Include="zip2mem_subdir.cxx" />
@@ -176,6 +178,7 @@
     <ClInclude Include="bot_runtime.hxx" />
     <ClInclude Include="bot_workbench.hxx" />
     <ClInclude Include="configs.hxx" />
+    <ClInclude Include="editor_utils.hxx" />
     <ClInclude Include="fsizes.hxx" />
     <ClInclude Include="security.hxx" />
     <ClInclude Include="editor.hxx" />
@@ -214,6 +217,7 @@
     <ClInclude Include="thirdparty\vfspp\VirtualFileSystem.hpp" />
     <ClInclude Include="thirdparty\vfspp\ZipFile.hpp" />
     <ClInclude Include="thirdparty\vfspp\ZipFileSystem.hpp" />
+    <ClInclude Include="ui_state.hxx" />
     <ClInclude Include="user_session.hxx" />
     <ClInclude Include="zip2memvfs.hxx" />
   </ItemGroup>

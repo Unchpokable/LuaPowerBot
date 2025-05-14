@@ -8,10 +8,11 @@
 #include "thirdparty/imgui-docking/imgui.h"
 #include "thirdparty/imgui-docking/backends/imgui_impl_glfw.h"
 #include "thirdparty/imgui-docking/backends/imgui_impl_opengl3.h"
-#include "thirdparty/imgui-docking/backends/imgui_impl_win32.h"
 
 #include "configs.hxx"
 #include "logdef.hxx"
+
+#include "ui_state.hxx"
 
 #pragma comment(lib, "opengl32.lib")
 
@@ -32,7 +33,6 @@ WNDPROC old_windowproc = nullptr;
 #endif
 
 configs::Vec2Int window_geometry;
-bool is_maximized = false;
 
 ImGuiID dockspace_id { 0 };
 bool is_first_frame { false };
@@ -54,7 +54,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 void window_maximize_callback(GLFWwindow* window, int maximized)
 {
-    data::is_maximized = maximized == GLFW_TRUE;
+    state::is_maximized = maximized == GLFW_TRUE;
 }
 
 #ifdef _WIN32
