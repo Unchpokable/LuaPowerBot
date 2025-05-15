@@ -22,11 +22,11 @@ std::string get_executable_path()
 
 int main(int argc, char** argv)
 {
-    auto args = cmd::parse_arguments(argc, argv);
+    std::ignore = cmd::parse_arguments(argc, argv);
 
     configs::load_from_file(get_executable_path() + "config.json");
 
-    if(cmd::empty(args) || cmd::get(args, "gui")) {
+    if(cmd::env::empty() || cmd::env::get("gui")) {
         editor::open_gui();
     }
 

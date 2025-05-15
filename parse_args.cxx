@@ -2,6 +2,7 @@
 
 #include <ranges>
 
+cmd::CmdArgs cmd::env::args = CmdArgs();
 
 std::string remove_quotes(const std::string& str)
 {
@@ -9,6 +10,18 @@ std::string remove_quotes(const std::string& str)
         return str.substr(1, str.size() - 2);
     }
     return str;
+}
+
+bool cmd::env::empty() {
+    return cmd::empty(cmd::env::args);
+}
+
+std::optional<cmd::ArgsOption> cmd::env::get(std::string_view arg) {
+    return cmd::get(cmd::env::args, arg);
+}
+
+bool cmd::env::contains(std::string_view arg) {
+    return cmd::contains(cmd::env::args, arg);
 }
 
 bool cmd::empty(const CmdArgs& args) {
@@ -66,6 +79,8 @@ cmd::CmdArgs cmd::parse_arguments(int argc, char **argv)
             }
         }
     }
+
+    env::args = args;
 
     return args;
 }

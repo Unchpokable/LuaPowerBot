@@ -6,6 +6,7 @@
 #include "GLFW/glfw3native.h" 
 
 #include "thirdparty/imgui-docking/imgui.h"
+#include "thirdparty/imgui-docking/misc/cpp/imgui_stdlib.h"
 #include "thirdparty/imgui-docking/backends/imgui_impl_glfw.h"
 #include "thirdparty/imgui-docking/backends/imgui_impl_opengl3.h"
 
