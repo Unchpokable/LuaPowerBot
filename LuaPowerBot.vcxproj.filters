@@ -288,7 +288,7 @@
       <Filter>headers\editor</Filter>
     </ClInclude>
     <ClInclude Include="fsizes.hxx">
-      <Filter>headers</Filter>
+      <Filter>headers\utility</Filter>
     </ClInclude>
     <ClInclude Include="editor_utils.hxx">
       <Filter>headers\editor</Filter>
