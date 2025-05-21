@@ -1,10 +1,11 @@
 #ifndef ZIPFILE_HPP
 #define ZIPFILE_HPP
 
+#include <stack>
+#include <utility>
+
 #include "IFile.h"
 #include "zip_file.hpp"
-
-#include <stack>
 
 namespace vfspp
 {
@@ -20,13 +21,13 @@ public:
         : m_FileInfo(fileInfo)
         , m_EntryID(entryID)
         , m_Size(size)
-        , m_ZipArchive(zipArchive)
+        , m_ZipArchive(std::move(zipArchive))
         , m_IsOpened(false)
         , m_SeekPos(0)
     {
-    }   
+    }
 
-    ~ZipFile()
+    virtual ~ZipFile() override
     {
         Close();
     }

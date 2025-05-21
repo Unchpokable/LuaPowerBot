@@ -5,6 +5,8 @@
 
 #include "bot_workbench.hxx"
 
+#include <ranges>
+
 #include "logdef.hxx"
 
 #include "thirdparty/imgui-docking/imgui.h"
@@ -139,7 +141,7 @@ void editor::workbench::refresh_scripts()
 
     std::ranges::sort(data::folders);
 
-    for(auto& [dir, files] : data::files_by_folders) {
+    for(auto &files : data::files_by_folders | std::views::values) {
         std::ranges::sort(files);
     }
 }
@@ -159,4 +161,7 @@ void editor::workbench::stop_bot()
 
 void editor::workbench::render()
 {
+    ImGui::Begin("Bot workbench");
+
+    ImGui::End();
 }

@@ -17,4 +17,16 @@ std::string current_file_text;
 
 }
 
+void editor::code::assign_filesystem(files::ZipFS filesystem)
+{
+    data::working_filesystem = std::move(filesystem);
+}
 
+void editor::code::open_file(std::string_view file_name) {
+}
+
+void editor::code::actualize() {
+}
+
+void editor::code::write_cached() {
+}

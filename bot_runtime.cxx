@@ -72,6 +72,10 @@ tg::BotRuntime::BotRuntime(const std::string& apiKey)
     _bot = std::make_unique<TgBot::Bot>(apiKey);
 }
 
+void tg::BotRuntime::pollAndDispatch()
+{
+}
+
 void tg::BotRuntime::initNewSession(std::uint64_t chatId)
 {
 }

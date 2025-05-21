@@ -1,5 +1,8 @@
 #include "editor.hxx"
 
+// I'VE SPENT A FUCKING HOUR TO DETERMINE WHY A STD::MIN AND STD::MAX TURNING INTO FUCKING PUMPKINS AFTER INCLUDING GLFWNATIVE HEADER DAMN YOU MICROSOFT
+#define NOMINMAX
+
 #include "GLFW/glfw3.h"
 
 #define GLFW_EXPOSE_NATIVE_WIN32
@@ -12,6 +15,9 @@
 
 #include "configs.hxx"
 #include "logdef.hxx"
+
+#include "bot_workbench.hxx"
+#include "code_editor.hxx"
 
 #include "ui_state.hxx"
 
@@ -137,9 +143,7 @@ void initialize_imgui(GLFWwindow* window)
 
 void render_bot_page()
 {
-    ImGui::Begin("Bot Workbench");
-
-    ImGui::End();
+    workbench::render();
 }
 
 void render_text_editor()
