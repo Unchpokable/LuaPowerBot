@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClCompile Include="bot_runtime.cxx" />
     <ClCompile Include="bot_workbench.cxx" />
+    <ClCompile Include="code_editor.cxx" />
     <ClCompile Include="configs.cxx" />
     <ClCompile Include="editor_utils.cxx" />
     <ClCompile Include="security.cxx" />
@@ -177,6 +178,7 @@
   <ItemGroup>
     <ClInclude Include="bot_runtime.hxx" />
     <ClInclude Include="bot_workbench.hxx" />
+    <ClInclude Include="code_editor.hxx" />
     <ClInclude Include="configs.hxx" />
     <ClInclude Include="editor_utils.hxx" />
     <ClInclude Include="fsizes.hxx" />

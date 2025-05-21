@@ -159,6 +159,9 @@
     <ClCompile Include="ui_state.cxx">
       <Filter>sources\editor</Filter>
     </ClCompile>
+    <ClCompile Include="code_editor.cxx">
+      <Filter>sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="thirdparty\imgui-docking\imconfig.h">
@@ -294,6 +297,9 @@
       <Filter>headers\editor</Filter>
     </ClInclude>
     <ClInclude Include="ui_state.hxx">
+      <Filter>headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="code_editor.hxx">
       <Filter>headers\editor</Filter>
     </ClInclude>
   </ItemGroup>

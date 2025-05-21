@@ -18,6 +18,8 @@ public:
 
     BotRuntime(const std::string& apiKey);
 
+    void pollAndDispatch();
+
 private:
     void initNewSession(std::uint64_t chatId);
 
