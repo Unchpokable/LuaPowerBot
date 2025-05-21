@@ -163,5 +163,9 @@ void editor::workbench::render()
 {
     ImGui::Begin("Bot workbench");
 
+    for(auto &[dir, files] : data::files_by_folders) {
+        
+    }
+
     ImGui::End();
 }
