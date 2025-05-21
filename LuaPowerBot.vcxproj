@@ -169,6 +169,7 @@
     <ClCompile Include="thirdparty\imgui-docking\imgui_draw.cpp" />
     <ClCompile Include="thirdparty\imgui-docking\imgui_tables.cpp" />
     <ClCompile Include="thirdparty\imgui-docking\imgui_widgets.cpp" />
+    <ClCompile Include="thirdparty\imgui-docking\misc\cpp\imgui_stdlib.cpp" />
     <ClCompile Include="thirdparty\imtextedit\TextEditor.cpp" />
     <ClCompile Include="ui_state.cxx" />
     <ClCompile Include="user_session.cxx" />

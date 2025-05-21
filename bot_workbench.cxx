@@ -163,8 +163,88 @@ void editor::workbench::render()
 {
     ImGui::Begin("Bot workbench");
 
-    for(auto &[dir, files] : data::files_by_folders) {
-        
+    static std::string project_path = "No project opened";
+    if(data::project_files && data::project_files->IsInitialized()) {
+        project_path = "Opened: " + data::project_files->BasePath();
+    }
+
+    ImGui::TextWrapped("%s", project_path.c_str());
+    ImGui::Separator();
+
+    if(ImGui::Button("Open new project")) {
+        //
+    }
+
+    ImGui::BeginChild("Files", ImVec2(0, ImGui::GetContentRegionAvail().y - 100), true);
+
+    if(data::files_by_folders.contains("/")) {
+        if(ImGui::TreeNodeEx("/ (Root)", ImGuiTreeNodeFlags_DefaultOpen)) {
+            for(const auto& file: data::files_by_folders["/"]) {
+                auto is_selected = ImGui::Selectable(file.c_str());
+
+                if(is_selected && ImGui::IsMouseDoubleClicked(0)) {
+                    code::open_file(file);
+                }
+            }
+
+            ImGui::TreePop();
+        }
+    }
+
+    for(const auto& dir : data::folders) {
+        if(dir == "/") continue;
+
+        if(ImGui::TreeNodeEx(dir.c_str(), 0)) {
+            if(data::files_by_folders.contains(dir)) {
+                for(const auto& file : data::files_by_folders[dir]) {
+                    bool is_selected = ImGui::Selectable(file.c_str());
+
+                    if(is_selected && ImGui::IsMouseDoubleClicked(0)) {
+                        std::string full_path = dir + file;
+                        code::open_file(full_path);
+                    }
+                }
+            }
+            ImGui::TreePop();
+        }
+    }
+
+    ImGui::EndChild();
+
+    ImGui::Separator();
+
+    ImGui::InputText("API Key", &data::api_key, ImGuiInputTextFlags_Password);
+
+    ImGui::Text("Bot status: ");
+    ImGui::SameLine();
+
+    bool is_bot_running = (data::bot_runtime != nullptr);
+    ImVec4 status_color = is_bot_running ? ImVec4(0.0f, 1.0f, 0.0f, 1.0f) : ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
+    std::string status_text = is_bot_running ? "ONLINE" : "OFFLINE";
+
+    ImGui::TextColored(status_color, "%s", status_text.c_str());
+    ImGui::SameLine();
+
+    float circle_radius = ImGui::GetTextLineHeight() * 0.5f;
+    ImVec2 p = ImGui::GetCursorScreenPos();
+    ImGui::GetWindowDrawList()->AddCircleFilled(
+        ImVec2(p.x + circle_radius, p.y + circle_radius), 
+        circle_radius, 
+        ImGui::ColorConvertFloat4ToU32(status_color));
+    ImGui::Dummy(ImVec2(circle_radius * 2 + 4, circle_radius * 2));
+
+    if(!is_bot_running) {
+        if(ImGui::Button("Start Bot")) {
+            if(!data::api_key.empty()) {
+                start_bot();
+            } else {
+                //utils::show_notification("Error", "API key is required to start the bot", true);
+            }
+        }
+    } else {
+        if(ImGui::Button("Stop Bot")) {
+            stop_bot();
+        }
     }
 
     ImGui::End();
