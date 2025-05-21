@@ -247,5 +247,9 @@ void editor::workbench::render()
         }
     }
 
+    if(ImGui::GetIO().KeyCtrl && ImGui::IsKeyPressed(ImGuiKey_S)) {
+        save();
+    }
+
     ImGui::End();
 }
