@@ -160,7 +160,10 @@
       <Filter>sources\editor</Filter>
     </ClCompile>
     <ClCompile Include="code_editor.cxx">
-      <Filter>sources</Filter>
+      <Filter>sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="thirdparty\imgui-docking\misc\cpp\imgui_stdlib.cpp">
+      <Filter>sources\thirdparty</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
