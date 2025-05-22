@@ -1,12 +1,6 @@
 #include "editor.hxx"
 
-// I'VE SPENT A FUCKING HOUR TO DETERMINE WHY A STD::MIN AND STD::MAX TURNING INTO FUCKING PUMPKINS AFTER INCLUDING GLFWNATIVE HEADER DAMN YOU MICROSOFT
-#define NOMINMAX
-
 #include "GLFW/glfw3.h"
-
-#define GLFW_EXPOSE_NATIVE_WIN32
-#include "GLFW/glfw3native.h" 
 
 #include "thirdparty/imgui-docking/imgui.h"
 #include "thirdparty/imgui-docking/misc/cpp/imgui_stdlib.h"
@@ -26,12 +20,6 @@
 namespace editor::internal {
 
 namespace data {
-
-#ifdef _WIN32
-
-WNDPROC old_windowproc = nullptr;
-
-#endif
 
 configs::Vec2Int window_geometry;
 
