@@ -102,9 +102,7 @@ void render_bot_page()
 
 void render_text_editor()
 {
-    ImGui::Begin("Editor");
-
-    ImGui::End();
+    code::render();
 }
 
 void render_output_console()

@@ -10,4 +10,6 @@ void open_file(std::string_view file_name);
 void actualize();
 void write_cached();
 
+void render();
+
 }

@@ -30,3 +30,6 @@ void editor::code::actualize() {
 
 void editor::code::write_cached() {
 }
+
+void editor::code::render() {
+}
