@@ -23,12 +23,6 @@
 
 #pragma comment(lib, "opengl32.lib")
 
-#ifdef _WIN32
-#include <windows.h>
-extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
-#endif
-
 namespace editor::internal {
 
 namespace data {
@@ -64,31 +58,6 @@ void window_maximize_callback(GLFWwindow* window, int maximized)
     state::is_maximized = maximized == GLFW_TRUE;
 }
 
-#ifdef _WIN32
-
-LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
-{
-    if(ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam))
-        return true;
-
-    return CallWindowProc(data::old_windowproc, hwnd, msg, wparam, lparam);
-}
-
-void setup_win32_handling(GLFWwindow* window)
-{
-    HWND hwnd = glfwGetWin32Window(window);
-
-    if(hwnd != nullptr) {
-        WNDPROC prev_wndproc = reinterpret_cast<WNDPROC>(GetWindowLongPtr(hwnd, GWLP_WNDPROC));
-
-        data::old_windowproc = prev_wndproc;
-
-        SetWindowLongPtr(hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(wnd_proc));
-    }
-}
-
-#endif
-
 GLFWwindow* make_window(const char* title, configs::Vec2Int geometry)
 {
     glfwSetErrorCallback(error_callback);
@@ -120,16 +89,13 @@ GLFWwindow* make_window(const char* title, configs::Vec2Int geometry)
 
     data::window_geometry = geometry;
 
-#ifdef _WIN32
-    setup_win32_handling(window);
-#endif
-
     return window;
 }
 
 void initialize_imgui(GLFWwindow* window)
 {
     IMGUI_CHECKVERSION();
+    
     ImGui::CreateContext();
 
     auto &io = ImGui::GetIO();
