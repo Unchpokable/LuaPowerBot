@@ -70,6 +70,12 @@
     <Filter Include="headers\thirdparty\vfs">
       <UniqueIdentifier>{3d8ce95f-9c28-4db5-8b94-1c6353400cd3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="headers\editor\modals">
+      <UniqueIdentifier>{7847f25d-b8b4-4ae2-878a-a502c9b1a2c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\editor\modals">
+      <UniqueIdentifier>{ac0d5755-3058-45c9-9bf4-2d200f1be105}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="thirdparty\imgui-docking\imgui_widgets.cpp">
@@ -164,6 +170,9 @@
     </ClCompile>
     <ClCompile Include="thirdparty\imgui-docking\misc\cpp\imgui_stdlib.cpp">
       <Filter>sources\thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="thirdparty\imgui-docking\misc\cpp\imgui_stdlib.cpp">
+      <Filter>sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -304,6 +313,9 @@
     </ClInclude>
     <ClInclude Include="code_editor.hxx">
       <Filter>headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="modals.hxx">
+      <Filter>headers\editor\modals</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
