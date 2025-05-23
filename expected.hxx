@@ -26,7 +26,7 @@ public:
     Expected(const error_type& err) requires std::copy_constructible<Err>;
     Expected(error_type&& err) requires std::move_constructible<Err>;
 
-    bool hasValue() const noexcept;
+    bool has_value() const noexcept;
     explicit operator bool() const noexcept;
 
     const value_type& value() const;
@@ -52,7 +52,7 @@ template <typename T, typename Err>
 Expected<T, Err>::Expected(error_type&& err) requires std::move_constructible<Err> : _data(std::move(err)) {}
 
 template <typename T, typename Err>
-bool Expected<T, Err>::hasValue() const noexcept
+bool Expected<T, Err>::has_value() const noexcept
 {
     return _data.index() == 0;
 }
@@ -60,13 +60,13 @@ bool Expected<T, Err>::hasValue() const noexcept
 template <typename T, typename Err>
 Expected<T, Err>::operator bool() const noexcept
 {
-    return hasValue();
+    return has_value();
 }
 
 template <typename T, typename Err>
 const typename Expected<T, Err>::value_type& Expected<T, Err>::value() const
 {
-    if(!hasValue()) 
+    if(!has_value()) 
         unreachable();
     return std::get<0>(_data);
 }
@@ -74,7 +74,7 @@ const typename Expected<T, Err>::value_type& Expected<T, Err>::value() const
 template <typename T, typename Err>
 const typename Expected<T, Err>::error_type& Expected<T, Err>::error() const
 {
-    if(hasValue())
+    if(has_value())
         unreachable();
     return std::get<1>(_data);
 }
@@ -82,7 +82,7 @@ const typename Expected<T, Err>::error_type& Expected<T, Err>::error() const
 template <typename T, typename Err>
 typename Expected<T, Err>::value_type& Expected<T, Err>::value()
 {
-    if(!hasValue()) 
+    if(!has_value()) 
         unreachable();
     return std::get<0>(_data);
 }
@@ -90,7 +90,7 @@ typename Expected<T, Err>::value_type& Expected<T, Err>::value()
 template <typename T, typename Err>
 typename Expected<T, Err>::error_type& Expected<T, Err>::error()
 {
-    if(hasValue()) 
+    if(has_value()) 
         unreachable();
     return std::get<1>(_data);
 }

@@ -14,16 +14,16 @@ class BotRuntime
 {
 public:
     static std::unique_ptr<BotRuntime> create(const std::string& apiKey, const std::string& commandsPath);
-    static std::unique_ptr<BotRuntime> createFromProject(const std::string& zip, const std::string& external_api_key = {});
+    static std::unique_ptr<BotRuntime> create_from_project(const std::string& zip, const std::string& external_api_key = {});
 
     BotRuntime(const std::string& apiKey);
 
-    void pollAndDispatch();
+    void poll_and_dispatch();
 
 private:
-    void initNewSession(std::uint64_t chatId);
+    void init_new_session(std::uint64_t chatId);
 
-    void verifySessions();
+    void verify_sessions();
 
     std::unique_ptr<TgBot::Bot> _bot { nullptr };
     std::unordered_map<std::uint64_t, std::unique_ptr<UserSession>> _activeSessions;

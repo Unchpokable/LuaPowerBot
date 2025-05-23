@@ -18,17 +18,17 @@ public:
 
     UserSession(const std::shared_ptr<TgBot::Bot>& bot, const BytecodeMap& commands);
 
-    void manageMessage(const TgBot::Message::Ptr& message);
-    void manageCallback(const TgBot::CallbackQuery::Ptr& callbackQuery);
+    void manage_message(const TgBot::Message::Ptr& message);
+    void manage_callback(const TgBot::CallbackQuery::Ptr& callbackQuery);
 
     void update();
 
-    TimePoint lastActivity() const;
+    TimePoint last_activity() const;
 
-    void forceClose();
+    void force_close();
 
 private:
-    void mapCommands();
+    void map_commands();
 
     std::shared_ptr<TgBot::Bot> _bot;
 
@@ -47,18 +47,18 @@ public:
     UserSessionThread(const std::shared_ptr<TgBot::Bot>& bot, const BytecodeMap& commands);
     ~UserSessionThread();
 
-    void enqueueTask(NoReturningTask task);
+    void enqueue_task(NoReturningTask task);
 
-    void manageMessage(const TgBot::Message::Ptr& message);
-    void manageCallback(const TgBot::CallbackQuery::Ptr& callbackQuery);
+    void manage_message(const TgBot::Message::Ptr& message);
+    void manage_message(const TgBot::CallbackQuery::Ptr& callbackQuery);
 
-    UserSession::TimePoint lastActivity() const;
-    void forceClose();
+    UserSession::TimePoint last_activity() const;
+    void force_close();
 
     void update();
 
 private:
-    void threadFunc();
+    void thread_func();
 
     bool _running { true };
 

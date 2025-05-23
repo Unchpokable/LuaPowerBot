@@ -23,7 +23,7 @@ std::unique_ptr<tg::BotRuntime> tg::BotRuntime::create(const std::string& apiKey
     return context;
 }
 
-std::unique_ptr<tg::BotRuntime> tg::BotRuntime::createFromProject(const std::string& zip, const std::string& external_api_key)
+std::unique_ptr<tg::BotRuntime> tg::BotRuntime::create_from_project(const std::string& zip, const std::string& external_api_key)
 {
     auto filesystem = files::open_zip(zip);
     if(!filesystem) {
@@ -72,21 +72,21 @@ tg::BotRuntime::BotRuntime(const std::string& apiKey)
     _bot = std::make_unique<TgBot::Bot>(apiKey);
 }
 
-void tg::BotRuntime::pollAndDispatch()
+void tg::BotRuntime::poll_and_dispatch()
 {
 }
 
-void tg::BotRuntime::initNewSession(std::uint64_t chatId)
+void tg::BotRuntime::init_new_session(std::uint64_t chatId)
 {
 }
 
-void tg::BotRuntime::verifySessions()
+void tg::BotRuntime::verify_sessions()
 {
     auto clock_now = std::chrono::high_resolution_clock::now();
 
     for(auto &sessionPtr : _activeSessions | std::views::values) {
-        if(sessionPtr->lastActivity() - clock_now > ActivityTimeout) {
-            sessionPtr->forceClose();
+        if(sessionPtr->last_activity() - clock_now > ActivityTimeout) {
+            sessionPtr->force_close();
         }
     }
 }

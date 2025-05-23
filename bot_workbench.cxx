@@ -43,7 +43,7 @@ namespace editor::workbench::internal {
 
 void bot_runtime_thread(const std::stop_token &token) {
     while(!token.stop_requested()) {
-        data::bot_runtime->pollAndDispatch();
+        data::bot_runtime->poll_and_dispatch();
 
         data::Task task;
         {

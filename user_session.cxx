@@ -21,14 +21,14 @@ tg::UserSession::UserSession(const std::shared_ptr<TgBot::Bot>& bot, const Bytec
     _commandBox.reset(commandBox);
 }
 
-void tg::UserSession::manageMessage(const TgBot::Message::Ptr& message)
+void tg::UserSession::manage_message(const TgBot::Message::Ptr& message)
 {
     _lastActivity = std::chrono::high_resolution_clock::now();
 
     return;
 }
 
-void tg::UserSession::manageCallback(const TgBot::CallbackQuery::Ptr& callbackQuery)
+void tg::UserSession::manage_callback(const TgBot::CallbackQuery::Ptr& callbackQuery)
 {
     _lastActivity = std::chrono::high_resolution_clock::now();
     auto tokens = utils::string_split(callbackQuery->data, ';');
@@ -82,16 +82,16 @@ void tg::UserSession::update()
     }
 }
 
-tg::UserSession::TimePoint tg::UserSession::lastActivity() const
+tg::UserSession::TimePoint tg::UserSession::last_activity() const
 {
     return _lastActivity;
 }
 
-void tg::UserSession::forceClose()
+void tg::UserSession::force_close()
 {
 }
 
-void tg::UserSession::mapCommands()
+void tg::UserSession::map_commands()
 {
     for (const auto& [name, func_object] : _commandBox->commands()) {
         auto str_name = name.as<std::string>();
@@ -109,7 +109,7 @@ void tg::UserSession::mapCommands()
 tg::UserSessionThread::UserSessionThread(const std::shared_ptr<TgBot::Bot>& bot, const BytecodeMap& commands)
     : _session(bot, commands)
 {
-    _thread = std::thread(&UserSessionThread::threadFunc, this);
+    _thread = std::thread(&UserSessionThread::thread_func, this);
     luabot_logInfo("Started UserSessionThread");
 }
 
@@ -128,7 +128,7 @@ tg::UserSessionThread::~UserSessionThread()
 
 }
 
-void tg::UserSessionThread::enqueueTask(NoReturningTask task)
+void tg::UserSessionThread::enqueue_task(NoReturningTask task)
 {
     {
         std::unique_lock lock(_mutex);
@@ -138,35 +138,35 @@ void tg::UserSessionThread::enqueueTask(NoReturningTask task)
     _condition.notify_one();
 }
 
-void tg::UserSessionThread::manageMessage(const TgBot::Message::Ptr& message)
+void tg::UserSessionThread::manage_message(const TgBot::Message::Ptr& message)
 {
-    enqueueTask([this, message]() {
-        _session.manageMessage(message);
+    enqueue_task([this, message]() {
+        _session.manage_message(message);
     });
 }
 
-void tg::UserSessionThread::manageCallback(const TgBot::CallbackQuery::Ptr& callbackQuery)
+void tg::UserSessionThread::manage_message(const TgBot::CallbackQuery::Ptr& callbackQuery)
 {
-    enqueueTask([this, callbackQuery]() {
-        _session.manageCallback(callbackQuery);
+    enqueue_task([this, callbackQuery]() {
+        _session.manage_callback(callbackQuery);
     });
 }
 
-tg::UserSession::TimePoint tg::UserSessionThread::lastActivity() const
+tg::UserSession::TimePoint tg::UserSessionThread::last_activity() const
 {
-    return _session.lastActivity();
+    return _session.last_activity();
 }
 
-void tg::UserSessionThread::forceClose()
+void tg::UserSessionThread::force_close()
 {
-    enqueueTask([this]() {
-        _session.forceClose();
+    enqueue_task([this]() {
+        _session.force_close();
     });
 }
 
 void tg::UserSessionThread::update()
 {
-    enqueueTask([this]() {
+    enqueue_task([this]() {
         try {
             _session.update();
         } catch(const std::exception& e) {
@@ -177,7 +177,7 @@ void tg::UserSessionThread::update()
     _condition.notify_one();
 }
 
-void tg::UserSessionThread::threadFunc()
+void tg::UserSessionThread::thread_func()
 {
     while(true) {
         NoReturningTask task;
