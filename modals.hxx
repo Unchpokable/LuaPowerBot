@@ -28,13 +28,25 @@ enum ModalEvent {
     Continues // means that modal window rendered something but not ended its routine. DO NOT ADD CALLBACKS TO THIS
 };
 
-using anon_func_ptr = const void*;
+using anon_func_ptr = void(*)();
 using handler = std::pair<ModalEvent, anon_func_ptr>;
 
 using id_type = int;
 
 template<typename T>
 concept event_handler = std::same_as<T, handler>;
+
+template<typename F>
+constexpr auto make_callback(F function) -> void(*)()
+{
+    return reinterpret_cast<void(*)()>(function);
+}
+
+template<typename ...Args>
+constexpr auto arguments_callback(handler handler) -> void(*)(Args...)
+{
+    return reinterpret_cast<void(*)(Args...)>(handler.second);
+}
 
 class Modal
 {
@@ -64,9 +76,18 @@ public:
     virtual ModalEvent render() const override;
 
 private:
+    void scan_directory() const;
+    bool matches_filter(std::string_view filename) const;
+
     std::string _initial_path;
     std::string _filter;
-    std::string _selected_path;
+    mutable std::string _selected_path;
+    mutable std::string _current_path;
+
+    mutable std::vector<std::string> _directories;
+    mutable std::vector<std::string> _files;
+
+    mutable int _selected_index = -1;
 };
 
 class YesNoModal : public Modal
