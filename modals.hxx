@@ -114,7 +114,6 @@ Expected<ModalEvent, errors::Error> forced_render(id_type modal_id);
 
 }
 
-
 template<modals::event_handler ...Handlers>
 modals::id_type modals::ask_open(std::string_view title, std::string_view initial_path, std::string_view filters, bool blocking, Handlers ...handlers)
 {

@@ -108,7 +108,7 @@ void editor::workbench::refresh_scripts()
 
     auto &file_list = data::project_files->FileList();
 
-    for(const auto& [path, file] : file_list) {
+    for(const auto& file : file_list | std::views::values) {
         const auto& file_info = file->GetFileInfo();
         std::string abs_path = file_info.AbsolutePath();
 

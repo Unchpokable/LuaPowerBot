@@ -13,6 +13,8 @@
 #include "bot_workbench.hxx"
 #include "code_editor.hxx"
 
+#include "modals.hxx"
+
 #include "ui_state.hxx"
 
 #pragma comment(lib, "opengl32.lib")

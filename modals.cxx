@@ -13,9 +13,9 @@ std::unordered_map<id_type, std::unique_ptr<Modal>> modals_registry;
 modals::id_type modals::add_modal(Modal *modal) {
     auto id = data::counter++;
     data::active_modals.push_back(id);
-    data::modals_registry.insert_or_assign(id, modal);
+    data::modals_registry.insert_or_assign(id, std::unique_ptr<Modal>(modal));
 
-    modal->set_popup_id(std::format("info_popup##{}", id));
+    modal->set_popup_id(std::format("modal_popup##{}", id));
 
     return id;
 }
