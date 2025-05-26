@@ -116,6 +116,10 @@ void render_output_console()
 
 void render_gui(GLFWwindow* window)
 {
+    if(modals::has_any_modal()) {
+        modals::render_top();
+    }
+
     render_bot_page();
     render_text_editor();
     render_output_console();

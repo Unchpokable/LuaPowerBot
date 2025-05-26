@@ -38,17 +38,12 @@ inline void setLogOutput(LogSink newSink) {
     sink = std::move(newSink);
 }
 
-template<typename... Args>
-void log_impl(Level lvl, std::source_location loc, std::string_view fmt, Args&&... args) {
-    auto msg = std::vformat(fmt, std::make_format_args(std::forward<Args>(args)...));
-    auto full = std::format("[{}] {}:{} :: {}", level_to_string(lvl), loc.file_name(), loc.line(), loc.function_name(), msg);
-
-    sink(full);
-}
-
 template<typename ...Args>
 void log(Level lvl, std::source_location loc, std::string_view fmt, Args&&... args) {
-    log_impl(lvl, loc , fmt, std::forward<Args>(args)...);
+    auto msg = std::vformat(fmt, std::make_format_args(std::forward<Args>(args)...));
+    auto full = std::format("[{}] {}:{} :: {}\n", level_to_string(lvl), loc.file_name(), loc.line(), msg);
+
+    sink(full);
 }
 
 }

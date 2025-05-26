@@ -81,6 +81,7 @@ void bot_runtime_enqueue_task(data::Task task)
 
 void open_project_handler(std::string_view path)
 {
+    luabot_logInfo("Opened: {}", path);
     open_project_file(std::string(path));
 }
 
@@ -179,11 +180,7 @@ void editor::workbench::render()
 
     if(ImGui::Button("Open new project")) {
         modals::ask_open("Open new project", {}, "*.zip", true, 
-            modals::handler { modals::ModalEvent::Ok, modals::make_callback(internal::open_project_handler) });
-    }
-
-    if(modals::has_any_modal()) {
-        auto event = modals::render_top();
+            handle(modals::ModalEvent::Ok, internal::open_project_handler));
     }
 
     ImGui::BeginChild("Files", ImVec2(0, ImGui::GetContentRegionAvail().y - 100), true);

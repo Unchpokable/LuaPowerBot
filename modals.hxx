@@ -37,7 +37,7 @@ template<typename T>
 concept event_handler = std::same_as<T, handler>;
 
 template<typename F>
-constexpr auto make_callback(F function) -> void(*)()
+constexpr auto anonymize_function(F function) -> void(*)()
 {
     return reinterpret_cast<void(*)()>(function);
 }
@@ -46,6 +46,14 @@ template<typename ...Args>
 constexpr auto arguments_callback(handler handler) -> void(*)(Args...)
 {
     return reinterpret_cast<void(*)(Args...)>(handler.second);
+}
+
+template<typename F>
+constexpr handler handle(ModalEvent event, F handler_func)
+{
+    auto anonymized_function = anonymize_function(handler_func);
+
+    return handler { event, anonymized_function };
 }
 
 class Modal

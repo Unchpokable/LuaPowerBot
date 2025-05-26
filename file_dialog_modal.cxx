@@ -57,7 +57,16 @@ modals::ModalEvent modals::FileDialogModal::render() const
                 } else {
                     _current_path = (fs::path(_current_path) / dir).string();
                 }
+
                 scan_directory();
+
+                // re-scan other directory is a good reason to early return and go to the next render cycle
+                ImGui::PopStyleColor();
+
+                ImGui::EndChild();
+                ImGui::EndPopup();
+
+                return result;
             }
         }
         ImGui::PopStyleColor();
@@ -73,7 +82,7 @@ modals::ModalEvent modals::FileDialogModal::render() const
 
             if(ImGui::IsMouseDoubleClicked(0)) {
                 if(_handlers.contains(Ok)) {
-                    auto handler = arguments_callback<const std::string&>({ Ok, _handlers.at(Ok) });
+                    auto handler = arguments_callback<std::string_view>({ Ok, _handlers.at(Ok) });
                     handler(_selected_path);
                 }
                 result = Ok;
@@ -89,7 +98,7 @@ modals::ModalEvent modals::FileDialogModal::render() const
     if(ImGui::Button("OK", ImVec2(120, 0))) {
         if(!_selected_path.empty() && fs::exists(_selected_path) && fs::is_regular_file(_selected_path)) {
             if(_handlers.contains(Ok)) {
-                auto handler = arguments_callback<const std::string&>({ Ok, _handlers.at(Ok) });
+                auto handler = arguments_callback<std::string_view>({ Ok, _handlers.at(Ok) });
                 handler(_selected_path);
             }
             result = Ok;
