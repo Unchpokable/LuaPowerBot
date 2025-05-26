@@ -3,7 +3,7 @@
 #include "logging.hxx"
 
 #define luabot_logInternal(lvl, fmt, ...) \
-    ::logging::log((lvl), std::source_location::current(),(fmt), ##__VA_ARGS__)
+    ::logging::log((lvl), std::source_location::current(),(fmt), __VA_ARGS__)
 
 #define luabot_logInfo(...) \
     luabot_logInternal(::logging::Level::Info, __VA_ARGS__)
