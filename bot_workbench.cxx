@@ -15,6 +15,7 @@
 #include "code_editor.hxx"
 #include "editor.hxx"
 #include "editor_utils.hxx"
+#include "modals.hxx"
 #include "ui_state.hxx"
 
 namespace editor::workbench::data {
@@ -76,6 +77,11 @@ void bot_runtime_enqueue_task(data::Task task)
     }
 
     data::condition.notify_one();
+}
+
+void open_project_handler(std::string_view path)
+{
+    open_project_file(std::string(path));
 }
 
 }
@@ -172,7 +178,12 @@ void editor::workbench::render()
     ImGui::Separator();
 
     if(ImGui::Button("Open new project")) {
-        //
+        modals::ask_open("Open new project", {}, "*.zip", true, 
+            modals::handler { modals::ModalEvent::Ok, modals::make_callback(internal::open_project_handler) });
+    }
+
+    if(modals::has_any_modal()) {
+        auto event = modals::render_top();
     }
 
     ImGui::BeginChild("Files", ImVec2(0, ImGui::GetContentRegionAvail().y - 100), true);

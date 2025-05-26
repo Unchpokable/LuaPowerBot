@@ -128,6 +128,8 @@ id_type warn(std::string_view title, std::string_view message, bool blocking);
 id_type inform(std::string_view title, std::string_view message, bool blocking);
 id_type error(std::string_view title, std::string_view message, bool blocking);
 
+bool has_any_modal();
+
 ///@brief renders a modal window on top of the queue. Pops it from queue if modal dialog returned final status code and lefts it on top of the queue if it returned \c ModalEvent::Continues
 ModalEvent render_top();
 

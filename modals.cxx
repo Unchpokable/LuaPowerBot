@@ -38,6 +38,11 @@ modals::id_type modals::error(std::string_view title, std::string_view message, 
     return add_modal(modal);
 }
 
+bool modals::has_any_modal()
+{
+    return !data::active_modals.empty();
+}
+
 modals::ModalEvent modals::render_top() {
     auto top = data::active_modals.front();
 

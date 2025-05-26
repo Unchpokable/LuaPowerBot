@@ -106,6 +106,8 @@ modals::ModalEvent modals::FileDialogModal::render() const
         result = Cancel;
     }
 
+    ImGui::EndChild();
+
     ImGui::EndPopup();
 
     return result;
