@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include <format>
 #include <functional>
 #include <iostream>
@@ -40,8 +41,8 @@ inline void setLogOutput(LogSink newSink) {
 
 template<typename ...Args>
 void log(Level lvl, std::source_location loc, std::string_view fmt, Args&&... args) {
-    auto msg = std::vformat(fmt, std::make_format_args(std::forward<Args>(args)...));
-    auto full = std::format("[{}] {}:{} :: {}\n", level_to_string(lvl), loc.file_name(), loc.line(), msg);
+    auto msg = std::vformat(fmt, std::make_format_args(args...));
+    auto full = std::format("[{}] {}:{} :: {}\n", level_to_string(lvl), std::filesystem::path(loc.file_name()).filename().string(), loc.line(), msg);
 
     sink(full);
 }

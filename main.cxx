@@ -2,6 +2,7 @@
 #include "parse_args.hxx"
 
 #include "editor.hxx"
+#include "logdef.hxx"
 
 std::string get_executable_path();
 
@@ -23,6 +24,10 @@ std::string get_executable_path()
 int main(int argc, char** argv)
 {
     std::ignore = cmd::parse_arguments(argc, argv);
+
+    luabot_logFatal("PIZDEC!! {}", "ZHIZHA");
+
+    ::logging::log((::logging::Level::Fatal), std::source_location::current(),("PIZDEC!! {}"), "ZHIZHA");
 
     configs::load_from_file(get_executable_path() + "config.json");
 
