@@ -117,7 +117,7 @@ void render_output_console()
 void render_gui(GLFWwindow* window)
 {
     if(modals::has_any_modal()) {
-        modals::render_top();
+        modals::render_from_top();
     }
 
     render_bot_page();

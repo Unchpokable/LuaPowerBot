@@ -68,6 +68,8 @@ public:
 
     void set_popup_id(std::string_view popup_id);
 
+    bool is_blocking() const;
+
 protected:
     std::string _imgui_popup_id;
     std::string _title;
@@ -138,8 +140,7 @@ id_type error(std::string_view title, std::string_view message, bool blocking);
 
 bool has_any_modal();
 
-///@brief renders a modal window on top of the queue. Pops it from queue if modal dialog returned final status code and lefts it on top of the queue if it returned \c ModalEvent::Continues
-ModalEvent render_top();
+void render_from_top();
 
 Expected<ModalEvent, errors::Error> forced_render(id_type modal_id);
 

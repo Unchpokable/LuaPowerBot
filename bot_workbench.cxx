@@ -96,6 +96,8 @@ void editor::workbench::open_project_file(const std::string& file)
         return;
     }
 
+    modals::inform("Project opened!", std::format("successfully opened: {}", file), false);
+
     data::project_files = std::move(result.value());
 }
 

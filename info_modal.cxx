@@ -8,6 +8,10 @@ modals::InfoModal::InfoModal(InfoType type, std::string_view title, std::string_
 
 modals::ModalEvent modals::InfoModal::render() const
 {
+    if(!ImGui::IsPopupOpen(_imgui_popup_id.c_str())) {
+        ImGui::OpenPopup(_imgui_popup_id.c_str());
+    }
+
     ModalEvent result = Continues;
 
     if(_blocking) {
@@ -44,10 +48,14 @@ modals::ModalEvent modals::InfoModal::render() const
 
     if(ImGui::Button("OK")) {
         auto handler = _handlers.find(ModalEvent::Ok);
-        handler->second();
+        if(handler != _handlers.end()) {
+            handler->second();
+        }
 
         result = ModalEvent::Ok;
     }
+
+    ImGui::EndChild();
 
     ImGui::EndPopup();
 

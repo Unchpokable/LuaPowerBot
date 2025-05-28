@@ -12,3 +12,8 @@ void modals::Modal::set_popup_id(std::string_view popup_id)
 {
     _imgui_popup_id = popup_id;
 }
+
+bool modals::Modal::is_blocking() const
+{
+    return _blocking;
+}

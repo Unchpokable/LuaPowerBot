@@ -43,7 +43,7 @@ bool modals::has_any_modal()
     return !data::active_modals.empty();
 }
 
-modals::ModalEvent modals::render_top() {
+void modals::render_from_top() {
     auto top = data::active_modals.front();
 
     auto modal = data::modals_registry[top].get();
@@ -51,13 +51,11 @@ modals::ModalEvent modals::render_top() {
     auto result = modal->render();
 
     if(result == ModalEvent::Continues) {
-        return result;
+        return;
     }
 
     data::modals_registry.erase(top); 
     data::active_modals.pop_front();
-
-    return result;
 }
 
 Expected<modals::ModalEvent, errors::Error> modals::forced_render(id_type modal_id) {
