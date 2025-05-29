@@ -1,35 +1,22 @@
+#include <filesystem>
+
 #include "configs.hxx"
 #include "parse_args.hxx"
 
 #include "editor.hxx"
 #include "logdef.hxx"
 
-std::string get_executable_path();
+std::filesystem::path get_current_path(char* argv[]) {
+    std::filesystem::path exe_dir = std::filesystem::canonical(argv[0]).parent_path();
 
-#ifdef _WIN32
-
-#include "Windows.h"
-
-std::string get_executable_path()
-{
-    char buffer[MAX_PATH]; // MAX_PATH
-    GetModuleFileNameA(nullptr, buffer, MAX_PATH);
-
-    std::string::size_type pos = std::string(buffer).find_last_of("\\/");
-    return std::string(buffer).substr(0, pos + 1);
+    return exe_dir;
 }
-
-#endif
 
 int main(int argc, char** argv)
 {
     std::ignore = cmd::parse_arguments(argc, argv);
 
-    luabot_logFatal("PIZDEC!! {}", "ZHIZHA");
-
-    ::logging::log((::logging::Level::Fatal), std::source_location::current(),("PIZDEC!! {}"), "ZHIZHA");
-
-    configs::load_from_file(get_executable_path() + "config.json");
+    configs::load_from_file(get_current_path(argv) / "config.json");
 
     if(cmd::env::empty() || cmd::env::get("gui")) {
         editor::open_gui();
