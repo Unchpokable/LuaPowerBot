@@ -27,6 +27,20 @@ modals::ModalEvent modals::FileDialogModal::render() const
         ImGui::OpenPopup(_imgui_popup_id.c_str());
     }
 
+    constexpr float min_width = 600.0f;
+    constexpr float min_height = 400.0f;
+    constexpr float max_width = 800.0f;
+    constexpr float max_height = 600.0f;
+
+    size_t total_items = _directories.size() + _files.size();
+    float item_height = ImGui::GetTextLineHeightWithSpacing();
+    float needed_height = total_items * item_height + 150.0f; 
+
+    float window_width = std::max(min_width, std::min(max_width, min_width + 50.0f));
+    float window_height = std::max(min_height, std::min(max_height, needed_height));
+
+    ImGui::SetNextWindowSize(ImVec2(window_width, window_height), ImGuiCond_Appearing);
+
     if(_blocking) {
         ImGui::BeginPopupModal(_imgui_popup_id.c_str(), nullptr, ImGuiWindowFlags_NoCollapse);
     } else {
@@ -34,10 +48,15 @@ modals::ModalEvent modals::FileDialogModal::render() const
     }
 
     ImGui::Text("Path: %s", _current_path.c_str());
-
     ImGui::Separator();
 
-    ImGui::BeginChild("FileBrowser", ImVec2(0, -ImGui::GetFrameHeightWithSpacing() * 2), true);
+    float available_height = ImGui::GetContentRegionAvail().y;
+    float bottom_ui_height = ImGui::GetFrameHeightWithSpacing() * 3 + ImGui::GetStyle().ItemSpacing.y * 2;
+    float file_list_height = available_height - bottom_ui_height;
+
+    file_list_height = std::max(file_list_height, 100.0f);
+
+    ImGui::BeginChild("FileBrowser", ImVec2(0, file_list_height), true);
 
     int index = 0;
 
@@ -47,6 +66,7 @@ modals::ModalEvent modals::FileDialogModal::render() const
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 0.0f, 1.0f)); // Yellow for folders
         if(ImGui::Selectable(("[DIR] " + dir).c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick)) {
             _selected_index = index;
+            _selected_path.clear();
 
             if(ImGui::IsMouseDoubleClicked(0)) {
                 if(dir == "..") {
@@ -62,10 +82,8 @@ modals::ModalEvent modals::FileDialogModal::render() const
 
                 // re-scan other directory is a good reason to early return and go to the next render cycle
                 ImGui::PopStyleColor();
-
                 ImGui::EndChild();
                 ImGui::EndPopup();
-
                 return result;
             }
         }
@@ -91,12 +109,50 @@ modals::ModalEvent modals::FileDialogModal::render() const
         index++;
     }
 
-    ImGui::Text("Selected: %s", _selected_path.c_str());
+    ImGui::EndChild();
 
     ImGui::Separator();
 
-    if(ImGui::Button("OK", ImVec2(120, 0))) {
-        if(!_selected_path.empty() && fs::exists(_selected_path) && fs::is_regular_file(_selected_path)) {
+    std::string display_path = _selected_path;
+    float available_width = ImGui::GetContentRegionAvail().x - 80.0f;
+
+    if(!display_path.empty()) {
+        ImVec2 text_size = ImGui::CalcTextSize(display_path.c_str());
+        if(text_size.x > available_width) {
+            while(display_path.length() > 3 && ImGui::CalcTextSize(("..." + display_path).c_str()).x > available_width) {
+                size_t first_slash = display_path.find_first_of("/\\");
+                if(first_slash != std::string::npos && first_slash < display_path.length() - 1) {
+                    display_path = display_path.substr(first_slash + 1);
+                } else {
+                    display_path = display_path.substr(1);
+                }
+            }
+            if(display_path.length() > 3) {
+                display_path = "..." + display_path;
+            }
+        }
+    }
+
+    ImGui::Text("Selected: %s", display_path.c_str());
+
+    ImGui::Separator();
+
+    constexpr float button_width = 120.0f;
+    const float button_spacing = ImGui::GetStyle().ItemSpacing.x;
+    const float total_buttons_width = button_width * 2 + button_spacing;
+    const float window_width_current = ImGui::GetWindowSize().x;
+    const float buttons_start_x = (window_width_current - total_buttons_width) * 0.5f;
+
+    ImGui::SetCursorPosX(buttons_start_x);
+
+    bool can_select = !_selected_path.empty() && fs::exists(_selected_path) && fs::is_regular_file(_selected_path);
+
+    if(!can_select) {
+        ImGui::BeginDisabled();
+    }
+
+    if(ImGui::Button("OK", ImVec2(button_width, 0))) {
+        if(can_select) {
             if(_handlers.contains(Ok)) {
                 auto handler = arguments_callback<std::string_view>({ Ok, _handlers.at(Ok) });
                 handler(_selected_path);
@@ -105,17 +161,19 @@ modals::ModalEvent modals::FileDialogModal::render() const
         }
     }
 
+    if(!can_select) {
+        ImGui::EndDisabled();
+    }
+
     ImGui::SameLine();
 
-    if(ImGui::Button("Cancel", ImVec2(120, 0))) {
+    if(ImGui::Button("Cancel", ImVec2(button_width, 0))) {
         if(_handlers.contains(Cancel)) {
             auto handler = _handlers.at(Cancel);
             handler();
         }
         result = Cancel;
     }
-
-    ImGui::EndChild();
 
     ImGui::EndPopup();
 
