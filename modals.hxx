@@ -7,6 +7,7 @@
 #include <string_view>
 #include <unordered_map>
 #include <vector>
+#include <any>
 
 #include "error.hxx"
 #include "expected.hxx"
@@ -28,33 +29,10 @@ enum ModalEvent {
     Continues // means that modal window rendered something but not ended its routine. DO NOT ADD CALLBACKS TO THIS
 };
 
-using anon_func_ptr = void(*)();
-using handler = std::pair<ModalEvent, anon_func_ptr>;
+using ModalCallback = std::function<void(std::any)>;
+using handler = std::pair<ModalEvent, ModalCallback>;
 
 using id_type = int;
-
-template<typename T>
-concept event_handler = std::same_as<T, handler>;
-
-template<typename F>
-constexpr auto anonymize_function(F function) -> void(*)()
-{
-    return reinterpret_cast<void(*)()>(function);
-}
-
-template<typename ...Args>
-constexpr auto arguments_callback(handler handler) -> void(*)(Args...)
-{
-    return reinterpret_cast<void(*)(Args...)>(handler.second);
-}
-
-template<typename F>
-constexpr handler handle(ModalEvent event, F handler_func)
-{
-    auto anonymized_function = anonymize_function(handler_func);
-
-    return handler { event, anonymized_function };
-}
 
 class Modal
 {
@@ -64,17 +42,23 @@ public:
 
     virtual ModalEvent render() const = 0;
 
-    void add_callback(handler handler);
+    void add_callback(ModalEvent event, ModalCallback callback);
+    void invoke_handler(ModalEvent event, const std::any &arg) const;
+    void invoke_handler(ModalEvent event) const;
 
     void set_popup_id(std::string_view popup_id);
 
     bool is_blocking() const;
 
+    // fluent builder time!
+    template<typename Func>
+    Modal& on(ModalEvent event, Func&& handler_func);
+
 protected:
     std::string _imgui_popup_id;
     std::string _title;
     bool _blocking;
-    std::unordered_map<ModalEvent, anon_func_ptr> _handlers;
+    std::unordered_map<ModalEvent, ModalCallback> _handlers;
 };
 
 class FileDialogModal : public Modal
@@ -128,15 +112,13 @@ private:
 // internal implementation function. If you're using this directly outside this module - you're doing wrong 
 id_type add_modal(Modal* modal); 
 
-template<event_handler ...Handlers>
-id_type ask_open(std::string_view title, std::string_view initial_path, std::string_view filters, bool blocking, Handlers... handlers);
+Modal* ask_open(std::string_view title, std::string_view initial_path, std::string_view filters, bool blocking);
 
-template<event_handler ...Handlers>
-id_type ask_yes_no(std::string_view title, std::string_view question, bool blocking, Handlers... handlers);
+Modal* ask_yes_no(std::string_view title, std::string_view question, bool blocking);
 
-id_type warn(std::string_view title, std::string_view message, bool blocking);
-id_type inform(std::string_view title, std::string_view message, bool blocking);
-id_type error(std::string_view title, std::string_view message, bool blocking);
+Modal* warn(std::string_view title, std::string_view message, bool blocking);
+Modal* inform(std::string_view title, std::string_view message, bool blocking);
+Modal* error(std::string_view title, std::string_view message, bool blocking);
 
 bool has_any_modal();
 
@@ -146,22 +128,9 @@ Expected<ModalEvent, errors::Error> forced_render(id_type modal_id);
 
 }
 
-template<modals::event_handler ...Handlers>
-modals::id_type modals::ask_open(std::string_view title, std::string_view initial_path, std::string_view filters, bool blocking, Handlers ...handlers)
-{
-    auto modal = new FileDialogModal(title, initial_path, filters, blocking);
+template <typename Func>
+modals::Modal& modals::Modal::on(ModalEvent event, Func&& handler_func) {
+    add_callback(event, std::forward<Func>(handler_func));
 
-    (modal->add_callback(handlers), ...);
-
-    return add_modal(modal);
-}
-
-template<modals::event_handler ...Handlers>
-modals::id_type modals::ask_yes_no(std::string_view title, std::string_view question, bool blocking, Handlers ...handlers)
-{
-    auto modal = new YesNoModal(title, question, blocking);
-
-    (modal->add_callback(handlers), ...);
-
-    return add_modal(modal);
+    return *this;
 }

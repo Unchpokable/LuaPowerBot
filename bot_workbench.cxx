@@ -38,6 +38,10 @@ std::jthread bot_runtime_thread;
 using Task = std::function<void()>;
 std::queue<Task> bot_runtime_tasks_queue;
 
+// visual things
+std::string_view selected_file;
+std::string opened_project_name;
+
 }
 
 namespace editor::workbench::internal {
@@ -79,12 +83,6 @@ void bot_runtime_enqueue_task(data::Task task)
     data::condition.notify_one();
 }
 
-void open_project_handler(std::string_view path)
-{
-    luabot_logInfo("Opened: {}", path);
-    open_project_file(std::string(path));
-}
-
 }
 
 void editor::workbench::open_project_file(const std::string& file)
@@ -99,6 +97,10 @@ void editor::workbench::open_project_file(const std::string& file)
     modals::inform("Project opened!", std::format("successfully opened: {}", file), false);
 
     data::project_files = std::move(result.value());
+
+    data::opened_project_name = fs::path(file).filename().string();
+
+    refresh_scripts();
 }
 
 void editor::workbench::refresh_scripts()
@@ -174,15 +176,17 @@ void editor::workbench::render()
 
     static std::string project_path = "No project opened";
     if(data::project_files && data::project_files->IsInitialized()) {
-        project_path = "Opened: " + data::project_files->BasePath();
+        project_path = "Opened: " + data::opened_project_name;
     }
 
     ImGui::TextWrapped("%s", project_path.c_str());
     ImGui::Separator();
 
     if(ImGui::Button("Open new project")) {
-        modals::ask_open("Open new project", {}, "*.zip", true, 
-            handle(modals::ModalEvent::Ok, internal::open_project_handler));
+        modals::ask_open("Open new project", {}, "*.zip", true)
+            ->on(modals::ModalEvent::Ok, [](const std::any& path) {
+                open_project_file(std::any_cast<std::string>(path));
+            });
     }
 
     ImGui::BeginChild("Files", ImVec2(0, ImGui::GetContentRegionAvail().y - 100), true);
@@ -190,10 +194,14 @@ void editor::workbench::render()
     if(data::files_by_folders.contains("/")) {
         if(ImGui::TreeNodeEx("/ (Root)", ImGuiTreeNodeFlags_DefaultOpen)) {
             for(const auto& file: data::files_by_folders["/"]) {
-                auto is_selected = ImGui::Selectable(file.c_str());
+                auto is_selected = ImGui::Selectable(file.c_str(), file == data::selected_file);
 
-                if(is_selected && ImGui::IsMouseDoubleClicked(0)) {
-                    code::open_file(file);
+                if(is_selected) {
+                    data::selected_file = file;
+
+                    if(ImGui::IsMouseDoubleClicked(0)) {
+                        code::open_file(file);
+                    }
                 }
             }
 
@@ -207,11 +215,18 @@ void editor::workbench::render()
         if(ImGui::TreeNodeEx(dir.c_str(), 0)) {
             if(data::files_by_folders.contains(dir)) {
                 for(const auto& file : data::files_by_folders[dir]) {
-                    bool is_selected = ImGui::Selectable(file.c_str());
+                    if(file.empty()) { // SOMEWHY AND SOMEHOW WE GOT A FILE WITHOUT NAME
+                        continue;
+                    }
 
-                    if(is_selected && ImGui::IsMouseDoubleClicked(0)) {
-                        std::string full_path = dir + file;
-                        code::open_file(full_path);
+                    bool is_selected = ImGui::Selectable(file.c_str(), file == data::selected_file);
+
+                    if(is_selected) {
+                        data::selected_file = file;
+                        if(ImGui::IsMouseDoubleClicked(0)) {
+                            std::string full_path = dir + file;
+                            code::open_file(full_path);
+                        }
                     }
                 }
             }

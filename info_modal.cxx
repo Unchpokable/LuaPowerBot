@@ -70,10 +70,7 @@ modals::ModalEvent modals::InfoModal::render() const
     ImGui::SetCursorPosX(window_center - button_width * 0.5f);
 
     if(ImGui::Button("OK", ImVec2(button_width, 0))) {
-        auto handler = _handlers.find(ModalEvent::Ok);
-        if(handler != _handlers.end()) {
-            handler->second();
-        }
+        invoke_handler(ModalEvent::Ok);
 
         result = ModalEvent::Ok;
     }

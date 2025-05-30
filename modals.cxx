@@ -20,22 +20,39 @@ modals::id_type modals::add_modal(Modal *modal) {
     return id;
 }
 
-modals::id_type modals::warn(std::string_view title, std::string_view message, bool blocking) {
+modals::Modal* modals::ask_open(std::string_view title, std::string_view initial_path, std::string_view filters, bool blocking) {
+    auto modal = new FileDialogModal(title, initial_path, filters, blocking);
+    add_modal(modal);
+
+    return modal;
+}
+
+modals::Modal* modals::ask_yes_no(std::string_view title, std::string_view question, bool blocking) {
+    auto modal = new YesNoModal(title, question, blocking);
+    add_modal(modal);
+
+    return modal;
+}
+
+modals::Modal* modals::warn(std::string_view title, std::string_view message, bool blocking) {
     auto modal = new InfoModal(modals::Warning, title, message, blocking);
+    add_modal(modal);
 
-    return add_modal(modal);
+    return modal;
 }
 
-modals::id_type modals::inform(std::string_view title, std::string_view message, bool blocking) {
+modals::Modal* modals::inform(std::string_view title, std::string_view message, bool blocking) {
     auto modal = new InfoModal(modals::Info, title, message, blocking);
+    add_modal(modal);
 
-    return add_modal(modal);
+    return modal;
 }
 
-modals::id_type modals::error(std::string_view title, std::string_view message, bool blocking) {
+modals::Modal* modals::error(std::string_view title, std::string_view message, bool blocking) {
     auto modal = new InfoModal(modals::Error, title, message, blocking);
+    add_modal(modal);
 
-    return add_modal(modal);
+    return modal;
 }
 
 bool modals::has_any_modal()

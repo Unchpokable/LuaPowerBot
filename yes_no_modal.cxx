@@ -55,10 +55,7 @@ modals::ModalEvent modals::YesNoModal::render() const
     ImGui::SetCursorPosX(buttons_start_x);
 
     if(ImGui::Button("Yes", ImVec2(button_width, 0))) {
-        auto handler = _handlers.find(ModalEvent::Yes);
-        if(handler != _handlers.end()) {
-            handler->second();
-        }
+        invoke_handler(ModalEvent::Yes);
         result = ModalEvent::Yes;
     }
 
@@ -66,10 +63,7 @@ modals::ModalEvent modals::YesNoModal::render() const
     ImGui::SetCursorPosX(buttons_start_x + button_width + button_spacing);
 
     if(ImGui::Button("No", ImVec2(button_width, 0))) {
-        auto handler = _handlers.find(ModalEvent::No);
-        if(handler != _handlers.end()) {
-            handler->second();
-        }
+        invoke_handler(ModalEvent::No);
         result = ModalEvent::No;
     }
 

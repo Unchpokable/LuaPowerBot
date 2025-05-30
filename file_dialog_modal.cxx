@@ -100,8 +100,7 @@ modals::ModalEvent modals::FileDialogModal::render() const
 
             if(ImGui::IsMouseDoubleClicked(0)) {
                 if(_handlers.contains(Ok)) {
-                    auto handler = arguments_callback<std::string_view>({ Ok, _handlers.at(Ok) });
-                    handler(_selected_path);
+                    invoke_handler(ModalEvent::Ok, std::any { _selected_path });
                 }
                 result = Ok;
             }
@@ -154,8 +153,7 @@ modals::ModalEvent modals::FileDialogModal::render() const
     if(ImGui::Button("OK", ImVec2(button_width, 0))) {
         if(can_select) {
             if(_handlers.contains(Ok)) {
-                auto handler = arguments_callback<std::string_view>({ Ok, _handlers.at(Ok) });
-                handler(_selected_path);
+                invoke_handler(ModalEvent::Ok, _selected_path);
             }
             result = Ok;
         }
@@ -169,8 +167,7 @@ modals::ModalEvent modals::FileDialogModal::render() const
 
     if(ImGui::Button("Cancel", ImVec2(button_width, 0))) {
         if(_handlers.contains(Cancel)) {
-            auto handler = _handlers.at(Cancel);
-            handler();
+            invoke_handler(ModalEvent::Cancel);
         }
         result = Cancel;
     }
