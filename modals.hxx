@@ -109,6 +109,19 @@ private:
     InfoType _type;
 };
 
+class InputModal : public Modal
+{
+public:
+    InputModal(std::string_view title, std::string_view prompt, bool blocking);
+    virtual ~InputModal() override = default;
+
+    virtual ModalEvent render() const override;
+
+private:
+    std::string _prompt;
+    std::string _user_input;
+};
+
 // internal implementation function. If you're using this directly outside this module - you're doing wrong 
 id_type add_modal(Modal* modal); 
 

@@ -155,6 +155,7 @@
     <ClCompile Include="editor_utils.cxx" />
     <ClCompile Include="file_dialog_modal.cxx" />
     <ClCompile Include="info_modal.cxx" />
+    <ClCompile Include="input_modal.cxx" />
     <ClCompile Include="modal_base.cxx" />
     <ClCompile Include="modals.cxx" />
     <ClCompile Include="security.cxx" />

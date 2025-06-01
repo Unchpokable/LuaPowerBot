@@ -186,7 +186,10 @@
     <ClCompile Include="modals.cxx">
       <Filter>sources\editor\modals</Filter>
     </ClCompile>
-    <ClCompile Include="yes_no_modals.cxx">
+    <ClCompile Include="yes_no_modal.cxx">
+      <Filter>sources\editor\modals</Filter>
+    </ClCompile>
+    <ClCompile Include="input_modal.cxx">
       <Filter>sources\editor\modals</Filter>
     </ClCompile>
   </ItemGroup>
