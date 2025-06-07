@@ -15,7 +15,7 @@ concept ErrorCompatible =
     std::derived_from<T, std::exception> &&
     std::constructible_from<T, const char*>;
 
-enum FileSystemResult
+enum FileSystemResult : std::uint16_t
 {
     OK,
     FileTooBig,

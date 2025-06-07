@@ -20,6 +20,29 @@
 
 namespace editor::workbench::data {
 
+constexpr const char* command_template = R"(return function()
+    return {
+        -- place your data here
+        -- do not use hardcoded data - it can be lost due to bytecode serialization
+        
+        -- do not remove or rename these functions! This is a public API functions that will be called by a runtime when
+        -- on_start will be executed once when new chat session is created
+        on_start = function() 
+            -- implement your startup routine here
+        end;
+
+        -- on_message will be called every time when bot receives a message
+        on_message = function(chat_id, message) 
+            -- implement your action on message here
+        end;
+
+        -- on_callback will be called every time when bot receives a callback query (InlineKeyboard handling, etc.)
+        on_callback = function(chat_id, callback_query) 
+            -- implement your action to callback here
+        end;
+    }
+end)";
+
 files::ZipFS project_files;
 
 std::unique_ptr<tg::BotRuntime> bot_runtime;
@@ -81,6 +104,35 @@ void bot_runtime_enqueue_task(data::Task task)
     }
 
     data::condition.notify_one();
+}
+
+void on_create_file(const std::any& handler_arg)
+{
+    auto string = std::any_cast<std::string>(handler_arg);
+    auto full_name = std::format("scripts/{}.lua", string);
+    if(!data::project_files || !data::project_files->IsInitialized()) {
+        modals::inform("Unable to add command", "To add a command, create or open a project", false);
+        return;
+    }
+
+    data::project_files->CreateFile(vfspp::FileInfo(full_name));
+
+    auto result = files::write_text(data::project_files, full_name, data::command_template);
+
+    if(result != errors::OK) {
+        std::string message = std::format("Unable to write a file: {}, error code: {}", full_name, static_cast<std::uint16_t>(result));
+        modals::inform("File writing error!", message, false);
+    }
+
+    refresh_scripts();
+}
+
+void handle_keyboard()
+{
+    if(ImGui::IsKeyChordPressed(ImGuiMod_Ctrl | ImGuiKey_N)) {
+        modals::ask_input("New command", "Provide a command name:", true)
+            ->on(modals::ModalEvent::Ok, on_create_file);
+    }
 }
 
 }
@@ -173,6 +225,8 @@ void editor::workbench::stop_bot()
 void editor::workbench::render()
 {
     ImGui::Begin("Bot workbench");
+
+    internal::handle_keyboard();
 
     static std::string project_path = "No project opened";
     if(data::project_files && data::project_files->IsInitialized()) {

@@ -2,6 +2,8 @@
 
 #include <format>
 
+#include "bot_runtime.hxx"
+
 namespace modals::data {
 
 id_type counter;
@@ -29,6 +31,14 @@ modals::Modal* modals::ask_open(std::string_view title, std::string_view initial
 
 modals::Modal* modals::ask_yes_no(std::string_view title, std::string_view question, bool blocking) {
     auto modal = new YesNoModal(title, question, blocking);
+    add_modal(modal);
+
+    return modal;
+}
+
+modals::Modal* modals::ask_input(std::string_view title, std::string_view prompt, bool blocking)
+{
+    auto modal = new InputModal(title, prompt, blocking);
     add_modal(modal);
 
     return modal;

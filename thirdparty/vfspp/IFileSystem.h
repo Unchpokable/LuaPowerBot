@@ -3,6 +3,15 @@
 
 #include "IFile.h"
 
+// #include <windows.h> guards
+#ifdef CreateFile
+#undef CreateFile
+#endif
+
+#ifdef CopyFile
+#undef CopyFile
+#endif
+
 namespace vfspp
 {
 

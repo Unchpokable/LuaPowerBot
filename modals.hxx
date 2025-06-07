@@ -119,7 +119,7 @@ public:
 
 private:
     std::string _prompt;
-    std::string _user_input;
+    mutable std::string _user_input;
 };
 
 // internal implementation function. If you're using this directly outside this module - you're doing wrong 
@@ -128,6 +128,8 @@ id_type add_modal(Modal* modal);
 Modal* ask_open(std::string_view title, std::string_view initial_path, std::string_view filters, bool blocking);
 
 Modal* ask_yes_no(std::string_view title, std::string_view question, bool blocking);
+
+Modal* ask_input(std::string_view title, std::string_view prompt, bool blocking);
 
 Modal* warn(std::string_view title, std::string_view message, bool blocking);
 Modal* inform(std::string_view title, std::string_view message, bool blocking);
