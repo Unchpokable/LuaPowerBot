@@ -1,7 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 
-#include "zip2memvfs.hxx"
 #include <ranges>
+
+#include "zip2memvfs.hxx"
 
 #include "logdef.hxx"
 #include "security.hxx"
@@ -23,22 +24,30 @@ bool check_file_flags(const vfspp::IFilePtr& file, vfspp::IFile::FileMode flags)
     return (current_mode & flags) == flags;
 }
 
+vfspp::MemoryFileSystemPtr fs_map(const vfspp::ZipFileSystemPtr& zip)
+{
+    
 }
 
-Expected<vfspp::ZipFileSystemPtr, errors::Error> files::open_zip(const std::string& name)
+}
+
+Expected<files::IFileSystem> files::open_zip(const std::string& name)
 {
     auto fs = std::make_shared<vfspp::ZipFileSystem>(name);
 
     fs->Initialize();
 
     if(fs->IsInitialized()) {
-        return fs;
+        auto mem_fs = internal::fs_map(fs);
+        auto ifs = vfspp::IFileSystemPtr(std::move(mem_fs));
+
+        return ifs;
     }
 
     return errors::Error(std::format("Unable to open archive {}", name));
 }
 
-Expected<files::VirtualFS, errors::Error> files::open_subdir(const ZipFS& zip, const std::string& directory, bool readonly)
+Expected<files::VirtualFS> files::open_subdir(const IFileSystem& zip, const std::string& directory, bool readonly)
 {
     vfspp::FileInfo dir_info(directory);
     if(!zip->IsDir(dir_info)) {
@@ -54,7 +63,7 @@ Expected<files::VirtualFS, errors::Error> files::open_subdir(const ZipFS& zip, c
     return vfs;
 }
 
-Expected<files::ByteArray, errors::Error> files::read_bytes(const ZipFS& zip, const std::string& name)
+Expected<files::ByteArray> files::read_bytes(const IFileSystem& zip, const std::string& name)
 {
     auto file = zip->OpenFile(vfspp::FileInfo(name), vfspp::IFile::FileMode::Read);
     if(!file) {
@@ -68,7 +77,7 @@ Expected<files::ByteArray, errors::Error> files::read_bytes(const ZipFS& zip, co
     return result;
 }
 
-Expected<files::ByteArray, errors::Error> files::read_bytes(const vfspp::IFilePtr& file)
+Expected<files::ByteArray> files::read_bytes(const vfspp::IFilePtr& file)
 {
     std::vector<std::uint8_t> data;
     data.resize(file->Size());
@@ -85,7 +94,7 @@ Expected<files::ByteArray, errors::Error> files::read_bytes(const vfspp::IFilePt
     return data;
 }
 
-Expected<std::string, errors::Error> files::read_text(const ZipFS& zip, const std::string& file_name)
+Expected<std::string> files::read_text(const IFileSystem& zip, const std::string& file_name)
 {
     auto file = zip->OpenFile(vfspp::FileInfo(file_name), vfspp::IFile::FileMode::Read);
     if(!file) {
@@ -99,7 +108,7 @@ Expected<std::string, errors::Error> files::read_text(const ZipFS& zip, const st
     return result;
 }
 
-Expected<std::string, errors::Error> files::read_text(const vfspp::IFilePtr& file)
+Expected<std::string> files::read_text(const vfspp::IFilePtr& file)
 {
     auto bytes_result = read_bytes(file);
 
@@ -112,7 +121,7 @@ Expected<std::string, errors::Error> files::read_text(const vfspp::IFilePtr& fil
     return std::string(data.begin(), data.end());
 }
 
-errors::FileSystemResult files::append_bytes(const ZipFS& zip, const std::string& name, const ByteArray& bytes)
+errors::FileSystemResult files::append_bytes(const IFileSystem& zip, const std::string& name, const ByteArray& bytes)
 {
     auto file = zip->OpenFile(name, vfspp::IFile::FileMode::Append);
     if(!file) {
@@ -151,7 +160,7 @@ errors::FileSystemResult files::append_bytes(const vfspp::IFilePtr& file, const 
     return errors::OK;
 }
 
-errors::FileSystemResult files::write_bytes(const ZipFS& zip, const std::string& name, const ByteArray& bytes)
+errors::FileSystemResult files::write_bytes(const IFileSystem& zip, const std::string& name, const ByteArray& bytes)
 {
     auto file = zip->OpenFile(name, vfspp::IFile::FileMode::Write | vfspp::IFile::FileMode::Truncate);
     if(!file) {
@@ -191,7 +200,7 @@ errors::FileSystemResult files::write_bytes(const vfspp::IFilePtr& file, const B
     return errors::OK;
 }
 
-errors::FileSystemResult files::append_text(const ZipFS& zip, const std::string& name, const std::string& text)
+errors::FileSystemResult files::append_text(const IFileSystem& zip, const std::string& name, const std::string& text)
 {
     auto file = zip->OpenFile(vfspp::FileInfo(name), vfspp::IFile::FileMode::Append | vfspp::IFile::FileMode::Truncate);
     if(!file) {
@@ -214,7 +223,7 @@ errors::FileSystemResult files::append_text(const vfspp::IFilePtr& file, const s
     return result;
 }
 
-errors::FileSystemResult files::write_text(const ZipFS& zip, const std::string& name, const std::string& text)
+errors::FileSystemResult files::write_text(const IFileSystem& zip, const std::string& name, const std::string& text)
 {
     auto file = zip->OpenFile(vfspp::FileInfo(name), vfspp::IFile::FileMode::Write | vfspp::IFile::FileMode::Truncate);
     if(!file) {

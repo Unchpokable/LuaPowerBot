@@ -42,7 +42,7 @@ private:
 };
 
 Expected<BytecodeMap, errors::Error> load_bytecode_map(const std::string& folder);
-Expected<BytecodeMap, errors::Error> load_bytecode_map(const files::ZipFS& zip_fs);
+Expected<BytecodeMap, errors::Error> load_bytecode_map(const files::IFileSystem& zip_fs);
 
 Expected<CommandBox*, errors::Error> make_state_from_cached_bytecode(const BytecodeMap& bytecode_map);
 

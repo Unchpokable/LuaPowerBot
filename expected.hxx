@@ -13,7 +13,7 @@ __noreturn inline void unreachable()
     assert(false);
 }
 
-template<typename T, typename Err>
+template<typename T, typename Err = errors::Error>
 class Expected
 {
 public:

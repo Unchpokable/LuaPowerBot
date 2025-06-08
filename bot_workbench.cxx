@@ -25,7 +25,7 @@ constexpr const char* command_template = R"(return function()
         -- place your data here
         -- do not use hardcoded data - it can be lost due to bytecode serialization
         
-        -- do not remove or rename these functions! This is a public API functions that will be called by a runtime when
+        -- do not remove or rename these functions! This is a public API functions that will be called by a runtime
         -- on_start will be executed once when new chat session is created
         on_start = function() 
             -- implement your startup routine here
@@ -43,7 +43,7 @@ constexpr const char* command_template = R"(return function()
     }
 end)";
 
-files::ZipFS project_files;
+files::IFileSystem project_files;
 
 std::unique_ptr<tg::BotRuntime> bot_runtime;
 

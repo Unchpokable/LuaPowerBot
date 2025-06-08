@@ -4,7 +4,7 @@
 namespace editor::code
 {
 
-void assign_filesystem(files::ZipFS filesystem);
+void assign_filesystem(files::IFileSystem filesystem);
 void open_file(std::string_view file_name);
 
 void actualize();

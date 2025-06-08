@@ -9,7 +9,7 @@
 namespace editor::code::data
 {
 
-files::ZipFS working_filesystem;
+files::IFileSystem working_filesystem;
 vfspp::ZipFilePtr working_file;
 std::unordered_map<std::string, vfspp::ZipFilePtr> opened_files;
 std::unordered_map<std::string, std::string> updated_files;
@@ -17,7 +17,7 @@ std::string current_file_text;
 
 }
 
-void editor::code::assign_filesystem(files::ZipFS filesystem)
+void editor::code::assign_filesystem(files::IFileSystem filesystem)
 {
     data::working_filesystem = std::move(filesystem);
 }

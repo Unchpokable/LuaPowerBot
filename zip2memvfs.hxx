@@ -14,13 +14,16 @@
 
 #define VFSPP_ENABLE_MULTITHREADING
 
+#include "vfspp/MemoryFileSystem.hpp"
 #include "vfspp/VirtualFileSystem.hpp"
 #include "vfspp/ZipFileSystem.hpp"
 
 namespace files {
 
 using ByteArray = std::vector<std::uint8_t>;
-using ZipFS = vfspp::ZipFileSystemPtr;
+
+using IFileSystem = vfspp::IFileSystemPtr;
+using MemFS = vfspp::MemoryFileSystemPtr;
 using VirtualFS = vfspp::VirtualFileSystemPtr;
 
 constexpr std::size_t file_size_limit = sizes::megabytes<std::size_t>(200);
@@ -58,24 +61,26 @@ private:
     mutable TFileList _file_list;
 };
 
-Expected<ZipFS, errors::Error> open_zip(const std::string& name);
-Expected<VirtualFS, errors::Error> open_subdir(const ZipFS& zip, const std::string& directory, bool readonly = false);
+Expected<IFileSystem> open_zip(const std::string& name);
+errors::FileSystemResult save_zip(const IFileSystem& zip);
 
-Expected<ByteArray, errors::Error> read_bytes(const ZipFS& zip, const std::string& name);
-Expected<ByteArray, errors::Error> read_bytes(const vfspp::IFilePtr& file);
-Expected<std::string, errors::Error> read_text(const ZipFS& zip, const std::string& file_name);
-Expected<std::string, errors::Error> read_text(const vfspp::IFilePtr& file);
+Expected<VirtualFS> open_subdir(const IFileSystem& zip, const std::string& directory, bool readonly = false);
 
-errors::FileSystemResult append_bytes(const ZipFS& zip, const std::string& name, const ByteArray& bytes);
+Expected<ByteArray> read_bytes(const IFileSystem& zip, const std::string& name);
+Expected<ByteArray> read_bytes(const vfspp::IFilePtr& file);
+Expected<std::string> read_text(const IFileSystem& zip, const std::string& file_name);
+Expected<std::string> read_text(const vfspp::IFilePtr& file);
+
+errors::FileSystemResult append_bytes(const IFileSystem& zip, const std::string& name, const ByteArray& bytes);
 errors::FileSystemResult append_bytes(const vfspp::IFilePtr& file, const ByteArray& bytes);
 
-errors::FileSystemResult write_bytes(const ZipFS& zip, const std::string& name, const ByteArray& bytes);
+errors::FileSystemResult write_bytes(const IFileSystem& zip, const std::string& name, const ByteArray& bytes);
 errors::FileSystemResult write_bytes(const vfspp::IFilePtr& file, const ByteArray& bytes);
 
-errors::FileSystemResult append_text(const ZipFS& zip, const std::string& name, const std::string& text);
+errors::FileSystemResult append_text(const IFileSystem& zip, const std::string& name, const std::string& text);
 errors::FileSystemResult append_text(const vfspp::IFilePtr& file, const std::string& text);
 
-errors::FileSystemResult write_text(const ZipFS& zip, const std::string& name, const std::string& text);
+errors::FileSystemResult write_text(const IFileSystem& zip, const std::string& name, const std::string& text);
 errors::FileSystemResult write_text(const vfspp::IFilePtr& file, const std::string& text);
 
 }

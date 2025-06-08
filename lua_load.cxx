@@ -49,7 +49,7 @@ Expected<BytecodeMap, errors::Error> lua::load_bytecode_map(const std::string& f
     return result;
 }
 
-Expected<BytecodeMap, errors::Error> lua::load_bytecode_map(const files::ZipFS& zip_fs)
+Expected<BytecodeMap, errors::Error> lua::load_bytecode_map(const files::IFileSystem& zip_fs)
 {
     auto files = zip_fs->FileList();
 
