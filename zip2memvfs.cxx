@@ -26,7 +26,7 @@ bool check_file_flags(const vfspp::IFilePtr& file, vfspp::IFile::FileMode flags)
 
 vfspp::MemoryFileSystemPtr fs_map(const vfspp::ZipFileSystemPtr& zip)
 {
-    
+    return nullptr;
 }
 
 }
@@ -39,7 +39,7 @@ Expected<files::IFileSystem> files::open_zip(const std::string& name)
 
     if(fs->IsInitialized()) {
         auto mem_fs = internal::fs_map(fs);
-        auto ifs = vfspp::IFileSystemPtr(std::move(mem_fs));
+        auto ifs = vfspp::IFileSystemPtr(std::move(fs));
 
         return ifs;
     }

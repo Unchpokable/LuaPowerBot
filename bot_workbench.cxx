@@ -127,14 +127,16 @@ void on_create_file(const std::any& handler_arg)
     refresh_scripts();
 }
 
-void handle_keyboard()
-{
-    if(ImGui::IsKeyChordPressed(ImGuiMod_Ctrl | ImGuiKey_N)) {
-        modals::ask_input("New command", "Provide a command name:", true)
-            ->on(modals::ModalEvent::Ok, on_create_file);
-    }
 }
 
+void editor::workbench::init() {
+    state::bind_key(ImGuiMod_Ctrl | ImGuiKey_N, [] {
+        modals::ask_input("New command", "Provide a command name:", true)
+            ->on(modals::ModalEvent::Ok, internal::on_create_file);
+    });
+}
+
+void editor::workbench::shutdown() {
 }
 
 void editor::workbench::open_project_file(const std::string& file)
@@ -225,8 +227,6 @@ void editor::workbench::stop_bot()
 void editor::workbench::render()
 {
     ImGui::Begin("Bot workbench");
-
-    internal::handle_keyboard();
 
     static std::string project_path = "No project opened";
     if(data::project_files && data::project_files->IsInitialized()) {

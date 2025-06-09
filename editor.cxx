@@ -97,6 +97,11 @@ void initialize_imgui(GLFWwindow* window)
     ImGui_ImplOpenGL3_Init("#version 130");
 }
 
+void init_modules()
+{
+    workbench::init();
+}
+
 void render_bot_page()
 {
     workbench::render();
@@ -116,6 +121,8 @@ void render_output_console()
 
 void render_gui(GLFWwindow* window)
 {
+    state::handle_keyboard();
+
     if(modals::has_any_modal()) {
         modals::render_from_top();
     }
@@ -146,6 +153,7 @@ void editor::open_gui()
     glfwSwapInterval(1);
 
     internal::initialize_imgui(window);
+    internal::init_modules();
 
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
