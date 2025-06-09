@@ -3,6 +3,7 @@
 #include <format>
 
 #include "bot_runtime.hxx"
+#include "ui_state.hxx"
 
 namespace modals::data {
 
@@ -75,11 +76,16 @@ void modals::render_from_top() {
 
     auto modal = data::modals_registry[top].get();
 
+    if(modal->is_blocking()) {
+        editor::state::ignore_keyboard_input = true;
+    }
     auto result = modal->render();
 
     if(result == ModalEvent::Continues) {
         return;
     }
+
+    editor::state::ignore_keyboard_input = false;
 
     data::modals_registry.erase(top); 
     data::active_modals.pop_front();

@@ -7,6 +7,7 @@
 #include "thirdparty/imgui-docking/imgui.h"
 
 bool editor::state::is_maximized = false;
+bool editor::state::ignore_keyboard_input = false;
 
 namespace editor::state::data {
 
@@ -29,6 +30,10 @@ void editor::state::unbind_key(ImGuiKeyChord key)
 
 void editor::state::handle_keyboard()
 {
+    if(ignore_keyboard_input) {
+        return;
+    }
+
     for(auto key: data::key_bindings | std::views::keys) {
         if(ImGui::IsKeyChordPressed(key)) {
             data::key_bindings[key]();
