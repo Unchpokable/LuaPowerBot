@@ -163,7 +163,7 @@ void editor::workbench::open_project_file(const std::string& file)
         luabot_logErr("Unable to mound a scripts subdirectory: {}", scripts_subdir.error().message());
     }
 
-    auto resources_subdir = files::open_subdir(data::project_files, "/resources");
+    auto resources_subdir = files::open_subdir(data::project_files, "/resources/");
     if(resources_subdir) {
         data::resources_subdir = resources_subdir.value();
     } else {
