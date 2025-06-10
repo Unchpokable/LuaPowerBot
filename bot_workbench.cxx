@@ -46,6 +46,9 @@ end)";
 
 files::IFileSystem project_files;
 
+files::IFileSystem scripts_subdir;
+files::IFileSystem resources_subdir;
+
 std::unique_ptr<tg::BotRuntime> bot_runtime;
 
 std::string api_key;
@@ -110,15 +113,15 @@ void bot_runtime_enqueue_task(data::Task task)
 void on_create_file(const std::any& handler_arg)
 {
     auto string = std::any_cast<std::string>(handler_arg);
-    auto full_name = std::format("scripts/{}.lua", string);
-    if(!data::project_files || !data::project_files->IsInitialized()) {
+    auto full_name = std::format("{}.lua", string);
+    if(!data::scripts_subdir || !data::scripts_subdir->IsInitialized()) {
         modals::inform("Unable to add command", "To add a command, create or open a project", false);
         return;
     }
 
-    data::project_files->CreateFile(vfspp::FileInfo(full_name));
+    data::scripts_subdir->CreateFile(vfspp::FileInfo(full_name));
 
-    auto result = files::write_text(data::project_files, full_name, data::command_template);
+    auto result = files::write_text(data::scripts_subdir, full_name, data::command_template);
 
     if(result != errors::OK) {
         std::string message = std::format("Unable to write a file: {}, error code: {}", full_name, static_cast<std::uint16_t>(result));
@@ -152,6 +155,20 @@ void editor::workbench::open_project_file(const std::string& file)
     modals::inform("Project opened!", std::format("successfully opened: {}", file), false);
 
     data::project_files = std::move(result.value());
+
+    auto scripts_subdir = files::open_subdir(data::project_files, "/scripts/");
+    if(scripts_subdir) {
+        data::scripts_subdir = scripts_subdir.value();
+    } else {
+        luabot_logErr("Unable to mound a scripts subdirectory: {}", scripts_subdir.error().message());
+    }
+
+    auto resources_subdir = files::open_subdir(data::project_files, "/resources");
+    if(resources_subdir) {
+        data::resources_subdir = resources_subdir.value();
+    } else {
+        luabot_logErr("Unable to mound a resource subdirectory: {}", resources_subdir.error().message());
+    }
 
     data::opened_project_name = fs::path(file).filename().string();
 

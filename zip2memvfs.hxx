@@ -64,7 +64,7 @@ private:
 Expected<IFileSystem> open_zip(const std::string& name);
 errors::FileSystemResult save_zip(const IFileSystem& zip);
 
-Expected<VirtualFS> open_subdir(const IFileSystem& zip, const std::string& directory, bool readonly = false);
+Expected<IFileSystem> open_subdir(const IFileSystem& zip, const std::string& directory, bool readonly = false);
 
 Expected<ByteArray> read_bytes(const IFileSystem& zip, const std::string& name);
 Expected<ByteArray> read_bytes(const vfspp::IFilePtr& file);

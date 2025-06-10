@@ -24,9 +24,54 @@ bool check_file_flags(const vfspp::IFilePtr& file, vfspp::IFile::FileMode flags)
     return (current_mode & flags) == flags;
 }
 
-vfspp::MemoryFileSystemPtr fs_map(const vfspp::ZipFileSystemPtr& zip)
+bool is_file_dir(const vfspp::IFilePtr &file)
 {
-    return nullptr;
+    auto info = file->GetFileInfo();
+    auto name = info.AbsolutePath();
+
+    return name.ends_with("/");
+}
+
+Expected<vfspp::MemoryFileSystemPtr> fs_map(const vfspp::ZipFileSystemPtr& zip)
+{
+    auto mem_fs = std::make_shared<vfspp::MemoryFileSystem>();
+    mem_fs->Initialize();
+
+    if(!mem_fs->IsInitialized()) {
+        return errors::Error("Unable to create a memory-mapped file system");
+    }
+
+    for(auto &[name, file] : zip->FileList()) {
+        auto info = file->GetFileInfo();
+
+        if(info.IsDir() || !info.IsValid() || is_file_dir(file)) {
+            info = vfspp::FileInfo(info.Path(), true);
+        }
+
+        mem_fs->CreateFile(info);
+
+        if(info.IsDir()) {
+            continue;
+        }
+
+        auto bytes_result = read_bytes(file);
+
+        if(!bytes_result) {
+            bytes_result.error().throwError<std::runtime_error>();
+        }
+
+        auto bytes = bytes_result.value();
+
+        auto memory_file = mem_fs->OpenFile(info, vfspp::IFile::FileMode::ReadWrite);
+
+        write_bytes(memory_file, bytes);
+
+        if(memory_file->IsOpened()) {
+            memory_file->Close();
+        }
+    }
+
+    return mem_fs;
 }
 
 }
@@ -39,7 +84,11 @@ Expected<files::IFileSystem> files::open_zip(const std::string& name)
 
     if(fs->IsInitialized()) {
         auto mem_fs = internal::fs_map(fs);
-        auto ifs = vfspp::IFileSystemPtr(std::move(fs));
+        if(!mem_fs) {
+            return mem_fs.error();
+        }
+
+        auto ifs = vfspp::IFileSystemPtr(std::move(mem_fs.value()));
 
         return ifs;
     }
@@ -47,7 +96,7 @@ Expected<files::IFileSystem> files::open_zip(const std::string& name)
     return errors::Error(std::format("Unable to open archive {}", name));
 }
 
-Expected<files::VirtualFS> files::open_subdir(const IFileSystem& zip, const std::string& directory, bool readonly)
+Expected<files::IFileSystem> files::open_subdir(const IFileSystem& zip, const std::string& directory, bool readonly)
 {
     vfspp::FileInfo dir_info(directory);
     if(!zip->IsDir(dir_info)) {
@@ -60,7 +109,7 @@ Expected<files::VirtualFS> files::open_subdir(const IFileSystem& zip, const std:
 
     vfs->AddFileSystem("/", sub_fs);
 
-    return vfs;
+    return IFileSystem(std::move(sub_fs));
 }
 
 Expected<files::ByteArray> files::read_bytes(const IFileSystem& zip, const std::string& name)
