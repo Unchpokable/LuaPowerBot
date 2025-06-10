@@ -164,7 +164,6 @@ GLFWwindow* make_window(const char* title, configs::Vec2Int geometry)
     glfwSetWindowMaximizeCallback(window, window_maximize_callback);
 
     glfwMakeContextCurrent(window);
-    glfwSwapInterval(1); 
 
     data::window_geometry = geometry;
 
@@ -285,8 +284,6 @@ void editor::open_gui()
         internal::unlock_frame_rate();
     });
 
-    //glfwSwapInterval(1);
-
     internal::initialize_imgui(window);
     internal::init_modules();
 
@@ -320,7 +317,7 @@ void editor::open_gui()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        //ImGui::Text("%f", ImGui::GetIO().Framerate);
+        ImGui::Text("%f", ImGui::GetIO().Framerate);
 
         auto viewport = ImGui::GetMainViewport();
         ImGui::DockSpaceOverViewport(0, viewport, ImGuiDockNodeFlags_PassthruCentralNode);

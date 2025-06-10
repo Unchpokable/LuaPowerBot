@@ -103,11 +103,7 @@ Expected<files::IFileSystem> files::open_subdir(const IFileSystem& zip, const st
         return errors::Error(std::format("Path is not a directory: {}", directory));
     }
 
-    auto vfs = std::make_shared<vfspp::VirtualFileSystem>();
-
     auto sub_fs = std::make_shared<SubDirectory>(zip, directory, readonly);
-
-    vfs->AddFileSystem("/", sub_fs);
 
     return IFileSystem(std::move(sub_fs));
 }

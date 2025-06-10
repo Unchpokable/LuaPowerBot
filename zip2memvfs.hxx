@@ -32,7 +32,7 @@ class SubDirectory : public vfspp::IFileSystem
 {
 public:
     explicit SubDirectory(vfspp::IFileSystemPtr base_fs, std::string_view path, bool readonly = false);
-    
+
     virtual void Initialize() override;
     virtual void Shutdown() override;
     virtual bool IsInitialized() const override;
