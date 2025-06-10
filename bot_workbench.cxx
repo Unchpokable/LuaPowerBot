@@ -17,6 +17,7 @@
 #include "editor_utils.hxx"
 #include "modals.hxx"
 #include "ui_state.hxx"
+#include "tracy/tracy/Tracy.hpp"
 
 namespace editor::workbench::data {
 
@@ -226,6 +227,7 @@ void editor::workbench::stop_bot()
 
 void editor::workbench::render()
 {
+    ZoneScoped;
     ImGui::Begin("Bot workbench");
 
     static std::string project_path = "No project opened";

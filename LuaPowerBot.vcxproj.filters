@@ -76,6 +76,12 @@
     <Filter Include="sources\editor\modals">
       <UniqueIdentifier>{ac0d5755-3058-45c9-9bf4-2d200f1be105}</UniqueIdentifier>
     </Filter>
+    <Filter Include="headers\thirdparty\tracy">
+      <UniqueIdentifier>{e0425437-06de-449d-bc8f-65be6bef90e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\thirdparty\tracy">
+      <UniqueIdentifier>{c6e02a81-b7f4-4a3a-b6c9-e11e43c9def1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="thirdparty\imgui-docking\imgui_widgets.cpp">
@@ -191,6 +197,9 @@
     </ClCompile>
     <ClCompile Include="input_modal.cxx">
       <Filter>sources\editor\modals</Filter>
+    </ClCompile>
+    <ClCompile Include="thirdparty\tracy\TracyClient.cpp">
+      <Filter>sources\thirdparty\tracy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -334,6 +343,9 @@
     </ClInclude>
     <ClInclude Include="modals.hxx">
       <Filter>headers\editor\modals</Filter>
+    </ClInclude>
+    <ClInclude Include="thirdparty\tracy\tracy\Tracy.hpp">
+      <Filter>headers\thirdparty\tracy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

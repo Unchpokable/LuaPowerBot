@@ -5,6 +5,7 @@
 #include "ui_state.hxx"
 
 #include "thirdparty/imgui-docking/imgui.h"
+#include "tracy/tracy/Tracy.hpp"
 
 bool editor::state::is_maximized = false;
 bool editor::state::ignore_keyboard_input = false;
@@ -30,6 +31,7 @@ void editor::state::unbind_key(ImGuiKeyChord key)
 
 void editor::state::handle_keyboard()
 {
+    ZoneScoped;
     if(ignore_keyboard_input) {
         return;
     }

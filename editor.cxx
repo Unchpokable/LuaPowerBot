@@ -1,5 +1,7 @@
 #include "editor.hxx"
 
+#include "thirdparty/tracy/tracy/Tracy.hpp"
+
 #include "GLFW/glfw3.h"
 
 #include "thirdparty/imgui-docking/imgui.h"
@@ -121,6 +123,7 @@ void render_output_console()
 
 void render_gui(GLFWwindow* window)
 {
+    ZoneScoped;
     state::handle_keyboard();
 
     if(modals::has_any_modal()) {
@@ -147,6 +150,7 @@ void editor::open_gui()
     }
 
     auto geometry = configs::get<configs::Vec2Int>("Geometry");
+    auto framerate = *configs::get<int>("Framerate");
 
     auto window = internal::make_window("Lua!Power Bot Editor", { geometry->x, geometry->y });
     glfwMakeContextCurrent(window);
@@ -156,16 +160,19 @@ void editor::open_gui()
     internal::init_modules();
 
     while(!glfwWindowShouldClose(window)) {
-        glfwPollEvents();
-
-        if(glfwGetWindowAttrib(window, GLFW_ICONIFIED) != 0) {
-            ImGui_ImplGlfw_Sleep(10);
+        /*if(glfwGetWindowAttrib(window, GLFW_ICONIFIED) || !glfwGetWindowAttrib(window, GLFW_VISIBLE)) {
+            glfwWaitEvents();
             continue;
-        }
+        }*/
+
+        glfwWaitEventsTimeout(1.0/30.0);
+        //glfwPollEvents();
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+
+        ImGui::Text("%f", ImGui::GetIO().Framerate);
 
         auto viewport = ImGui::GetMainViewport();
         ImGui::DockSpaceOverViewport(0, viewport, ImGuiDockNodeFlags_PassthruCentralNode);
@@ -185,6 +192,8 @@ void editor::open_gui()
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         glfwSwapBuffers(window);
+
+        FrameMark;
     }
 
     ImGui_ImplOpenGL3_Shutdown();
