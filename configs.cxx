@@ -79,7 +79,7 @@ std::unordered_map<std::string, configs::ConfigValue>& configs::internal::get_co
     return data::config_values;
 }
 
-Expected<bool, errors::Error> configs::load_from_file(const fs::path& path)
+Expected<bool> configs::load_from_file(const fs::path& path)
 {
     try {
         if(!exists(path)) {
@@ -113,7 +113,7 @@ Expected<bool, errors::Error> configs::load_from_file(const fs::path& path)
     }
 }
 
-Expected<bool, errors::Error> configs::save_to_file(const fs::path& path)
+Expected<bool> configs::save_to_file(const fs::path& path)
 {
     try {
         create_directories(path.parent_path());

@@ -45,6 +45,13 @@ using SerializeFuncT = std::function<std::vector<std::uint8_t>>(T&& any);
 template<typename T>
 using DeserializeFuncT = std::function<T(const std::vector<std::uint8_t>&)>;
 
+template<typename T>
+concept BasicConfigType = std::is_same_v<T, std::string> ||
+std::is_same_v<T, int> ||
+std::is_same_v<T, double> ||
+std::is_same_v<T, bool> ||
+std::is_same_v<T, Vec2Int>;
+
 class ConfigValue
 {
 public:
@@ -58,11 +65,7 @@ public:
     template<typename T>
     ConfigValue(const T& value)
     {
-        if constexpr(std::is_same_v<T, std::string> ||
-            std::is_same_v<T, int> ||
-            std::is_same_v<T, double> ||
-            std::is_same_v<T, bool> ||
-            std::is_same_v<T, Vec2Int>) {
+        if constexpr(BasicConfigType<T>) {
             _value = value;
         } else {
             _value = serialize(value);
@@ -155,11 +158,7 @@ void register_type(SerializeFuncT<T> serializeFunc, DeserializeFuncT<T> deserial
 
 template<typename T>
 std::optional<T> ConfigValue::as() const {
-    if constexpr(std::is_same_v<T, std::string> ||
-        std::is_same_v<T, int> ||
-        std::is_same_v<T, double> ||
-        std::is_same_v<T, bool> ||
-        std::is_same_v<T, Vec2Int>) {
+    if constexpr(BasicConfigType<T>) {
         if(std::holds_alternative<T>(_value)) {
             return std::get<T>(_value);
         }
@@ -218,7 +217,7 @@ void set(const std::string& key, T&& value) {
     values[key].setValue(std::forward<T>(value));
 }
 
-Expected<bool, errors::Error> load_from_file(const fs::path& path);
-Expected<bool, errors::Error> save_to_file(const fs::path& path);
+Expected<bool> load_from_file(const fs::path& path);
+Expected<bool> save_to_file(const fs::path& path);
 
 }
