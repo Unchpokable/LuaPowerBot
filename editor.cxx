@@ -115,8 +115,6 @@ void framerate_limiter_thread(const std::stop_token& stop_token)
 
 void force_new_frame()
 {
-    luabot_logInfo("Unlocking framerate due to user actions");
-
     std::scoped_lock lock(data::wakeup_mutex);
     data::should_wakeup.store(true, std::memory_order_release);
     data::wakeup_condition.notify_all();
@@ -303,7 +301,7 @@ void editor::open_gui()
             while(true) {
                 glfwPollEvents();
 
-                if(internal::data::target_fps.load() >= framerate_limit_bound) {
+                if(internal::data::target_fps >= framerate_limit_bound) {
                     break;
                 }
 
