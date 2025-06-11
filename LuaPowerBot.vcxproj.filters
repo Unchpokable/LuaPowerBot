@@ -347,5 +347,8 @@
     <ClInclude Include="thirdparty\tracy\tracy\Tracy.hpp">
       <Filter>headers\thirdparty\tracy</Filter>
     </ClInclude>
+    <ClInclude Include="scope_guard.hxx">
+      <Filter>headers\utility</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

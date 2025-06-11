@@ -6,6 +6,7 @@
 
 #include "logdef.hxx"
 #include "security.hxx"
+#include "scope_guard.hxx"
 
 namespace files::internal {
 
@@ -226,6 +227,7 @@ Expected<files::ByteArray> files::read_bytes(const vfspp::IFilePtr& file)
     std::vector<std::uint8_t> data;
 
     bool was_opened = false;
+    scope_guard { if(was_opened) { file->Close(); } };
 
     if(!file->IsOpened()) {
         file->Open(vfspp::IFile::FileMode::Read);
@@ -236,15 +238,7 @@ Expected<files::ByteArray> files::read_bytes(const vfspp::IFilePtr& file)
 
     std::uint64_t bytes_read = file->Read(data.data(), data.size());
     if(bytes_read != data.size()) {
-        if(was_opened) {
-            file->Close();
-        }
-
         return errors::Error(std::format("Failed to read file: {}", file->GetFileInfo().Name()));
-    }
-
-    if(was_opened) {
-        file->Close();
     }
 
     return data;

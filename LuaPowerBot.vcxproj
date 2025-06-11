@@ -195,6 +195,7 @@
     <ClInclude Include="editor_utils.hxx" />
     <ClInclude Include="fsizes.hxx" />
     <ClInclude Include="modals.hxx" />
+    <ClInclude Include="scope_guard.hxx" />
     <ClInclude Include="security.hxx" />
     <ClInclude Include="editor.hxx" />
     <ClInclude Include="error.hxx" />
