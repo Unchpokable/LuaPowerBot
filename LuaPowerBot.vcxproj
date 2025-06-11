@@ -152,6 +152,7 @@
     <ClCompile Include="bot_workbench.cxx" />
     <ClCompile Include="code_editor.cxx" />
     <ClCompile Include="configs.cxx" />
+    <ClCompile Include="disk_io_worker.cpp" />
     <ClCompile Include="editor_utils.cxx" />
     <ClCompile Include="file_dialog_modal.cxx" />
     <ClCompile Include="info_modal.cxx" />
@@ -192,6 +193,7 @@
     <ClInclude Include="bot_workbench.hxx" />
     <ClInclude Include="code_editor.hxx" />
     <ClInclude Include="configs.hxx" />
+    <ClInclude Include="disk_io_worker.hxx" />
     <ClInclude Include="editor_utils.hxx" />
     <ClInclude Include="fsizes.hxx" />
     <ClInclude Include="modals.hxx" />
@@ -236,6 +238,7 @@
     <ClInclude Include="thirdparty\vfspp\ZipFileSystem.hpp" />
     <ClInclude Include="ui_state.hxx" />
     <ClInclude Include="user_session.hxx" />
+    <ClInclude Include="workers.hxx" />
     <ClInclude Include="zip2memvfs.hxx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

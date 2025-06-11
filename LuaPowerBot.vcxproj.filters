@@ -82,6 +82,12 @@
     <Filter Include="sources\thirdparty\tracy">
       <UniqueIdentifier>{c6e02a81-b7f4-4a3a-b6c9-e11e43c9def1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="headers\workers">
+      <UniqueIdentifier>{621657b0-95fb-4664-bb89-76d1706b38de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\workers">
+      <UniqueIdentifier>{5c11d3fc-5ab5-4453-817f-8396ca0b6633}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="thirdparty\imgui-docking\imgui_widgets.cpp">
@@ -200,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="thirdparty\tracy\TracyClient.cpp">
       <Filter>sources\thirdparty\tracy</Filter>
+    </ClCompile>
+    <ClCompile Include="disk_io_worker.cpp">
+      <Filter>sources\workers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -349,6 +358,12 @@
     </ClInclude>
     <ClInclude Include="scope_guard.hxx">
       <Filter>headers\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="workers.hxx">
+      <Filter>headers\workers</Filter>
+    </ClInclude>
+    <ClInclude Include="disk_io_worker.hxx">
+      <Filter>headers\workers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,6 +6,7 @@
 #include <utility>
 #include <variant>
 
+#include "error.hxx"
 #include "globals.hxx"
 
 __noreturn inline void unreachable()
@@ -38,6 +39,9 @@ public:
 private:
     std::variant<value_type, error_type> _data;
 };
+
+template<typename Err = errors::Error>
+using ExpectedErr = Expected<std::monostate, Err>;
 
 template <typename T, typename Err>
 Expected<T, Err>::Expected(const value_type& value) requires std::copy_constructible<T> : _data(value) {}
