@@ -62,7 +62,7 @@ private:
 };
 
 Expected<IFileSystem> open_zip(const std::string& name);
-errors::FileSystemResult save_zip(const IFileSystem& zip);
+errors::FileSystemResult save_to_zip(const fs::path& path, const vfspp::IFileSystemPtr& fs, bool overwrite = true);
 
 Expected<IFileSystem> open_subdir(const IFileSystem& zip, const std::string& directory, bool readonly = false);
 

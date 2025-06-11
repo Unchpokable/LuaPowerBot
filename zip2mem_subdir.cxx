@@ -1,5 +1,7 @@
 #include "zip2memvfs.hxx"
 
+#include <regex>
+
 files::SubDirectory::SubDirectory(vfspp::IFileSystemPtr base_fs, std::string_view path, bool readonly)
     : _origin_fs(std::move(base_fs)), _prefix(path), _readonly(readonly)
 { }
@@ -150,7 +152,9 @@ std::string files::SubDirectory::to_full_path(std::string_view path) const
         return cleaned;
     }
 
-    return _prefix + cleaned;
+    auto combined = _prefix + cleaned;
+
+    return std::regex_replace(combined, std::regex("/+"), "/");
 }
 
 std::string files::SubDirectory::to_local_path(std::string_view path) const

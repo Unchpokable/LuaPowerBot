@@ -24,12 +24,24 @@ bool check_file_flags(const vfspp::IFilePtr& file, vfspp::IFile::FileMode flags)
     return (current_mode & flags) == flags;
 }
 
-bool is_file_dir(const vfspp::IFilePtr &file)
+bool is_file_dir(const vfspp::IFilePtr& file)
 {
     auto info = file->GetFileInfo();
     auto name = info.AbsolutePath();
 
     return name.ends_with("/");
+}
+
+bool has_subdirectory(const IFileSystem& fs, const vfspp::FileInfo& info)
+{
+    // todo: maybe there is a more accurate way to do this?
+    for(auto& file: fs->FileList() | std::views::values) {
+        if(file->GetFileInfo().AbsolutePath().starts_with(info.AbsolutePath())) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 Expected<vfspp::MemoryFileSystemPtr> fs_map(const vfspp::ZipFileSystemPtr& zip)
@@ -41,7 +53,7 @@ Expected<vfspp::MemoryFileSystemPtr> fs_map(const vfspp::ZipFileSystemPtr& zip)
         return errors::Error("Unable to create a memory-mapped file system");
     }
 
-    for(auto &[name, file] : zip->FileList()) {
+    for(const auto &file : zip->FileList() | std::views::values) {
         auto info = file->GetFileInfo();
 
         if(info.IsDir() || !info.IsValid() || is_file_dir(file)) {
@@ -90,16 +102,103 @@ Expected<files::IFileSystem> files::open_zip(const std::string& name)
 
         auto ifs = vfspp::IFileSystemPtr(std::move(mem_fs.value()));
 
+        fs->Shutdown();
+
         return ifs;
     }
 
     return errors::Error(std::format("Unable to open archive {}", name));
 }
 
+errors::FileSystemResult files::save_to_zip(const fs::path& path, const vfspp::IFileSystemPtr& fs, bool overwrite)
+{
+    if(!fs || !fs->IsInitialized()) {
+        return errors::UnableToWrite;
+    }
+
+    if(fs::exists(path) && !overwrite) {
+        return errors::UnableToWrite;
+    }
+
+    fs::path temp_dir = fs::temp_directory_path();
+    fs::path temp_file = temp_dir / std::format("luabot_tmp_{}.zip", std::to_string(std::time(nullptr)));
+
+    try {
+        mz_zip_archive zip_archive = {};
+
+        if(!mz_zip_writer_init_file(&zip_archive, temp_file.string().c_str(), 0)) {
+            return errors::UnableToWrite;
+        }
+
+        const auto& file_list = fs->FileList();
+
+        auto write_success = true;
+
+        for(const auto &file : file_list | std::views::values) {
+            if(!file) {
+                continue;
+            }
+
+            auto& info = file->GetFileInfo();
+
+            if(info.IsDir()) {
+                continue;
+            }
+
+            auto content_result = read_bytes(file);
+            if(!content_result) {
+                luabot_logErr("Failed to read file: {}", info.AbsolutePath());
+                write_success = false;
+                break;
+            }
+
+            auto& content = content_result.value();
+            auto archive_path = info.AbsolutePath();
+
+            if(archive_path.starts_with("/")) {
+                archive_path = archive_path.substr(1);
+            }
+
+            if(!mz_zip_writer_add_mem(&zip_archive, archive_path.c_str(), content.data(), content.size(), MZ_DEFAULT_COMPRESSION)) {
+                luabot_logErr("Failed to add file to archive: {}", archive_path);
+                write_success = false;
+                break;
+            }
+        }
+
+        if(write_success && !mz_zip_writer_finalize_archive(&zip_archive)) {
+            write_success = false;
+        }
+
+        mz_zip_writer_end(&zip_archive);
+
+        if(!write_success) {
+            fs::remove(temp_file);
+            return errors::UnableToWrite;
+        }
+
+        fs::rename(temp_file, path);
+
+        fs::remove(temp_file);
+
+        return errors::OK;
+
+    } catch(std::exception& e) {
+        luabot_logErr("Failed writing archive: {}", e.what());
+
+        if(fs::exists(temp_file)) {
+            fs::remove(temp_file);
+        }
+
+        return errors::UnableToWrite;
+    }
+}
+
+
 Expected<files::IFileSystem> files::open_subdir(const IFileSystem& zip, const std::string& directory, bool readonly)
 {
     vfspp::FileInfo dir_info(directory);
-    if(!zip->IsDir(dir_info)) {
+    if(!zip->IsDir(dir_info) && !internal::has_subdirectory(zip, vfspp::FileInfo(directory))) {
         return errors::Error(std::format("Path is not a directory: {}", directory));
     }
 
@@ -125,15 +224,27 @@ Expected<files::ByteArray> files::read_bytes(const IFileSystem& zip, const std::
 Expected<files::ByteArray> files::read_bytes(const vfspp::IFilePtr& file)
 {
     std::vector<std::uint8_t> data;
-    data.resize(file->Size());
+
+    bool was_opened = false;
 
     if(!file->IsOpened()) {
         file->Open(vfspp::IFile::FileMode::Read);
+        was_opened = true;
     }
+
+    data.resize(file->Size());
 
     std::uint64_t bytes_read = file->Read(data.data(), data.size());
     if(bytes_read != data.size()) {
+        if(was_opened) {
+            file->Close();
+        }
+
         return errors::Error(std::format("Failed to read file: {}", file->GetFileInfo().Name()));
+    }
+
+    if(was_opened) {
+        file->Close();
     }
 
     return data;

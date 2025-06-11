@@ -53,6 +53,7 @@ std::unique_ptr<tg::BotRuntime> bot_runtime;
 
 std::string api_key;
 
+fs::path project_file;
 std::vector<std::string> folders;
 std::map<std::string, std::vector<std::string>> files_by_folders;
 
@@ -170,7 +171,9 @@ void editor::workbench::open_project_file(const std::string& file)
         luabot_logErr("Unable to mound a resource subdirectory: {}", resources_subdir.error().message());
     }
 
-    data::opened_project_name = fs::path(file).filename().string();
+    data::project_file = fs::path(file);
+    data::opened_project_name = data::project_file.stem().string();
+
 
     refresh_scripts();
 }
@@ -232,6 +235,17 @@ void editor::workbench::refresh_scripts()
 void editor::workbench::save()
 {
     code::write_cached();
+
+    // todo: background worker thread execution
+    auto result = files::save_to_zip(data::project_file, data::project_files);
+    luabot_logInfo("Saving... result: {}", static_cast<int>(result));
+
+    if(result == errors::OK) {
+        modals::inform("Saving", "Project successfully saved!", false);
+    } else {
+        auto message = std::format("File saving is failed with error code: {}", static_cast<int>(result));
+        modals::inform("Saving", message, false);
+    }
 }
 
 void editor::workbench::start_bot()
@@ -260,6 +274,11 @@ void editor::workbench::render()
             ->on(modals::ModalEvent::Ok, [](const std::any& path) {
                 open_project_file(std::any_cast<std::string>(path));
             });
+    }
+
+    ImGui::SameLine();
+    if(ImGui::Button("Save")) {
+        save();
     }
 
     ImGui::BeginChild("Files", ImVec2(0, ImGui::GetContentRegionAvail().y - 100), true);
