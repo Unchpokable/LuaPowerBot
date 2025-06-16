@@ -152,7 +152,6 @@
     <ClCompile Include="bot_workbench.cxx" />
     <ClCompile Include="code_editor.cxx" />
     <ClCompile Include="configs.cxx" />
-    <ClCompile Include="disk_io_worker.cpp" />
     <ClCompile Include="editor_utils.cxx" />
     <ClCompile Include="file_dialog_modal.cxx" />
     <ClCompile Include="info_modal.cxx" />
@@ -184,6 +183,7 @@
     <ClCompile Include="thirdparty\tracy\TracyClient.cpp" />
     <ClCompile Include="ui_state.cxx" />
     <ClCompile Include="user_session.cxx" />
+    <ClCompile Include="workers.cxx" />
     <ClCompile Include="yes_no_modal.cxx" />
     <ClCompile Include="zip2memvfs.cxx" />
     <ClCompile Include="zip2mem_subdir.cxx" />
@@ -193,7 +193,6 @@
     <ClInclude Include="bot_workbench.hxx" />
     <ClInclude Include="code_editor.hxx" />
     <ClInclude Include="configs.hxx" />
-    <ClInclude Include="disk_io_worker.hxx" />
     <ClInclude Include="editor_utils.hxx" />
     <ClInclude Include="fsizes.hxx" />
     <ClInclude Include="modals.hxx" />

@@ -190,7 +190,7 @@ void editor::workbench::refresh_scripts()
         return;
     }
 
-    code::actualize();
+    code::refresh();
 
     auto &file_list = data::project_files->FileList();
 
